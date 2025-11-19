@@ -6,291 +6,518 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
-      padding: 20px;
+      padding: 24px 16px 40px;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f5f5f7;
-      color: #333;
+      background: radial-gradient(circle at top, #fef5ff 0, #f5f7fb 45%, #f3f3f3 100%);
+      color: #222;
     }
-    h1 {
+
+    .page {
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+
+    /* 헤더 */
+
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .hero-text h1 {
+      margin: 0 0 8px;
+      font-size: 24px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-text p {
+      margin: 0;
+      font-size: 13px;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(125, 95, 255, 0.06);
+      color: #6a4bff;
+      font-size: 11px;
+      margin-bottom: 8px;
+    }
+
+    .hero-image {
+      flex-shrink: 0;
+      width: 120px;
+      height: 120px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, #ffd6e7, #c8d6ff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: #555;
       text-align: center;
-      margin-bottom: 20px;
+      padding: 10px;
     }
-    .container {
+
+    .hero-image img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 18px;
+      display: block;
+    }
+
+    /* 메인 레이아웃 */
+
+    .main {
       display: flex;
       flex-wrap: wrap;
       gap: 20px;
-      max-width: 1200px;
-      margin: 0 auto;
     }
-    .form, .preview {
-      flex: 1 1 350px;
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 16px 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+
+    .form-panel,
+    .preview-panel {
+      flex: 1 1 360px;
+      background: #fff;
+      border-radius: 20px;
+      padding: 16px 18px 20px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
     }
-    .section-title {
-      font-size: 16px;
+
+    .panel-title {
+      font-size: 14px;
       font-weight: 600;
-      margin: 16px 0 8px;
+      margin: 2px 0 12px;
+    }
+
+    .panel-sub {
+      font-size: 11px;
+      color: #888;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin: 16px 0 6px;
       color: #333;
     }
+
     label {
       display: block;
-      font-size: 13px;
-      margin: 6px 0 4px;
+      font-size: 12px;
+      margin: 6px 0 3px;
       color: #555;
     }
-    input[type="text"], textarea {
+
+    input[type="text"],
+    textarea {
       width: 100%;
       padding: 8px 10px;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-      font-size: 13px;
-      resize: vertical;
-    }
-    textarea { min-height: 60px; }
-    .small-tip {
-      font-size: 11px;
-      color: #999;
-      margin-bottom: 4px;
-    }
-    .preview-inner {
-      border-radius: 12px;
-      padding: 16px 18px;
-      background: #fafafa;
-      border: 1px solid #eee;
-      font-size: 14px;
-      line-height: 1.6;
-      max-height: 80vh;
-      overflow-y: auto;
-    }
-    .preview-block {
-      margin-bottom: 16px;
-    }
-    .preview-block h3 {
-      margin: 0 0 6px;
-      font-size: 15px;
-    }
-    .preview-block p {
-      margin: 2px 0;
-    }
-    .chip-list {
-      display: inline-flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-    .chip {
-      padding: 2px 8px;
-      border-radius: 999px;
-      border: 1px solid #ddd;
+      border-radius: 10px;
+      border: 1px solid #dde0eb;
       font-size: 12px;
+      resize: vertical;
+      background: #fafbff;
+    }
+
+    textarea { min-height: 60px; }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #8467ff;
+      box-shadow: 0 0 0 1px rgba(132, 103, 255, 0.2);
       background: #fff;
     }
+
+    .small-tip {
+      font-size: 11px;
+      color: #9a9aac;
+      margin-bottom: 4px;
+    }
+
+    /* 미리보기 스타일 */
+
+    .profile-book {
+      border-radius: 18px;
+      padding: 16px 16px 18px;
+      background: linear-gradient(135deg, #ffffff, #f8f6ff);
+      border: 1px solid #ece6ff;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .profile-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .profile-name {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .profile-tagline {
+      font-size: 11px;
+      color: #777;
+    }
+
+    .profile-pill {
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: #f0ebff;
+      color: #6b4df7;
+    }
+
+    .profile-section {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px dashed #e2def5;
+    }
+
+    .profile-section-title {
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #444;
+    }
+
+    .chip-list {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .chip {
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid #ddd;
+      font-size: 11px;
+      background: #fff;
+      white-space: nowrap;
+    }
+
+    .placeholder {
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    .footer-note {
+      margin-top: 10px;
+      font-size: 10px;
+      color: #999;
+      text-align: right;
+    }
+
     @media (max-width: 768px) {
-      .container {
+      body {
+        padding: 16px 12px 32px;
+      }
+      .hero {
         flex-direction: column;
+        align-items: flex-start;
+      }
+      .hero-image {
+        align-self: center;
+      }
+      .panel-title {
+        font-size: 13px;
       }
     }
   </style>
 </head>
 <body>
-  <h1>넷플연가 프로필북</h1>
-  <div class="container">
-    <div class="form">
-      <form id="profile-form">
-        <div class="section">
-          <div class="section-title">[남이 보는 나 · 내가 보는 나]</div>
-          <div class="small-tip">쉼표(,)로 구분해서 적어 주세요. 예: 차분한, 관찰자, 현실적인</div>
-          <label>1. 남들이 나에게 적어준 키워드 3가지</label>
-          <input type="text" id="others_keywords" placeholder="예: 차분한, 따뜻한, 분석적" />
-          <label>2. 내가 보는 나의 키워드 3가지</label>
-          <input type="text" id="self_keywords" placeholder="예: 조용한, 집요한, 유머있는" />
-          <label>3. 남의 시선과 나의 시선이 달랐던 점 1가지</label>
-          <textarea id="view_diff" placeholder="예: 나는 내 성격을 소심하다고 생각했는데, 다른 사람들은 섬세하다고 표현해줬다."></textarea>
-        </div>
-        <div class="section">
-          <div class="section-title">[나의 인생작품을 찾아서]</div>
-          <label>1. 내가 좋아하는 작품</label>
-          <input type="text" id="fav_work" placeholder="예: 영화 <비포 선라이즈>" />
-          <label>2. 인생이라고 느꼈던 장면 / 이유</label>
-          <textarea id="life_scene" placeholder="어떤 장면이 왜 와닿았는지 적어주세요."></textarea>
-          <label>3. 내가 좋아하지 않는 작품들의 공통점</label>
-          <textarea id="dislike_common" placeholder="예: 인물의 감정 변화를 설명 없이 밀어붙이는 작품들"></textarea>
-          <label>4. 그래서 나는 이런 사람이다 (한 문장)</label>
-          <input type="text" id="i_am" placeholder="예: 사람 사이의 대화와 디테일을 중요하게 여기는 사람이다." />
-        </div>
-        <div class="section">
-          <div class="section-title">[무의식 속 나의 취향]</div>
-          <label>1. 나의 시각적 취향</label>
-          <textarea id="visual_taste" placeholder="예: 낮은 채도의 색감, 깔끔한 구도, 자연광이 들어오는 공간"></textarea>
-          <label>2. 내가 안정감을 느끼는 공간/환경</label>
-          <textarea id="space_taste" placeholder="예: 너무 어둡지 않은 카페, 사람 목소리는 있지만 과하지 않은 곳"></textarea>
-          <label>3. 내가 편안함을 느끼는 사람의 에너지</label>
-          <textarea id="people_energy" placeholder="예: 과하게 리드하지 않고, 조용히 웃어주는 사람"></textarea>
-          <label>4. 나의 이상적 자기상(ideal self)</label>
-          <textarea id="ideal_self" placeholder="예: 내 속도를 지키면서도, 사람들에게 따뜻하게 다가가는 사람"></textarea>
-        </div>
-        <div class="section">
-          <div class="section-title">[나를 움직이는 감정 & 가치 3가지]</div>
-          <div class="small-tip">쉼표(,)로 구분해서 적어 주세요. 예: 안정감, 성취감, 소속감</div>
-          <input type="text" id="values" placeholder="예: 안정감, 깊은 대화, 신뢰" />
-        </div>
-        <div class="section">
-          <div class="section-title">[넷플연가를 통해 새롭게 발견한 나]</div>
-          <label>1. 예상 못한 나의 모습 1가지</label>
-          <textarea id="new_side" placeholder="예: 생각보다 내가 내 취향을 잘 설명할 수 있다는 것"></textarea>
-          <label>2. 앞으로 더 키워가고 싶은 부분 1가지</label>
-          <textarea id="grow_side" placeholder="예: 내 취향을 숨기지 않고 자연스럽게 드러내는 연습"></textarea>
-        </div>
-        <button type="submit" style="display:none;">submit</button>
-      </form>
-    </div>
-    <div class="preview">
-      <div class="section-title">미리보기</div>
-      <div class="preview-inner" id="preview">
-        <!-- JS로 실시간 내용이 들어갑니다 -->
+  <div class="page">
+    <!-- 상단 헤더 -->
+    <header class="hero">
+      <div class="hero-text">
+        <div class="hero-badge">넷플연가 · Profile Book</div>
+        <h1>나를 닮은 넷플연가 프로필북</h1>
+        <p>
+          모임에서 나눴던 대화와 질문들을 정리해서,<br />
+          지금의 나를 가장 잘 보여주는 한 권의 프로필북을 만들어봐요.
+        </p>
       </div>
-    </div>
+      <div class="hero-image">
+        <!-- 이 안에 <img>로 교체해도 됨 -->
+        여기에<br>이미지 넣고 싶으면<br>img 태그로 교체!
+      </div>
+    </header>
+
+    <!-- 메인: 입력 + 미리보기 -->
+    <main class="main">
+      <!-- 입력 폼 -->
+      <section class="form-panel">
+        <div class="panel-title">질문에 편하게 답을 적어주세요</div>
+        <div class="panel-sub">입력한 내용은 오른쪽 프로필북에 바로 반영됩니다.</div>
+
+        <form id="profile-form">
+          <!-- 기본 정보 -->
+          <div class="section">
+            <div class="section-title">[기본 정보]</div>
+            <label>닉네임 또는 이름</label>
+            <input type="text" id="nickname" placeholder="예: 라이언 / R" />
+
+            <label>짧은 한 줄 소개</label>
+            <input type="text" id="tagline" placeholder="예: 일상을 기록하는 관찰자형 ENFP" />
+          </div>
+
+          <!-- 남이 보는 나 / 내가 보는 나 -->
+          <div class="section">
+            <div class="section-title">[남이 보는 나 · 내가 보는 나]</div>
+            <div class="small-tip">쉼표(,)로 구분해서 적어 주세요. 예: 차분한, 관찰자, 현실적인</div>
+
+            <label>1. 남들이 나에게 적어준 키워드</label>
+            <input type="text" id="others_keywords" placeholder="예: 차분한, 따뜻한, 분석적" />
+
+            <label>2. 내가 보는 나의 키워드</label>
+            <input type="text" id="self_keywords" placeholder="예: 조용한, 집요한, 유머있는" />
+          </div>
+
+          <!-- 인생 작품 -->
+          <div class="section">
+            <div class="section-title">[나의 인생작품을 찾아서]</div>
+
+            <label>3. 내가 좋아하는 작품</label>
+            <input type="text" id="fav_work" placeholder="예: 영화 &lt;비포 선라이즈&gt;" />
+
+            <label>4. 인생이라고 느꼈던 장면 / 이유</label>
+            <textarea id="life_scene" placeholder="어떤 장면이 왜 와닿았는지 적어주세요."></textarea>
+
+            <label>5. 내가 잘 안 맞는 작품들의 공통점</label>
+            <textarea id="dislike_common" placeholder="예: 인물의 감정 변화를 설명 없이 밀어붙이는 작품들"></textarea>
+          </div>
+
+          <!-- 무의식 속 취향 -->
+          <div class="section">
+            <div class="section-title">[무의식 속 나의 취향]</div>
+
+            <label>6. 나의 시각적 취향</label>
+            <textarea id="visual_taste" placeholder="예: 낮은 채도의 색감, 깔끔한 구도, 자연광이 들어오는 공간"></textarea>
+
+            <label>7. 내가 편안함을 느끼는 공간 / 사람의 분위기</label>
+            <textarea id="space_people" placeholder="예: 너무 시끄럽지 않은 카페, 과하지 않게 리드해주는 사람"></textarea>
+
+            <label>8. 나의 이상적 자기상(ideal self)</label>
+            <textarea id="ideal_self" placeholder="예: 내 속도를 지키면서도, 사람들에게 따뜻하게 다가가는 사람"></textarea>
+          </div>
+
+          <!-- 감정 & 가치 -->
+          <div class="section">
+            <div class="section-title">[나를 움직이는 감정 & 가치]</div>
+            <div class="small-tip">쉼표(,)로 구분해서 2~5개 정도 적어 주세요.</div>
+            <input type="text" id="values" placeholder="예: 안정감, 깊은 대화, 신뢰, 발견" />
+          </div>
+
+          <!-- 넷플연가에서 발견한 나 -->
+          <div class="section">
+            <div class="section-title">[넷플연가에서 발견한 나]</div>
+
+            <label>9. 이번 모임을 통해 새로 알게 된 나</label>
+            <textarea id="new_side" placeholder="예: 생각보다 내가 내 취향을 잘 설명할 수 있다는 것"></textarea>
+
+            <label>10. 앞으로 더 키워가고 싶은 부분</label>
+            <textarea id="grow_side" placeholder="예: 내 취향을 숨기지 않고 자연스럽게 드러내는 연습"></textarea>
+          </div>
+
+          <button type="submit" style="display:none;">submit</button>
+        </form>
+      </section>
+
+      <!-- 미리보기 패널 -->
+      <section class="preview-panel">
+        <div class="panel-title">프로필북 미리보기</div>
+        <div class="panel-sub">캡처해서 제출하거나, 그대로 프로필북 제작에 활용할 수 있어요.</div>
+
+        <div class="profile-book" id="preview">
+          <!-- JS에서 자동 렌더링 -->
+        </div>
+
+        <div class="footer-note">
+          * 이 페이지는 입력만 저장하지 않고, 브라우저 안에서만 임시로 보여줘요.
+        </div>
+      </section>
+    </main>
   </div>
+
   <script>
-    const form = document.getElementById("profile-form");
-    const preview = document.getElementById("preview");
     const fields = [
+      "nickname",
+      "tagline",
       "others_keywords",
       "self_keywords",
-      "view_diff",
       "fav_work",
       "life_scene",
       "dislike_common",
-      "i_am",
       "visual_taste",
-      "space_taste",
-      "people_energy",
+      "space_people",
       "ideal_self",
       "values",
       "new_side",
       "grow_side",
     ];
+
+    const preview = document.getElementById("preview");
+    const form = document.getElementById("profile-form");
+
     function splitChips(str) {
       return str
         .split(",")
         .map(s => s.trim())
-        .filter(s => s.length > 0);
+        .filter(Boolean);
     }
+
     function renderPreview() {
       const data = {};
       fields.forEach(id => {
         const el = document.getElementById(id);
         data[id] = el ? el.value.trim() : "";
       });
-      const othersChips = splitChips(data.others_keywords);
-      const selfChips = splitChips(data.self_keywords);
-      const valueChips = splitChips(data.values);
+
+      const others = splitChips(data.others_keywords);
+      const self = splitChips(data.self_keywords);
+      const values = splitChips(data.values);
+
+      const nickname = data.nickname || "닉네임을 입력해주세요";
+      const tagline =
+        data.tagline || "지금의 나를 한 줄로 소개해보세요.";
+
       preview.innerHTML = `
-        <div class="preview-block">
-          <h3>[남이 보는 나 · 내가 보는 나]</h3>
-          <p><strong>남들이 본 나</strong> ${
-            othersChips.length
-              ? `<span class="chip-list">${othersChips
-                  .map(k => `<span class="chip">${k}</span>`)
-                  .join("")}</span>`
-              : "(아직 입력되지 않았습니다)"
-          }</p>
-          <p><strong>내가 보는 나</strong> ${
-            selfChips.length
-              ? `<span class="chip-list">${selfChips
-                  .map(k => `<span class="chip">${k}</span>`)
-                  .join("")}</span>`
-              : "(아직 입력되지 않았습니다)"
-          }</p>
-          ${
-            data.view_diff
-              ? `<p><strong>시선의 차이:</strong> ${data.view_diff}</p>`
-              : ""
-          }
+        <div class="profile-header">
+          <div class="profile-header-left">
+            <div class="profile-name">${nickname}</div>
+            <div class="profile-tagline">${tagline}</div>
+          </div>
+          <div class="profile-pill">넷플연가 Profile</div>
         </div>
-        <div class="preview-block">
-          <h3>[나의 인생작품을 찾아서]</h3>
+
+        <div class="profile-section">
+          <div class="profile-section-title">남이 보는 나 · 내가 보는 나</div>
+          <p>
+            <strong>남들이 본 나</strong><br />
+            ${
+              others.length
+                ? `<span class="chip-list">${others
+                    .map(k => `<span class="chip">${k}</span>`)
+                    .join("")}</span>`
+                : `<span class="placeholder">키워드를 2~3개 정도 적어보세요.</span>`
+            }
+          </p>
+          <p>
+            <strong>내가 보는 나</strong><br />
+            ${
+              self.length
+                ? `<span class="chip-list">${self
+                    .map(k => `<span class="chip">${k}</span>`)
+                    .join("")}</span>`
+                : `<span class="placeholder">내가 느끼는 나의 모습을 적어보세요.</span>`
+            }
+          </p>
+        </div>
+
+        <div class="profile-section">
+          <div class="profile-section-title">나의 인생작품</div>
           ${
             data.fav_work
-              ? `<p><strong>좋아하는 작품:</strong> ${data.fav_work}</p>`
-              : ""
+              ? `<p><strong>좋아하는 작품</strong><br />${data.fav_work}</p>`
+              : `<p class="placeholder">마음에 깊이 남아있는 작품이 있다면 적어주세요.</p>`
           }
           ${
             data.life_scene
-              ? `<p><strong>인생이라고 느꼈던 장면/이유:</strong> ${data.life_scene}</p>`
+              ? `<p><strong>인생 장면 / 이유</strong><br />${data.life_scene}</p>`
               : ""
           }
           ${
             data.dislike_common
-              ? `<p><strong>좋아하지 않는 작품들의 공통점:</strong> ${data.dislike_common}</p>`
-              : ""
-          }
-          ${
-            data.i_am
-              ? `<p><strong>그래서 나는 이런 사람이다:</strong> ${data.i_am}</p>`
+              ? `<p><strong>나와 잘 안 맞는 작품들의 공통점</strong><br />${data.dislike_common}</p>`
               : ""
           }
         </div>
-        <div class="preview-block">
-          <h3>[무의식 속 나의 취향]</h3>
+
+        <div class="profile-section">
+          <div class="profile-section-title">무의식 속 취향</div>
           ${
             data.visual_taste
-              ? `<p><strong>시각적 취향:</strong> ${data.visual_taste}</p>`
+              ? `<p><strong>시각적 취향</strong><br />${data.visual_taste}</p>`
               : ""
           }
           ${
-            data.space_taste
-              ? `<p><strong>안정감을 느끼는 공간:</strong> ${data.space_taste}</p>`
-              : ""
-          }
-          ${
-            data.people_energy
-              ? `<p><strong>편안한 사람의 에너지:</strong> ${data.people_energy}</p>`
+            data.space_people
+              ? `<p><strong>편안한 공간 / 사람의 분위기</strong><br />${data.space_people}</p>`
               : ""
           }
           ${
             data.ideal_self
-              ? `<p><strong>이상적 자기상:</strong> ${data.ideal_self}</p>`
+              ? `<p><strong>이상적 자기상</strong><br />${data.ideal_self}</p>`
+              : ""
+          }
+          ${
+            !data.visual_taste && !data.space_people && !data.ideal_self
+              ? `<p class="placeholder">공간, 사람, 내가 되고 싶은 나를 떠올리며 자유롭게 적어보세요.</p>`
               : ""
           }
         </div>
-        <div class="preview-block">
-          <h3>[나를 움직이는 감정 & 가치]</h3>
+
+        <div class="profile-section">
+          <div class="profile-section-title">나를 움직이는 감정 & 가치</div>
           ${
-            valueChips.length
-              ? `<p><span class="chip-list">${valueChips
+            values.length
+              ? `<p><span class="chip-list">${values
                   .map(v => `<span class="chip">${v}</span>`)
                   .join("")}</span></p>`
-              : "<p>(아직 입력되지 않았습니다)</p>"
+              : `<p class="placeholder">중요하게 느끼는 감정이나 가치를 2~5개 정도 적어보세요.</p>`
           }
         </div>
-        <div class="preview-block">
-          <h3>[넷플연가를 통해 새롭게 발견한 나]</h3>
+
+        <div class="profile-section">
+          <div class="profile-section-title">넷플연가에서 발견한 나</div>
           ${
             data.new_side
-              ? `<p><strong>새롭게 본 나의 모습:</strong> ${data.new_side}</p>`
+              ? `<p><strong>새롭게 알게 된 나</strong><br />${data.new_side}</p>`
               : ""
           }
           ${
             data.grow_side
-              ? `<p><strong>앞으로 키워가고 싶은 부분:</strong> ${data.grow_side}</p>`
+              ? `<p><strong>앞으로 키워가고 싶은 부분</strong><br />${data.grow_side}</p>`
+              : ""
+          }
+          ${
+            !data.new_side && !data.grow_side
+              ? `<p class="placeholder">모임을 통해 느낀 점이나 앞으로의 방향을 적어보세요.</p>`
               : ""
           }
         </div>
       `;
     }
+
     fields.forEach(id => {
       const el = document.getElementById(id);
       if (!el) return;
       el.addEventListener("input", renderPreview);
     });
-    form.addEventListener("submit", e => {
-      e.preventDefault();
-    });
+
+    form.addEventListener("submit", e => e.preventDefault());
+
     renderPreview();
   </script>
 </body>
