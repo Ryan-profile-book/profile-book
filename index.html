@@ -39,7 +39,7 @@
       position:relative;
     }
 
-    /* 패턴 */
+    /* 색지 패턴들 */
     .phone[data-pattern="sunrise"] { background:linear-gradient(135deg,#ffe0f0,#fff5d9); }
     .phone[data-pattern="lavender"] { background:linear-gradient(135deg,#e5e0ff,#fdf2ff); }
     .phone[data-pattern="mint"] { background:linear-gradient(135deg,#d9fff2,#f2fff8); }
@@ -49,7 +49,7 @@
     .phone[data-pattern="navy"] { background:linear-gradient(135deg,#6f7fb8,#4c5a99); }
     .phone[data-pattern="black"] { background:linear-gradient(135deg,#333,#111); }
 
-    /* 헤더 */
+    /* 상단 바 */
     .top-bar {
       height:44px;
       padding:0 16px;
@@ -66,13 +66,14 @@
       cursor:pointer;
     }
 
-    /* 페이지 본문 */
+    /* 본문 컨테이너 */
     .page-container {
       flex:1;
       padding:12px;
       display:flex;
     }
 
+    /* 기본 페이지 카드 */
     .page-inner {
       width:100%;
       height:100%;
@@ -84,14 +85,22 @@
       position:relative;
     }
 
-    /* STEP 제어 */
+    /* 표지일 때는 카드 없애고 색지 전체 보이게 */
+    body.cover-step .page-inner {
+      background:transparent;
+      box-shadow:none;
+      border-radius:0;
+      padding:0;
+    }
+
     .step { display:none; }
     .step.active { display:block; }
 
-    /* 헤더 (페이지 내부) */
+    /* 페이지 상단 헤더 (챕터/질문 페이지) */
     .header-fixed {
       text-align:center;
       margin-bottom:14px;
+      padding-top:8px;
     }
     .header-title {
       font-size:15px;
@@ -103,20 +112,21 @@
       margin-top:2px;
     }
 
-    /* 페이지 번호 */
+    /* 페이지 번호 (아래 가운데) */
     .page-number {
       position:absolute;
-      right:14px;
+      left:50%;
+      transform:translateX(-50%);
       bottom:14px;
-      font-size:12px;
-      opacity:0.8;
+      font-size:15px;
+      opacity:0.85;
       z-index:999;
-      background:rgba(255,255,255,0.6);
-      padding:2px 6px;
-      border-radius:6px;
+      background:rgba(255,255,255,0.8);
+      padding:3px 10px;
+      border-radius:999px;
     }
 
-    /* 색지 선택 */
+    /* 색지 선택 페이지 */
     .pattern-title {
       text-align:center;
       font-size:16px;
@@ -149,20 +159,38 @@
       font-size:14px;
     }
 
-    /* 타이틀 페이지 */
-    .title-page {
-      text-align:center;
-      margin-top:80px;
+    /* ====================
+       표지(타이틀) 스타일
+       ==================== */
+    .cover-page {
+      height:100%;
+      padding:40px 30px 32px;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start;
+      color:#111;
     }
-    .title-heading {
-      font-size:24px;
-      font-weight:700;
-      margin-bottom:6px;
+    .cover-top-label {
+      font-size:12px;
+      margin-bottom:40px;
+      opacity:0.9;
     }
-    .title-sub {
-      font-size:13px;
-      color:#666;
-      line-height:1.6;
+    .cover-main-title {
+      font-size:26px;
+      font-weight:600;
+      margin-bottom:8px;
+    }
+    .cover-author {
+      font-size:15px;
+      margin-bottom:80px;
+    }
+    .cover-author span {
+      font-weight:500;
+    }
+    .cover-desc {
+      font-size:14px;
+      line-height:1.9;
+      white-space:pre-line;
     }
 
     /* 챕터 */
@@ -232,8 +260,15 @@
       margin-top:4px;
     }
 
+    /* 캡처 모드에서는 textarea 숨기고 view만 */
     body.capture-mode textarea { display:none; }
     body.capture-mode .answer-view { display:block; }
+
+    /* 캡처 모드에서 상/하단 메뉴 숨김 */
+    body.capture-mode .top-bar,
+    body.capture-mode .bottom-nav {
+      display:none;
+    }
 
     /* 하단 버튼 */
     .bottom-nav {
@@ -284,7 +319,7 @@
     <main class="page-container">
       <div class="page-inner" id="capture-target">
 
-        <!-- STEP 0 : 첫 페이지 -->
+        <!-- STEP 0 : 색지 + 닉네임 -->
         <section class="step active" data-step="0">
           <div class="pattern-title">배경 색지를 골라주세요</div>
 
@@ -302,13 +337,18 @@
           <input class="nickname-input" id="nicknameInput" placeholder="닉네임을 입력해주세요" />
         </section>
 
-        <!-- STEP 1 : 타이틀 -->
+        <!-- STEP 1 : 표지(타이틀) -->
         <section class="step" data-step="1">
-          <div class="title-page">
-            <div class="title-heading">나의 프로필북</div>
-            <div class="title-sub">
-              넷플연가에서 만난 나의 취향을<br>
-              한 페이지씩 채워가는 시간
+          <div class="cover-page">
+            <div class="cover-top-label">넷플연가</div>
+            <div class="cover-main-title">나의 프로필북</div>
+            <div class="cover-author">
+              <span id="coverName"></span> 지음
+            </div>
+            <div class="cover-desc">
+나의 취향을
+한 페이지씩 채워가는 시간
+with 을지로 취향관
             </div>
           </div>
         </section>
@@ -463,9 +503,12 @@
       const el = document.getElementById(id);
       if(el) el.textContent = nickname;
     });
+
+    const coverName = document.getElementById("coverName");
+    if (coverName) coverName.textContent = nickname || "";
   }
 
-  /* textarea ↔ view 싱크 */
+  /* textarea ↔ 보기모드 싱크 */
   ["q1","q2","q3","q4"].forEach(id => {
     const ta = document.getElementById(id);
     const view = document.getElementById(id+"-view");
@@ -482,6 +525,9 @@
 
     if(currentStep===totalSteps-1) nextBtn.textContent="완료(전체 저장)";
     else nextBtn.textContent="다음 →";
+
+    // 표지일 때 cover-step 클래스 부여 (색지 전체 보이게)
+    document.body.classList.toggle("cover-step", currentStep===1);
 
     if(currentStep>0) applyNickname();
   }
@@ -502,7 +548,7 @@
     currentStep=0; updateStepUI();
   }
 
-  /* CAPTURE */
+  /* 페이지 캡처 (상/하단 메뉴는 capture-mode에서 숨김) */
   async function captureStep(stepIndex){
     currentStep = stepIndex;
     updateStepUI();
@@ -511,7 +557,7 @@
     document.body.classList.add("capture-mode");
     await new Promise(r=>setTimeout(r,60));
 
-    const target = document.getElementById("phone");
+    const target = document.getElementById("phone");  // 색지 포함 전체
     const canvas = await html2canvas(target,{scale:2});
 
     document.body.classList.remove("capture-mode");
