@@ -2,14 +2,14 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>넷플연가 프로필북</title>
+  <title>넷플연가 프로필북 만들기</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      padding: 24px 16px 40px;
+      padding: 20px 12px 36px;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: radial-gradient(circle at top, #fef5ff 0, #f5f7fb 45%, #f3f3f3 100%);
       color: #222;
@@ -30,17 +30,8 @@
       margin-bottom: 24px;
     }
 
-    .hero-text h1 {
-      margin: 0 0 8px;
-      font-size: 24px;
-      letter-spacing: -0.02em;
-    }
-
-    .hero-text p {
-      margin: 0;
-      font-size: 13px;
-      color: #555;
-      line-height: 1.5;
+    .hero-text {
+      flex: 1;
     }
 
     .hero-badge {
@@ -55,10 +46,23 @@
       margin-bottom: 8px;
     }
 
+    .hero-text h1 {
+      margin: 0 0 8px;
+      font-size: 24px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-text p {
+      margin: 0;
+      font-size: 13px;
+      color: #555;
+      line-height: 1.5;
+    }
+
     .hero-image {
       flex-shrink: 0;
-      width: 120px;
-      height: 120px;
+      width: 110px;
+      height: 110px;
       border-radius: 24px;
       background: linear-gradient(135deg, #ffd6e7, #c8d6ff);
       display: flex;
@@ -70,19 +74,12 @@
       padding: 10px;
     }
 
-    .hero-image img {
-      max-width: 100%;
-      max-height: 100%;
-      border-radius: 18px;
-      display: block;
-    }
-
     /* 메인 레이아웃 */
 
     .main {
       display: flex;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 18px;
     }
 
     .form-panel,
@@ -97,20 +94,66 @@
     .panel-title {
       font-size: 14px;
       font-weight: 600;
-      margin: 2px 0 12px;
+      margin: 2px 0 4px;
     }
 
     .panel-sub {
       font-size: 11px;
       color: #888;
+      margin-bottom: 12px;
+    }
+
+    /* 단계 표시 */
+
+    .step-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 11px;
+      color: #666;
+    }
+
+    .step-dots {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #ddd;
+    }
+
+    .dot.active {
+      width: 16px;
+      background: #7c5cff;
+    }
+
+    .dot.done {
+      background: #b7a5ff;
+    }
+
+    .step-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin: 10px 0 6px;
+      color: #333;
+    }
+
+    .step-desc {
+      font-size: 11px;
+      color: #888;
       margin-bottom: 8px;
     }
 
-    .section-title {
-      font-size: 13px;
-      font-weight: 600;
-      margin: 16px 0 6px;
-      color: #333;
+    .step {
+      display: none;
+    }
+    .step.active {
+      display: block;
     }
 
     label {
@@ -147,7 +190,109 @@
       margin-bottom: 4px;
     }
 
-    /* 미리보기 스타일 */
+    /* 커버 선택 카드 */
+
+    .cover-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 4px;
+      margin-bottom: 10px;
+    }
+
+    .cover-card {
+      border-radius: 14px;
+      padding: 8px 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid transparent;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      min-height: 70px;
+    }
+
+    .cover-card[data-theme="soft"] {
+      background: linear-gradient(145deg, #ffe9f4, #fef6ff);
+    }
+    .cover-card[data-theme="night"] {
+      background: radial-gradient(circle at top, #1f2937, #020617);
+      color: #f9fafb;
+    }
+    .cover-card[data-theme="mint"] {
+      background: linear-gradient(145deg, #e0fff7, #f6fff9);
+    }
+
+    .cover-label {
+      font-size: 11px;
+      opacity: 0.8;
+    }
+
+    .cover-main {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .cover-emoji {
+      position: absolute;
+      right: 6px;
+      bottom: 4px;
+      font-size: 20px;
+      opacity: 0.8;
+    }
+
+    .cover-card input[type="radio"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .cover-card.active {
+      border-color: #7c5cff;
+      box-shadow: 0 0 0 1px rgba(124, 92, 255, 0.6);
+    }
+
+    /* 네비게이션 버튼 */
+
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 9px 10px;
+      border-radius: 999px;
+      border: none;
+      font-size: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #7c5cff, #b591ff);
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: #f3f4ff;
+      color: #555;
+    }
+
+    .btn:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    /* 미리보기 카드 */
 
     .profile-book {
       border-radius: 18px;
@@ -156,6 +301,7 @@
       border: 1px solid #ece6ff;
       font-size: 13px;
       line-height: 1.7;
+      min-height: 240px;
     }
 
     .profile-header {
@@ -231,7 +377,7 @@
 
     @media (max-width: 768px) {
       body {
-        padding: 16px 12px 32px;
+        padding: 16px 10px 32px;
       }
       .hero {
         flex-direction: column;
@@ -243,6 +389,9 @@
       .panel-title {
         font-size: 13px;
       }
+      .main {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
@@ -252,92 +401,128 @@
     <header class="hero">
       <div class="hero-text">
         <div class="hero-badge">넷플연가 · Profile Book</div>
-        <h1>나를 닮은 넷플연가 프로필북</h1>
+        <h1>나를 닮은 프로필북 만들기</h1>
         <p>
-          모임에서 나눴던 대화와 질문들을 정리해서,<br />
-          지금의 나를 가장 잘 보여주는 한 권의 프로필북을 만들어봐요.
+          한 번에 다 쓰지 않아도 괜찮아요.<br />
+          표지 → 나 → 인생작품 → 취향 순서로, 한 장씩 천천히 채워볼게요.
         </p>
       </div>
       <div class="hero-image">
-        <!-- 이 안에 <img>로 교체해도 됨 -->
-        여기에<br>이미지 넣고 싶으면<br>img 태그로 교체!
+        겉표지 이미지는<br>아래에서 골라주세요 :)
       </div>
     </header>
 
-    <!-- 메인: 입력 + 미리보기 -->
+    <!-- 메인: 단계별 입력 + 미리보기 -->
     <main class="main">
-      <!-- 입력 폼 -->
+      <!-- 입력 패널 -->
       <section class="form-panel">
-        <div class="panel-title">질문에 편하게 답을 적어주세요</div>
-        <div class="panel-sub">입력한 내용은 오른쪽 프로필북에 바로 반영됩니다.</div>
+        <div class="panel-title">내 프로필북 만들기</div>
+        <div class="panel-sub">다음 버튼을 눌러 한 단계씩 채워보세요.</div>
+
+        <div class="step-indicator">
+          <div id="step-label">1 / 4 단계</div>
+          <div class="step-dots">
+            <div class="dot active" data-step-dot="0"></div>
+            <div class="dot" data-step-dot="1"></div>
+            <div class="dot" data-step-dot="2"></div>
+            <div class="dot" data-step-dot="3"></div>
+          </div>
+        </div>
 
         <form id="profile-form">
-          <!-- 기본 정보 -->
-          <div class="section">
-            <div class="section-title">[기본 정보]</div>
+          <!-- STEP 0: 표지 & 기본 -->
+          <div class="step active" data-step="0">
+            <div class="step-title">표지 & 기본 정보</div>
+            <div class="step-desc">프로필북에 들어갈 이름과 한 줄 소개, 표지 느낌을 골라주세요.</div>
+
             <label>닉네임 또는 이름</label>
             <input type="text" id="nickname" placeholder="예: 라이언 / R" />
 
             <label>짧은 한 줄 소개</label>
             <input type="text" id="tagline" placeholder="예: 일상을 기록하는 관찰자형 ENFP" />
+
+            <label>겉표지 분위기 선택</label>
+            <div class="small-tip">마음에 드는 스타일을 하나 골라주세요. (나중에 바꿔도 돼요)</div>
+            <div class="cover-grid" id="cover-grid">
+              <div class="cover-card active" data-theme="soft">
+                <span class="cover-label">부드러운 파스텔</span>
+                <span class="cover-main">조용한 감성 일기장</span>
+                <span class="cover-emoji">🌸</span>
+                <input type="radio" name="cover_theme" value="soft" checked />
+              </div>
+              <div class="cover-card" data-theme="night">
+                <span class="cover-label">밤 감성</span>
+                <span class="cover-main">야행성 감상러의 노트</span>
+                <span class="cover-emoji">🌙</span>
+                <input type="radio" name="cover_theme" value="night" />
+              </div>
+              <div class="cover-card" data-theme="mint">
+                <span class="cover-label">산뜻한 민트</span>
+                <span class="cover-main">가볍게 숨 쉬는 노트</span>
+                <span class="cover-emoji">🌿</span>
+                <input type="radio" name="cover_theme" value="mint" />
+              </div>
+            </div>
           </div>
 
-          <!-- 남이 보는 나 / 내가 보는 나 -->
-          <div class="section">
-            <div class="section-title">[남이 보는 나 · 내가 보는 나]</div>
+          <!-- STEP 1: 남이 보는 나 / 내가 보는 나 -->
+          <div class="step" data-step="1">
+            <div class="step-title">남이 보는 나 · 내가 보는 나</div>
+            <div class="step-desc">지금까지 들었던 이야기와 내가 느끼는 나를 키워드로 적어볼게요.</div>
+
             <div class="small-tip">쉼표(,)로 구분해서 적어 주세요. 예: 차분한, 관찰자, 현실적인</div>
 
-            <label>1. 남들이 나에게 적어준 키워드</label>
+            <label>남들이 나에게 적어준 키워드</label>
             <input type="text" id="others_keywords" placeholder="예: 차분한, 따뜻한, 분석적" />
 
-            <label>2. 내가 보는 나의 키워드</label>
+            <label>내가 보는 나의 키워드</label>
             <input type="text" id="self_keywords" placeholder="예: 조용한, 집요한, 유머있는" />
           </div>
 
-          <!-- 인생 작품 -->
-          <div class="section">
-            <div class="section-title">[나의 인생작품을 찾아서]</div>
+          <!-- STEP 2: 인생작품 -->
+          <div class="step" data-step="2">
+            <div class="step-title">나의 인생작품을 찾아서</div>
+            <div class="step-desc">영화, 드라마, 책, 밈... 뭐든 좋아요. 나를 닮았다고 느꼈던 순간들을 적어봐요.</div>
 
-            <label>3. 내가 좋아하는 작품</label>
+            <label>내가 좋아하는 작품</label>
             <input type="text" id="fav_work" placeholder="예: 영화 &lt;비포 선라이즈&gt;" />
 
-            <label>4. 인생이라고 느꼈던 장면 / 이유</label>
+            <label>인생이라고 느꼈던 장면 / 이유</label>
             <textarea id="life_scene" placeholder="어떤 장면이 왜 와닿았는지 적어주세요."></textarea>
 
-            <label>5. 내가 잘 안 맞는 작품들의 공통점</label>
+            <label>내가 잘 안 맞는 작품들의 공통점</label>
             <textarea id="dislike_common" placeholder="예: 인물의 감정 변화를 설명 없이 밀어붙이는 작품들"></textarea>
           </div>
 
-          <!-- 무의식 속 취향 -->
-          <div class="section">
-            <div class="section-title">[무의식 속 나의 취향]</div>
+          <!-- STEP 3: 취향 & 가치 -->
+          <div class="step" data-step="3">
+            <div class="step-title">무의식 속 취향 & 나를 움직이는 것들</div>
+            <div class="step-desc">공간, 사람, 내가 되고 싶은 모습, 중요하게 느끼는 가치를 정리해볼게요.</div>
 
-            <label>6. 나의 시각적 취향</label>
+            <label>나의 시각적 취향</label>
             <textarea id="visual_taste" placeholder="예: 낮은 채도의 색감, 깔끔한 구도, 자연광이 들어오는 공간"></textarea>
 
-            <label>7. 내가 편안함을 느끼는 공간 / 사람의 분위기</label>
-            <textarea id="space_people" placeholder="예: 너무 시끄럽지 않은 카페, 과하지 않게 리드해주는 사람"></textarea>
+            <label>내가 편안함을 느끼는 공간 / 사람의 분위기</label>
+            <textarea id="space_people" placeholder="예: 너무 시끄럽지 않은 카페, 과하게 리드하지 않는 사람"></textarea>
 
-            <label>8. 나의 이상적 자기상(ideal self)</label>
+            <label>나의 이상적 자기상(ideal self)</label>
             <textarea id="ideal_self" placeholder="예: 내 속도를 지키면서도, 사람들에게 따뜻하게 다가가는 사람"></textarea>
-          </div>
 
-          <!-- 감정 & 가치 -->
-          <div class="section">
-            <div class="section-title">[나를 움직이는 감정 & 가치]</div>
-            <div class="small-tip">쉼표(,)로 구분해서 2~5개 정도 적어 주세요.</div>
+            <label>나를 움직이는 감정 & 가치 (2~5개)</label>
+            <div class="small-tip">쉼표(,)로 구분해서 적어 주세요. 예: 안정감, 깊은 대화, 신뢰, 발견</div>
             <input type="text" id="values" placeholder="예: 안정감, 깊은 대화, 신뢰, 발견" />
-          </div>
 
-          <!-- 넷플연가에서 발견한 나 -->
-          <div class="section">
-            <div class="section-title">[넷플연가에서 발견한 나]</div>
-
-            <label>9. 이번 모임을 통해 새로 알게 된 나</label>
+            <label>이번 넷플연가 모임을 통해 새로 알게 된 나</label>
             <textarea id="new_side" placeholder="예: 생각보다 내가 내 취향을 잘 설명할 수 있다는 것"></textarea>
 
-            <label>10. 앞으로 더 키워가고 싶은 부분</label>
+            <label>앞으로 더 키워가고 싶은 부분</label>
             <textarea id="grow_side" placeholder="예: 내 취향을 숨기지 않고 자연스럽게 드러내는 연습"></textarea>
+          </div>
+
+          <!-- 버튼 -->
+          <div class="nav-buttons">
+            <button type="button" class="btn btn-secondary" id="prev-btn">← 이전</button>
+            <button type="button" class="btn btn-primary" id="next-btn">다음 단계 →</button>
           </div>
 
           <button type="submit" style="display:none;">submit</button>
@@ -347,14 +532,12 @@
       <!-- 미리보기 패널 -->
       <section class="preview-panel">
         <div class="panel-title">프로필북 미리보기</div>
-        <div class="panel-sub">캡처해서 제출하거나, 그대로 프로필북 제작에 활용할 수 있어요.</div>
+        <div class="panel-sub">완성된 화면을 캡처해서 제출하거나, 프로필북 제작에 그대로 활용할 수 있어요.</div>
 
-        <div class="profile-book" id="preview">
-          <!-- JS에서 자동 렌더링 -->
-        </div>
+        <div class="profile-book" id="preview"></div>
 
         <div class="footer-note">
-          * 이 페이지는 입력만 저장하지 않고, 브라우저 안에서만 임시로 보여줘요.
+          * 입력 내용은 서버에 저장되지 않고, 이 브라우저에서만 보입니다.
         </div>
       </section>
     </main>
@@ -379,17 +562,31 @@
 
     const preview = document.getElementById("preview");
     const form = document.getElementById("profile-form");
+    const steps = Array.from(document.querySelectorAll(".step"));
+    const prevBtn = document.getElementById("prev-btn");
+    const nextBtn = document.getElementById("next-btn");
+    const stepLabel = document.getElementById("step-label");
+    const dots = Array.from(document.querySelectorAll("[data-step-dot]"));
+    const coverGrid = document.getElementById("cover-grid");
+
+    let currentStep = 0;
+    const totalSteps = steps.length;
 
     function splitChips(str) {
       return str
         .split(",")
-        .map(s => s.trim())
+        .map((s) => s.trim())
         .filter(Boolean);
+    }
+
+    function getCoverTheme() {
+      const checked = document.querySelector('input[name="cover_theme"]:checked');
+      return checked ? checked.value : "soft";
     }
 
     function renderPreview() {
       const data = {};
-      fields.forEach(id => {
+      fields.forEach((id) => {
         const el = document.getElementById(id);
         data[id] = el ? el.value.trim() : "";
       });
@@ -397,10 +594,14 @@
       const others = splitChips(data.others_keywords);
       const self = splitChips(data.self_keywords);
       const values = splitChips(data.values);
-
       const nickname = data.nickname || "닉네임을 입력해주세요";
       const tagline =
         data.tagline || "지금의 나를 한 줄로 소개해보세요.";
+      const theme = getCoverTheme();
+
+      let coverEmoji = "🌸";
+      if (theme === "night") coverEmoji = "🌙";
+      if (theme === "mint") coverEmoji = "🌿";
 
       preview.innerHTML = `
         <div class="profile-header">
@@ -408,7 +609,7 @@
             <div class="profile-name">${nickname}</div>
             <div class="profile-tagline">${tagline}</div>
           </div>
-          <div class="profile-pill">넷플연가 Profile</div>
+          <div class="profile-pill">${coverEmoji} 넷플연가 Profile</div>
         </div>
 
         <div class="profile-section">
@@ -418,7 +619,7 @@
             ${
               others.length
                 ? `<span class="chip-list">${others
-                    .map(k => `<span class="chip">${k}</span>`)
+                    .map((k) => `<span class="chip">${k}</span>`)
                     .join("")}</span>`
                 : `<span class="placeholder">키워드를 2~3개 정도 적어보세요.</span>`
             }
@@ -428,7 +629,7 @@
             ${
               self.length
                 ? `<span class="chip-list">${self
-                    .map(k => `<span class="chip">${k}</span>`)
+                    .map((k) => `<span class="chip">${k}</span>`)
                     .join("")}</span>`
                 : `<span class="placeholder">내가 느끼는 나의 모습을 적어보세요.</span>`
             }
@@ -455,7 +656,7 @@
         </div>
 
         <div class="profile-section">
-          <div class="profile-section-title">무의식 속 취향</div>
+          <div class="profile-section-title">무의식 속 취향 & 나를 움직이는 것들</div>
           ${
             data.visual_taste
               ? `<p><strong>시각적 취향</strong><br />${data.visual_taste}</p>`
@@ -472,20 +673,19 @@
               : ""
           }
           ${
-            !data.visual_taste && !data.space_people && !data.ideal_self
-              ? `<p class="placeholder">공간, 사람, 내가 되고 싶은 나를 떠올리며 자유롭게 적어보세요.</p>`
+            values.length
+              ? `<p><strong>나를 움직이는 가치</strong><br /><span class="chip-list">${values
+                  .map((v) => `<span class="chip">${v}</span>`)
+                  .join("")}</span></p>`
               : ""
           }
-        </div>
-
-        <div class="profile-section">
-          <div class="profile-section-title">나를 움직이는 감정 & 가치</div>
           ${
-            values.length
-              ? `<p><span class="chip-list">${values
-                  .map(v => `<span class="chip">${v}</span>`)
-                  .join("")}</span></p>`
-              : `<p class="placeholder">중요하게 느끼는 감정이나 가치를 2~5개 정도 적어보세요.</p>`
+            !data.visual_taste &&
+            !data.space_people &&
+            !data.ideal_self &&
+            !values.length
+              ? `<p class="placeholder">공간, 사람, 내가 되고 싶은 나, 중요하다고 느끼는 감정을 자유롭게 적어보세요.</p>`
+              : ""
           }
         </div>
 
@@ -510,14 +710,72 @@
       `;
     }
 
-    fields.forEach(id => {
+    // 단계 전환
+    function updateStepUI() {
+      steps.forEach((step, idx) => {
+        step.classList.toggle("active", idx === currentStep);
+      });
+      dots.forEach((dot, idx) => {
+        dot.classList.remove("active", "done");
+        if (idx < currentStep) dot.classList.add("done");
+        if (idx === currentStep) dot.classList.add("active");
+      });
+      stepLabel.textContent = `${currentStep + 1} / ${totalSteps} 단계`;
+      prevBtn.disabled = currentStep === 0;
+      nextBtn.textContent =
+        currentStep === totalSteps - 1 ? "완성 보기" : "다음 단계 →";
+    }
+
+    nextBtn.addEventListener("click", () => {
+      if (currentStep < totalSteps - 1) {
+        currentStep += 1;
+        updateStepUI();
+      } else {
+        // 마지막 단계에서 "완성 보기": 그냥 프리뷰에 집중하라고 스크롤만
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    });
+
+    prevBtn.addEventListener("click", () => {
+      if (currentStep > 0) {
+        currentStep -= 1;
+        updateStepUI();
+      }
+    });
+
+    // 커버 카드 클릭
+    if (coverGrid) {
+      coverGrid.addEventListener("click", (e) => {
+        const card = e.target.closest(".cover-card");
+        if (!card) return;
+        const value = card.getAttribute("data-theme");
+        const input = card.querySelector('input[type="radio"]');
+        if (input) {
+          input.checked = true;
+        }
+        document
+          .querySelectorAll(".cover-card")
+          .forEach((c) => c.classList.remove("active"));
+        card.classList.add("active");
+        renderPreview();
+      });
+    }
+
+    // 입력 변경 시 미리보기 업데이트
+    fields.forEach((id) => {
       const el = document.getElementById(id);
       if (!el) return;
       el.addEventListener("input", renderPreview);
     });
 
-    form.addEventListener("submit", e => e.preventDefault());
+    document.querySelectorAll('input[name="cover_theme"]').forEach((el) => {
+      el.addEventListener("change", renderPreview);
+    });
 
+    form.addEventListener("submit", (e) => e.preventDefault());
+
+    // 초기 렌더
+    updateStepUI();
     renderPreview();
   </script>
 </body>
