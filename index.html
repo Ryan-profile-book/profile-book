@@ -11,6 +11,7 @@
       padding: 20px;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: #f5f5f7;
+      color: #333;
     }
     h1 {
       text-align: center;
@@ -88,83 +89,65 @@
       font-size: 12px;
       background: #fff;
     }
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+    }
   </style>
 </head>
 <body>
   <h1>넷플연가 프로필북</h1>
   <div class="container">
-    <!-- 입력 영역 -->
     <div class="form">
       <form id="profile-form">
-        <!-- 남이 보는 나 / 내가 보는 나 -->
         <div class="section">
           <div class="section-title">[남이 보는 나 · 내가 보는 나]</div>
           <div class="small-tip">쉼표(,)로 구분해서 적어 주세요. 예: 차분한, 관찰자, 현실적인</div>
           <label>1. 남들이 나에게 적어준 키워드 3가지</label>
           <input type="text" id="others_keywords" placeholder="예: 차분한, 따뜻한, 분석적" />
-
           <label>2. 내가 보는 나의 키워드 3가지</label>
           <input type="text" id="self_keywords" placeholder="예: 조용한, 집요한, 유머있는" />
-
           <label>3. 남의 시선과 나의 시선이 달랐던 점 1가지</label>
           <textarea id="view_diff" placeholder="예: 나는 내 성격을 소심하다고 생각했는데, 다른 사람들은 섬세하다고 표현해줬다."></textarea>
         </div>
-
-        <!-- 인생작품 -->
         <div class="section">
           <div class="section-title">[나의 인생작품을 찾아서]</div>
           <label>1. 내가 좋아하는 작품</label>
-          <input type="text" id="fav_work" placeholder="예: 영화 &lt;비포 선라이즈&gt;" />
-
+          <input type="text" id="fav_work" placeholder="예: 영화 <비포 선라이즈>" />
           <label>2. 인생이라고 느꼈던 장면 / 이유</label>
           <textarea id="life_scene" placeholder="어떤 장면이 왜 와닿았는지 적어주세요."></textarea>
-
           <label>3. 내가 좋아하지 않는 작품들의 공통점</label>
           <textarea id="dislike_common" placeholder="예: 인물의 감정 변화를 설명 없이 밀어붙이는 작품들"></textarea>
-
           <label>4. 그래서 나는 이런 사람이다 (한 문장)</label>
           <input type="text" id="i_am" placeholder="예: 사람 사이의 대화와 디테일을 중요하게 여기는 사람이다." />
         </div>
-
-        <!-- 무의식 속 취향 -->
         <div class="section">
           <div class="section-title">[무의식 속 나의 취향]</div>
           <label>1. 나의 시각적 취향</label>
           <textarea id="visual_taste" placeholder="예: 낮은 채도의 색감, 깔끔한 구도, 자연광이 들어오는 공간"></textarea>
-
           <label>2. 내가 안정감을 느끼는 공간/환경</label>
           <textarea id="space_taste" placeholder="예: 너무 어둡지 않은 카페, 사람 목소리는 있지만 과하지 않은 곳"></textarea>
-
           <label>3. 내가 편안함을 느끼는 사람의 에너지</label>
           <textarea id="people_energy" placeholder="예: 과하게 리드하지 않고, 조용히 웃어주는 사람"></textarea>
-
           <label>4. 나의 이상적 자기상(ideal self)</label>
           <textarea id="ideal_self" placeholder="예: 내 속도를 지키면서도, 사람들에게 따뜻하게 다가가는 사람"></textarea>
         </div>
-
-        <!-- 감정 & 가치 -->
         <div class="section">
           <div class="section-title">[나를 움직이는 감정 & 가치 3가지]</div>
           <div class="small-tip">쉼표(,)로 구분해서 적어 주세요. 예: 안정감, 성취감, 소속감</div>
           <input type="text" id="values" placeholder="예: 안정감, 깊은 대화, 신뢰" />
         </div>
-
-        <!-- 넷플연가를 통해 발견한 나 -->
         <div class="section">
           <div class="section-title">[넷플연가를 통해 새롭게 발견한 나]</div>
           <label>1. 예상 못한 나의 모습 1가지</label>
           <textarea id="new_side" placeholder="예: 생각보다 내가 내 취향을 잘 설명할 수 있다는 것"></textarea>
-
           <label>2. 앞으로 더 키워가고 싶은 부분 1가지</label>
           <textarea id="grow_side" placeholder="예: 내 취향을 숨기지 않고 자연스럽게 드러내는 연습"></textarea>
         </div>
-
-        <!-- 폼 submit 막기용 -->
         <button type="submit" style="display:none;">submit</button>
       </form>
     </div>
-
-    <!-- 미리보기 영역 -->
     <div class="preview">
       <div class="section-title">미리보기</div>
       <div class="preview-inner" id="preview">
@@ -172,11 +155,9 @@
       </div>
     </div>
   </div>
-
   <script>
     const form = document.getElementById("profile-form");
     const preview = document.getElementById("preview");
-
     const fields = [
       "others_keywords",
       "self_keywords",
@@ -193,25 +174,21 @@
       "new_side",
       "grow_side",
     ];
-
     function splitChips(str) {
       return str
         .split(",")
         .map(s => s.trim())
         .filter(s => s.length > 0);
     }
-
     function renderPreview() {
       const data = {};
       fields.forEach(id => {
         const el = document.getElementById(id);
         data[id] = el ? el.value.trim() : "";
       });
-
       const othersChips = splitChips(data.others_keywords);
       const selfChips = splitChips(data.self_keywords);
       const valueChips = splitChips(data.values);
-
       preview.innerHTML = `
         <div class="preview-block">
           <h3>[남이 보는 나 · 내가 보는 나]</h3>
@@ -235,7 +212,6 @@
               : ""
           }
         </div>
-
         <div class="preview-block">
           <h3>[나의 인생작품을 찾아서]</h3>
           ${
@@ -259,7 +235,6 @@
               : ""
           }
         </div>
-
         <div class="preview-block">
           <h3>[무의식 속 나의 취향]</h3>
           ${
@@ -283,7 +258,6 @@
               : ""
           }
         </div>
-
         <div class="preview-block">
           <h3>[나를 움직이는 감정 & 가치]</h3>
           ${
@@ -294,7 +268,6 @@
               : "<p>(아직 입력되지 않았습니다)</p>"
           }
         </div>
-
         <div class="preview-block">
           <h3>[넷플연가를 통해 새롭게 발견한 나]</h3>
           ${
@@ -310,20 +283,14 @@
         </div>
       `;
     }
-
-    // 실시간 업데이트
     fields.forEach(id => {
       const el = document.getElementById(id);
       if (!el) return;
       el.addEventListener("input", renderPreview);
     });
-
-    // 폼 제출 방지
     form.addEventListener("submit", e => {
       e.preventDefault();
     });
-
-    // 초기 렌더
     renderPreview();
   </script>
 </body>
