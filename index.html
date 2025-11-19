@@ -10,11 +10,11 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:#e5e7eb; /* 사이트 바깥 배경 */
+      background:#e5e7eb;
       color:#222;
+      transition:0.2s;
     }
 
-    /* 가운데에 모바일 화면처럼 보이는 박스 */
     .bg {
       min-height:100vh;
       display:flex;
@@ -23,6 +23,7 @@
       padding:16px;
     }
 
+    /* 📱 모바일 화면 고정 */
     .phone {
       width:390px;
       height:780px;
@@ -33,10 +34,11 @@
       box-shadow:0 24px 60px rgba(15,23,42,0.3);
       display:flex;
       flex-direction:column;
-      background:linear-gradient(135deg,#fef5ff,#f5f7fb); /* 기본 패턴 */
+      background:linear-gradient(135deg,#fef5ff,#f5f7fb);
+      transition:0.3s;
     }
 
-    /* 패턴 네 가지 (페이지 배경) */
+    /* 📄 페이지 배경 패턴 */
     .phone[data-pattern="sunrise"] {
       background:linear-gradient(135deg,#ffe0f0,#fff5d9);
     }
@@ -50,7 +52,7 @@
       background:linear-gradient(135deg,#fff4dd,#ffe9e0);
     }
 
-    .top-bar{
+    .top-bar {
       height:44px;
       padding:0 16px;
       display:flex;
@@ -58,52 +60,75 @@
       background:rgba(255,255,255,0.6);
       backdrop-filter:blur(10px);
     }
-    .exit-btn{
+    .exit-btn {
       border:none;
       background:none;
       font-size:14px;
       cursor:pointer;
     }
 
-    .page-container{
+    .page-container {
       flex:1;
-      padding:12px 12px 12px;
+      padding:12px;
       display:flex;
     }
 
+    /* 📚 캡처될 영역 */
     .page-inner {
-      background:#ffffff;
-      border-radius:24px;
-      padding:20px 12px 20px;
       width:100%;
       height:100%;
+      padding:20px 14px;
+      background:white;
+      border-radius:24px;
       overflow-y:auto;
       box-shadow:0 12px 30px rgba(15,23,42,0.08);
     }
 
-    .step{display:none;}
-    .step.active{display:block;}
+    .step { display:none; }
+    .step.active { display:block; }
 
-    /* 타이틀 페이지 */
-    .title-page{
+    /* 🎨 색지 선택 */
+    .pattern-title {
+      text-align:center;
+      font-size:16px;
+      margin:28px 0 12px;
+    }
+    .pattern-grid {
+      display:flex; flex-wrap:wrap;
+      gap:10px; justify-content:center;
+    }
+    .pattern-card {
+      padding:8px 16px;
+      font-size:13px;
+      border-radius:999px;
+      border:1px solid #ddd;
+      background:white;
+      cursor:pointer;
+    }
+    .pattern-card.active {
+      border-color:#ff8a3d;
+      box-shadow:0 0 0 2px rgba(255,138,61,0.3);
+    }
+
+    /* 🏷 타이틀 */
+    .title-page {
       text-align:center;
       margin-top:80px;
     }
-    .title-heading{
+    .title-heading {
       font-size:24px;
       font-weight:700;
-      letter-spacing:-0.03em;
-      margin-bottom:8px;
+      margin-bottom:6px;
     }
-    .title-sub{
+    .title-sub {
       font-size:13px;
       color:#666;
       line-height:1.6;
     }
 
-    /* 챕터 페이지 */
-    .chapter-title{text-align:center;margin-top:80px;}
-    .chapter-label{
+    /* 📖 챕터 */
+    .chapter-title { text-align:center; margin-top:80px; }
+    .chapter-label {
       font-size:24px;
       letter-spacing:0.15em;
       font-weight:700;
@@ -111,249 +136,292 @@
       -webkit-background-clip:text;
       color:transparent;
     }
-    .chapter-number{font-size:36px;color:#ff5a3c;font-weight:700;margin:4px 0 16px;}
-    .chapter-sub{
+    .chapter-number {
+      font-size:36px;
+      font-weight:700;
+      color:#ff5a3c;
+      margin:4px 0 16px;
+    }
+    .chapter-sub {
       font-size:17px;
       font-family:"Apple SD Gothic Neo","Nanum Myeongjo",serif;
     }
 
-    /* 질문 페이지 */
-    .question-title{
+    /* ✏ 질문 */
+    .question-title {
       text-align:center;
-      font-size:16px;
-      margin:24px 0 16px;
+      font-size:17px;
+      margin:24px 0 18px;
       font-family:"Apple SD Gothic Neo","Nanum Myeongjo",serif;
     }
-    .image-placeholder{
-      margin:0 auto 14px;
-      width:220px;height:170px;
+
+    .image-placeholder {
+      margin:0 auto 16px;
+      width:220px; height:170px;
       border-radius:24px;
       border:1px dashed #ffd0a6;
       background:#fff7f0;
-      display:flex;align-items:center;justify-content:center;
-      font-size:11px;color:#d28b4a;text-align:center;padding:8px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:11px; color:#d28b4a;
     }
-    textarea{
-      width:100%;min-height:140px;
-      border-radius:16px;border:1px solid #ddd;
-      padding:10px 12px;font-size:13px;line-height:1.6;
+
+    .answer-block { margin-top:8px; }
+
+    textarea {
+      width:100%;
+      min-height:160px;
+      border-radius:18px;
+      padding:12px 14px;
+      border:1px solid #ddd;
+      font-size:14px; line-height:1.7;
       resize:vertical;
     }
-    textarea:focus{
+    textarea:focus {
+      border-color:#ff8a3d;
+      box-shadow:0 0 0 1px rgba(255,138,61,0.3);
       outline:none;
-      border-color:#ff8a3d;
-      box-shadow:0 0 0 1px rgba(255,138,61,.2);
-    }
-    textarea::placeholder{color:#b3b3b3;}
-
-    /* 색지 선택 */
-    .pattern-title{text-align:center;font-size:16px;margin:24px 0 10px;}
-    .pattern-grid{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
-    .pattern-card{
-      border-radius:999px;
-      border:1px solid #ddd;
-      padding:6px 14px;
-      font-size:12px;
-      background:#fff;
-      cursor:pointer;
-    }
-    .pattern-card.active{
-      border-color:#ff8a3d;
-      box-shadow:0 0 0 1px rgba(255,138,61,.4);
     }
 
-    /* 하단 네비 (폰 안에 고정) */
-    .bottom-nav{
-      height:64px;
-      padding:8px 16px 12px;
-      display:flex;
-      align-items:center;
-      gap:12px;
+    /* 📘 캡처모드일 때 텍스트만 보이기 */
+    .answer-view {
+      display:none;
+      white-space:pre-wrap;
+      line-height:1.8;
+      font-size:14px;
+      color:#333;
+      margin-top:4px;
+    }
+
+    body.capture-mode textarea { display:none; }
+    body.capture-mode .answer-view { display:block; }
+
+    /* ⬇ 하단 버튼 (폰 안쪽 고정) */
+    .bottom-nav {
+      height:68px;
+      padding:8px 16px 14px;
       background:rgba(255,255,255,0.7);
       backdrop-filter:blur(10px);
+      display:flex; align-items:center; gap:12px;
     }
-    .nav-btn{
-      min-width:88px;padding:8px 12px;
-      border-radius:999px;border:none;
-      font-size:13px;cursor:pointer;
-      background:#f3f4f6;color:#444;
-      display:inline-flex;align-items:center;justify-content:center;
+    .nav-btn {
+      min-width:90px;
+      border:none;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#f3f4f6;
+      font-size:13px;
+      cursor:pointer;
     }
-    .nav-btn.primary{background:#111827;color:#fff;}
-    .nav-btn:disabled{opacity:.35;cursor:default;}
-    .progress-text{flex:1;text-align:center;font-size:11px;color:#777;}
+    .nav-btn.primary { background:#111827; color:white; }
+    .nav-btn:disabled { opacity:0.35; cursor:default; }
+
+    .progress-text {
+      flex:1;
+      text-align:center;
+      font-size:12px;
+      color:#777;
+    }
   </style>
 </head>
+
 <body>
-  <div class="bg">
-    <!-- 이 전체가 “한 페이지”로 캡처될 영역 -->
-    <div class="phone" id="phone" data-pattern="sunrise">
-      <header class="top-bar">
-        <button class="exit-btn" type="button" onclick="goFirst()">× 나가기</button>
-      </header>
+<div class="bg">
+  <div class="phone" id="phone" data-pattern="sunrise">
 
-      <main class="page-container">
-        <div class="page-inner" id="page-inner">
-          <!-- STEP 0 : 배경 패턴 선택 -->
-          <section class="step active" data-step="0">
-            <div class="pattern-title">배경 색지를 골라주세요</div>
-            <div class="pattern-grid" id="pattern-grid">
-              <button class="pattern-card active" data-pattern="sunrise">선라이즈</button>
-              <button class="pattern-card" data-pattern="lavender">라벤더</button>
-              <button class="pattern-card" data-pattern="mint">민트</button>
-              <button class="pattern-card" data-pattern="sand">샌드</button>
+    <!-- 🔼 헤더(캡처 제외 영역) -->
+    <header class="top-bar">
+      <button class="exit-btn" onclick="goFirst()">× 나가기</button>
+    </header>
+
+    <!-- 📄 본문(캡처될 영역) -->
+    <main class="page-container">
+      <div class="page-inner" id="capture-target">
+
+        <!-- STEP 0 : 색지 선택 -->
+        <section class="step active" data-step="0">
+          <div class="pattern-title">배경 색지를 골라주세요</div>
+          <div class="pattern-grid">
+            <button class="pattern-card active" data-pattern="sunrise">선라이즈</button>
+            <button class="pattern-card" data-pattern="lavender">라벤더</button>
+            <button class="pattern-card" data-pattern="mint">민트</button>
+            <button class="pattern-card" data-pattern="sand">샌드</button>
+          </div>
+        </section>
+
+        <!-- STEP 1 : 타이틀 -->
+        <section class="step" data-step="1">
+          <div class="title-page">
+            <div class="title-heading">나의 프로필북</div>
+            <div class="title-sub">
+              넷플연가에서 만난 나의 취향을<br>
+              한 페이지씩 채워가는 시간
             </div>
-          </section>
+          </div>
+        </section>
 
-          <!-- STEP 1 : 타이틀 페이지 -->
-          <section class="step" data-step="1">
-            <div class="title-page">
-              <div class="title-heading">나의 프로필북</div>
-              <div class="title-sub">
-                넷플연가에서 만난 나의 취향과<br/>
-                지금의 나를 기록하는 작은 책
-              </div>
-            </div>
-          </section>
+        <!-- STEP 2 : CHAPTER 1 -->
+        <section class="step" data-step="2">
+          <div class="chapter-title">
+            <div class="chapter-label">CHAPTER</div>
+            <div class="chapter-number">1</div>
+            <div class="chapter-sub">챕터 1 제목</div>
+          </div>
+        </section>
 
-          <!-- STEP 2 : CHAPTER 1 -->
-          <section class="step" data-step="2">
-            <div class="chapter-title">
-              <div class="chapter-label">CHAPTER</div>
-              <div class="chapter-number">1</div>
-              <div class="chapter-sub">챕터 1 제목</div>
-            </div>
-          </section>
+        <!-- STEP 3 : 질문 1 -->
+        <section class="step" data-step="3">
+          <h2 class="question-title">질문 1</h2>
+          <div class="image-placeholder">이미지는 나중에</div>
 
-          <!-- STEP 3 : 질문 1 -->
-          <section class="step" data-step="3">
-            <h2 class="question-title">질문 1</h2>
-            <div class="image-placeholder">이미지는 나중에 넣을 자리</div>
+          <div class="answer-block">
             <textarea id="q1" placeholder="답변 1을 적어주세요."></textarea>
-          </section>
+            <div class="answer-view" id="q1-view"></div>
+          </div>
+        </section>
 
-          <!-- STEP 4 : 질문 2 -->
-          <section class="step" data-step="4">
-            <h2 class="question-title">질문 2</h2>
-            <div class="image-placeholder"></div>
+        <!-- STEP 4 : 질문 2 -->
+        <section class="step" data-step="4">
+          <h2 class="question-title">질문 2</h2>
+          <div class="image-placeholder"></div>
+
+          <div class="answer-block">
             <textarea id="q2" placeholder="답변 2를 적어주세요."></textarea>
-          </section>
+            <div class="answer-view" id="q2-view"></div>
+          </div>
+        </section>
 
-          <!-- STEP 5 : CHAPTER 2 -->
-          <section class="step" data-step="5">
-            <div class="chapter-title">
-              <div class="chapter-label">CHAPTER</div>
-              <div class="chapter-number">2</div>
-              <div class="chapter-sub">챕터 2 제목</div>
-            </div>
-          </section>
+        <!-- STEP 5 : CHAPTER 2 -->
+        <section class="step" data-step="5">
+          <div class="chapter-title">
+            <div class="chapter-label">CHAPTER</div>
+            <div class="chapter-number">2</div>
+            <div class="chapter-sub">챕터 2 제목</div>
+          </div>
+        </section>
 
-          <!-- STEP 6 : 질문 3 -->
-          <section class="step" data-step="6">
-            <h2 class="question-title">질문 3</h2>
-            <div class="image-placeholder"></div>
+        <!-- STEP 6 : 질문 3 -->
+        <section class="step" data-step="6">
+          <h2 class="question-title">질문 3</h2>
+          <div class="image-placeholder"></div>
+          <div class="answer-block">
             <textarea id="q3" placeholder="답변 3을 적어주세요."></textarea>
-          </section>
+            <div class="answer-view" id="q3-view"></div>
+          </div>
+        </section>
 
-          <!-- STEP 7 : 질문 4 (마지막) -->
-          <section class="step" data-step="7">
-            <h2 class="question-title">질문 4</h2>
-            <div class="image-placeholder"></div>
+        <!-- STEP 7 : 질문 4 -->
+        <section class="step" data-step="7">
+          <h2 class="question-title">질문 4</h2>
+          <div class="image-placeholder"></div>
+          <div class="answer-block">
             <textarea id="q4" placeholder="답변 4를 적어주세요."></textarea>
-          </section>
-        </div>
-      </main>
+            <div class="answer-view" id="q4-view"></div>
+          </div>
+        </section>
 
-      <footer class="bottom-nav">
-        <button class="nav-btn" id="prev-btn" type="button">← 이전</button>
-        <div class="progress-text" id="progress-text">1 / 8</div>
-        <button class="nav-btn primary" id="next-btn" type="button">다음 →</button>
-      </footer>
-    </div>
+      </div>
+    </main>
+
+    <!-- 🔽 하단 버튼 (캡처 제외 영역) -->
+    <footer class="bottom-nav">
+      <button class="nav-btn" id="prev-btn">← 이전</button>
+      <div class="progress-text" id="progress-text">1 / 8</div>
+      <button class="nav-btn primary" id="next-btn">다음 →</button>
+    </footer>
+
   </div>
+</div>
 
-  <!-- html2canvas: 캡처용 라이브러리 -->
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<!-- html2canvas -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
-  <script>
-    const phone = document.getElementById("phone");
-    const steps = Array.from(document.querySelectorAll(".step"));
-    const prevBtn = document.getElementById("prev-btn");
-    const nextBtn = document.getElementById("next-btn");
-    const progressText = document.getElementById("progress-text");
-    const totalSteps = steps.length;
-    let currentStep = 0;
+<script>
+  const phone = document.getElementById("phone");
+  const steps = Array.from(document.querySelectorAll(".step"));
+  const prevBtn = document.getElementById("prev-btn");
+  const nextBtn = document.getElementById("next-btn");
+  const progressText = document.getElementById("progress-text");
+  const totalSteps = steps.length;
+  let currentStep = 0;
 
-    // 색지 선택
-    const patternButtons = document.querySelectorAll(".pattern-card");
-    patternButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        patternButtons.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        phone.setAttribute("data-pattern", btn.dataset.pattern);
-      });
+  /* 패턴 선택 */
+  document.querySelectorAll(".pattern-card").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".pattern-card").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      phone.setAttribute("data-pattern", btn.dataset.pattern);
     });
+  });
 
-    function updateStepUI() {
-      steps.forEach((step, idx) => {
-        step.classList.toggle("active", idx === currentStep);
-      });
-      progressText.textContent = `${currentStep + 1} / ${totalSteps}`;
-      prevBtn.disabled = currentStep === 0;
-      nextBtn.textContent = currentStep === totalSteps - 1
-        ? "완료(모든 페이지 저장)"
-        : "다음 →";
+  /* textarea → answer-view 싱크 */
+  ["q1", "q2", "q3", "q4"].forEach(id => {
+    const ta = document.getElementById(id);
+    const view = document.getElementById(id + "-view");
+    if (!ta) return;
+    const sync = () => view.textContent = ta.value;
+    ta.addEventListener("input", sync);
+    sync();
+  });
+
+  function updateStepUI() {
+    steps.forEach((s, i) => s.classList.toggle("active", i === currentStep));
+    progressText.textContent = `${currentStep + 1} / ${totalSteps}`;
+    prevBtn.disabled = currentStep === 0;
+    nextBtn.textContent = currentStep === totalSteps - 1 ? "완료(전체 저장)" : "다음 →";
+  }
+
+  prevBtn.addEventListener("click", () => {
+    if (currentStep > 0) {
+      currentStep--; updateStepUI();
     }
+  });
 
-    prevBtn.addEventListener("click", () => {
-      if (currentStep > 0) {
-        currentStep--;
-        updateStepUI();
-      }
-    });
-
-    nextBtn.addEventListener("click", async () => {
-      if (currentStep < totalSteps - 1) {
-        currentStep++;
-        updateStepUI();
-      } else {
-        // 마지막: 모든 페이지를 한 장씩 캡처 & 다운로드
-        await saveAllPagesAsImages();
-      }
-    });
-
-    function goFirst() {
-      currentStep = 0;
-      updateStepUI();
+  nextBtn.addEventListener("click", async () => {
+    if (currentStep < totalSteps - 1) {
+      currentStep++; updateStepUI();
+    } else {
+      await saveAllPagesAsImages();
     }
+  });
 
-    // 특정 step 화면을 캡처해서 PNG 다운로드
-    async function captureCurrentStep(stepIndex) {
-      currentStep = stepIndex;
-      updateStepUI();
-      // UI가 그려질 시간을 잠깐 줌
-      await new Promise(r => setTimeout(r, 300));
-
-      const canvas = await html2canvas(phone, { scale: 2 });
-      const link = document.createElement("a");
-      link.download = `profile-book-step${stepIndex}.png`;
-      link.href = canvas.toDataURL("image/png");
-      link.click();
-
-      await new Promise(r => setTimeout(r, 300));
-    }
-
-    // step 1~마지막까지 순차 캡처 (0은 색지 선택이라 제외)
-    async function saveAllPagesAsImages() {
-      const originalStep = currentStep;
-      for (let i = 1; i < totalSteps; i++) {
-        await captureCurrentStep(i);
-      }
-      currentStep = originalStep;
-      updateStepUI();
-    }
-
+  function goFirst() {
+    currentStep = 0;
     updateStepUI();
-  </script>
+  }
+
+  /* 📸 캡처 함수 (특정 step 한 장 저장) */
+  async function captureStep(stepIndex) {
+    currentStep = stepIndex;
+    updateStepUI();
+    await new Promise(r => setTimeout(r, 250));
+
+    const target = document.getElementById("capture-target");
+
+    document.body.classList.add("capture-mode");
+    await new Promise(r => setTimeout(r, 50));
+
+    const canvas = await html2canvas(target, { scale: 2 });
+
+    document.body.classList.remove("capture-mode");
+
+    const link = document.createElement("a");
+    link.download = `profile-book-step${stepIndex}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+
+    await new Promise(r => setTimeout(r, 200));
+  }
+
+  /* 📕 전체 페이지 저장 (step1~마지막) */
+  async function saveAllPagesAsImages() {
+    for (let step = 1; step < totalSteps; step++) {
+      await captureStep(step);
+    }
+    alert("📘 모든 페이지 저장 완료!");
+  }
+
+  updateStepUI();
+</script>
+
 </body>
 </html>
