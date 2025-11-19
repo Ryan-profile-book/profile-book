@@ -7,51 +7,137 @@
   <style>
     * { box-sizing: border-box; }
     html, body { margin:0; padding:0; height:100%; }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:#fff; color:#222;
+      background: radial-gradient(circle at top, #fef5ff 0, #f5f7fb 45%, #f3f3f3 100%);
+      color:#222;
     }
-    body[data-pattern="white"]  { background:#ffffff; }
-    body[data-pattern="cream"]  { background:#fffaf0; }
-    body[data-pattern="peach"]  { background:#fff3f0; }
-    body[data-pattern="mint"]   { background:#f0fff8; }
+
+    /* 색지 패턴은 카드 영역 배경만 바꿔줌 */
+    .page-inner { 
+      width:100%; 
+      max-width:520px; 
+      min-height:60vh; 
+      padding:24px 12px; 
+      margin:0 auto;
+      border-radius:24px;
+      background:#ffffff;
+      box-shadow:0 18px 40px rgba(15,23,42,0.08);
+    }
+    body[data-pattern="cream"]  .page-inner { background:#fffaf0; }
+    body[data-pattern="peach"]  .page-inner { background:#fff3f0; }
+    body[data-pattern="mint"]   .page-inner { background:#f0fff8; }
+    body[data-pattern="white"]  .page-inner { background:#ffffff; }
 
     .app{min-height:100vh;display:flex;flex-direction:column;}
     .top-bar{height:44px;padding:0 16px;display:flex;align-items:center;}
     .exit-btn{border:none;background:none;font-size:14px;cursor:pointer;}
 
-    .page-container{flex:1;padding:16px 16px 72px;display:flex;justify-content:center;align-items:center;}
-    .page-inner{width:100%;max-width:520px;min-height:60vh;padding:24px 12px;}
+    .page-container{
+      flex:1;
+      padding:16px 16px 72px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
     .step{display:none;}
     .step.active{display:block;}
 
-    .chapter-title{text-align:center;margin-top:60px;}
-    .chapter-label{font-size:24px;letter-spacing:0.15em;font-weight:700;
-      background:linear-gradient(90deg,#ff7a3c,#ff4b7d,#ff8a3d);
-      -webkit-background-clip:text;color:transparent;}
-    .chapter-number{font-size:36px;color:#ff5a3c;font-weight:700;margin:4px 0 16px;}
-    .chapter-sub{font-size:17px;font-family:"Apple SD Gothic Neo","Nanum Myeongjo",serif;}
+    /* 타이틀 페이지 */
+    .title-page{
+      text-align:center;
+      margin-top:60px;
+    }
+    .title-heading{
+      font-size:24px;
+      font-weight:700;
+      letter-spacing:-0.03em;
+      margin-bottom:8px;
+    }
+    .title-sub{
+      font-size:13px;
+      color:#666;
+      line-height:1.6;
+    }
 
-    .question-title{text-align:center;font-size:16px;margin:24px 0 16px;
-      font-family:"Apple SD Gothic Neo","Nanum Myeongjo",serif;}
-    .image-placeholder{margin:0 auto 14px;width:220px;height:170px;border-radius:24px;
-      border:1px dashed #ffd0a6;background:#fff7f0;display:flex;align-items:center;
-      justify-content:center;font-size:11px;color:#d28b4a;text-align:center;padding:8px;}
-    textarea{width:100%;min-height:140px;border-radius:16px;border:1px solid #ddd;
-      padding:10px 12px;font-size:13px;line-height:1.6;resize:vertical;}
-    textarea:focus{outline:none;border-color:#ff8a3d;box-shadow:0 0 0 1px rgba(255,138,61,.2);}
+    /* 챕터 페이지 */
+    .chapter-title{text-align:center;margin-top:60px;}
+    .chapter-label{
+      font-size:24px;
+      letter-spacing:0.15em;
+      font-weight:700;
+      background:linear-gradient(90deg,#ff7a3c,#ff4b7d,#ff8a3d);
+      -webkit-background-clip:text;
+      color:transparent;
+    }
+    .chapter-number{font-size:36px;color:#ff5a3c;font-weight:700;margin:4px 0 16px;}
+    .chapter-sub{
+      font-size:17px;
+      font-family:"Apple SD Gothic Neo","Nanum Myeongjo",serif;
+    }
+
+    /* 질문 페이지 */
+    .question-title{
+      text-align:center;
+      font-size:16px;
+      margin:24px 0 16px;
+      font-family:"Apple SD Gothic Neo","Nanum Myeongjo",serif;
+    }
+    .image-placeholder{
+      margin:0 auto 14px;
+      width:220px;height:170px;
+      border-radius:24px;
+      border:1px dashed #ffd0a6;
+      background:#fff7f0;
+      display:flex;align-items:center;justify-content:center;
+      font-size:11px;color:#d28b4a;text-align:center;padding:8px;
+    }
+    textarea{
+      width:100%;min-height:140px;
+      border-radius:16px;border:1px solid #ddd;
+      padding:10px 12px;font-size:13px;line-height:1.6;
+      resize:vertical;
+    }
+    textarea:focus{
+      outline:none;
+      border-color:#ff8a3d;
+      box-shadow:0 0 0 1px rgba(255,138,61,.2);
+    }
     textarea::placeholder{color:#b3b3b3;}
 
+    /* 색지 선택 */
     .pattern-title{text-align:center;font-size:16px;margin:24px 0 10px;}
     .pattern-grid{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
-    .pattern-card{border-radius:999px;border:1px solid #ddd;padding:6px 14px;
-      font-size:12px;background:#fff;cursor:pointer;}
-    .pattern-card.active{border-color:#ff8a3d;box-shadow:0 0 0 1px rgba(255,138,61,.4);}
+    .pattern-card{
+      border-radius:999px;
+      border:1px solid #ddd;
+      padding:6px 14px;
+      font-size:12px;
+      background:#fff;
+      cursor:pointer;
+    }
+    .pattern-card.active{
+      border-color:#ff8a3d;
+      box-shadow:0 0 0 1px rgba(255,138,61,.4);
+    }
 
-    .bottom-nav{position:fixed;left:0;right:0;bottom:0;height:64px;padding:8px 16px 12px;
-      background:rgba(255,255,255,.96);border-top:1px solid #eee;display:flex;align-items:center;gap:12px;}
-    .nav-btn{min-width:88px;padding:8px 12px;border-radius:999px;border:none;font-size:13px;
-      cursor:pointer;background:#f3f4f6;color:#444;display:inline-flex;align-items:center;justify-content:center;}
+    /* 하단 네비 */
+    .bottom-nav{
+      position:fixed;left:0;right:0;bottom:0;
+      height:64px;padding:8px 16px 12px;
+      background:rgba(255,255,255,.96);
+      border-top:1px solid #eee;
+      display:flex;align-items:center;gap:12px;
+    }
+    .nav-btn{
+      min-width:88px;padding:8px 12px;
+      border-radius:999px;border:none;
+      font-size:13px;cursor:pointer;
+      background:#f3f4f6;color:#444;
+      display:inline-flex;align-items:center;justify-content:center;
+    }
     .nav-btn.primary{background:#111827;color:#fff;}
     .nav-btn:disabled{opacity:.35;cursor:default;}
     .progress-text{flex:1;text-align:center;font-size:11px;color:#999;}
@@ -64,8 +150,9 @@
     </header>
 
     <main class="page-container">
+      <!-- 이 영역 전체가 캡처 대상 -->
       <div class="page-inner" id="capture-area">
-        <!-- STEP 0 : 배경색 선택 -->
+        <!-- STEP 0 : 배경 색지 선택 -->
         <section class="step active" data-step="0">
           <div class="pattern-title">배경 색지를 골라주세요</div>
           <div class="pattern-grid" id="pattern-grid">
@@ -76,8 +163,19 @@
           </div>
         </section>
 
-        <!-- STEP 1 : CHAPTER 1 -->
+        <!-- STEP 1 : 타이틀 페이지 -->
         <section class="step" data-step="1">
+          <div class="title-page">
+            <div class="title-heading">나의 프로필북</div>
+            <div class="title-sub">
+              넷플연가에서 만난 나의 취향과<br/>
+              지금의 나를 기록하는 작은 책
+            </div>
+          </div>
+        </section>
+
+        <!-- STEP 2 : CHAPTER 1 -->
+        <section class="step" data-step="2">
           <div class="chapter-title">
             <div class="chapter-label">CHAPTER</div>
             <div class="chapter-number">1</div>
@@ -85,22 +183,22 @@
           </div>
         </section>
 
-        <!-- STEP 2 : 질문 1 -->
-        <section class="step" data-step="2">
+        <!-- STEP 3 : 질문 1 -->
+        <section class="step" data-step="3">
           <h2 class="question-title">질문 1</h2>
           <div class="image-placeholder">이미지는 나중에 넣을 자리</div>
           <textarea id="q1" placeholder="답변 1을 적어주세요."></textarea>
         </section>
 
-        <!-- STEP 3 : 질문 2 -->
-        <section class="step" data-step="3">
+        <!-- STEP 4 : 질문 2 -->
+        <section class="step" data-step="4">
           <h2 class="question-title">질문 2</h2>
           <div class="image-placeholder"></div>
           <textarea id="q2" placeholder="답변 2를 적어주세요."></textarea>
         </section>
 
-        <!-- STEP 4 : CHAPTER 2 -->
-        <section class="step" data-step="4">
+        <!-- STEP 5 : CHAPTER 2 -->
+        <section class="step" data-step="5">
           <div class="chapter-title">
             <div class="chapter-label">CHAPTER</div>
             <div class="chapter-number">2</div>
@@ -108,15 +206,15 @@
           </div>
         </section>
 
-        <!-- STEP 5 : 질문 3 -->
-        <section class="step" data-step="5">
+        <!-- STEP 6 : 질문 3 -->
+        <section class="step" data-step="6">
           <h2 class="question-title">질문 3</h2>
           <div class="image-placeholder"></div>
           <textarea id="q3" placeholder="답변 3을 적어주세요."></textarea>
         </section>
 
-        <!-- STEP 6 : 질문 4 -->
-        <section class="step" data-step="6">
+        <!-- STEP 7 : 질문 4 (마지막) -->
+        <section class="step" data-step="7">
           <h2 class="question-title">질문 4</h2>
           <div class="image-placeholder"></div>
           <textarea id="q4" placeholder="답변 4를 적어주세요."></textarea>
@@ -126,13 +224,13 @@
 
     <footer class="bottom-nav">
       <button class="nav-btn" id="prev-btn" type="button">← 이전</button>
-      <div class="progress-text" id="progress-text">1 / 7</div>
+      <div class="progress-text" id="progress-text">1 / 8</div>
       <button class="nav-btn primary" id="next-btn" type="button">다음 →</button>
     </footer>
   </div>
 
-  <!-- 나중에 html2canvas 붙일 자리 -->
-  <!-- <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script> -->
+  <!-- html2canvas: 캡처용 라이브러리 -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
   <script>
     const steps = Array.from(document.querySelectorAll(".step"));
@@ -142,6 +240,7 @@
     const totalSteps = steps.length;
     let currentStep = 0;
 
+    // 색지 선택
     const patternButtons = document.querySelectorAll(".pattern-card");
     patternButtons.forEach(btn => {
       btn.addEventListener("click", () => {
@@ -157,7 +256,7 @@
       });
       progressText.textContent = `${currentStep + 1} / ${totalSteps}`;
       prevBtn.disabled = currentStep === 0;
-      nextBtn.textContent = currentStep === totalSteps - 1 ? "완료" : "다음 →";
+      nextBtn.textContent = currentStep === totalSteps - 1 ? "완료(이미지 저장)" : "다음 →";
     }
 
     prevBtn.addEventListener("click", () => {
@@ -174,9 +273,8 @@
         updateStepUI();
         window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
-        // TODO: 여기에서 전체 답변을 이미지로 저장하는 함수 호출
-        // saveAllAsImage();
-        alert("여기에서 나중에 이미지 저장 기능이 실행될 거예요!");
+        // 마지막 단계: 현재 페이지를 이미지로 저장
+        saveCurrentPageAsImage();
       }
     });
 
@@ -184,6 +282,17 @@
       currentStep = 0;
       updateStepUI();
       window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // 캡처 & 다운로드 (예시)
+    function saveCurrentPageAsImage() {
+      const target = document.getElementById("capture-area");
+      html2canvas(target, { scale: 2 }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "profile-book.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
     }
 
     updateStepUI();
