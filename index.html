@@ -5,12 +5,17 @@
   <title>넷플연가 프로필북</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+  <!-- Webfonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@500;700&display=swap" rel="stylesheet">
+
   <style>
     * { box-sizing: border-box; }
     html, body { margin:0; padding:0; height:100%; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background:#e5e7eb;
       color:#222;
     }
@@ -161,43 +166,73 @@
     }
 
     /* ====================
-       표지(타이틀) 스타일
+       표지(타이틀) 스타일 - 책 카드 느낌
        ==================== */
     .cover-page {
       height:100%;
-      padding:40px 30px 32px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .cover-card {
+      width:260px;
+      height:400px;
+      background:#1f5f3b;          /* 진한 그린 (원하는 색으로 바꿔도 됨) */
+      border-radius:4px;
+      box-shadow:0 18px 35px rgba(0,0,0,0.35);
+      padding:28px 24px;
       display:flex;
       flex-direction:column;
       justify-content:flex-start;
-      color:#111;
-      font-family:"Apple SD Gothic Neo", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:#f7f7f2;
     }
+
     .cover-top-label {
       font-size:11px;
       letter-spacing:0.18em;
       text-transform:uppercase;
-      margin-bottom:40px;
+      margin-bottom:36px;
       opacity:0.9;
     }
+
     .cover-main-title {
-      font-size:30px;
-      font-family:"Nanum Myeongjo","Apple SD Gothic Neo",serif;
+      font-size:26px;
+      font-family:'Noto Serif KR',"Nanum Myeongjo","Apple SD Gothic Neo",serif;
       font-weight:600;
-      margin-bottom:10px;
+      margin-bottom:8px;
     }
+
     .cover-author {
-      font-size:15px;
-      font-family:"Apple SD Gothic Neo",system-ui,sans-serif;
-      margin-bottom:80px;
+      font-size:14px;
+      font-family:'Noto Sans KR',system-ui,sans-serif;
+      margin-bottom:40px;
     }
+
     .cover-author span {
       font-weight:500;
     }
+
     .cover-desc {
-      font-size:14px;
-      font-family:"Nanum Myeongjo","Apple SD Gothic Neo",serif;
+      font-size:13px;
+      font-family:'Noto Serif KR',"Nanum Myeongjo","Apple SD Gothic Neo",serif;
       line-height:1.9;
       white-space:pre-line;
+    }
+
+    .cover-illust {
+      margin-top:auto;
+      align-self:center;
+      width:140px;
+      height:140px;
+      background:#fff;
+      border-radius:4px;
+      box-shadow:0 6px 10px rgba(0,0,0,0.25);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:12px;
+      color:#999;
     }
 
     /* 챕터 공통 */
@@ -222,7 +257,7 @@
 
     .chapter-heading {
       font-size:20px;
-      font-family:"Nanum Myeongjo","Apple SD Gothic Neo",serif;
+      font-family:'Noto Serif KR',"Nanum Myeongjo","Apple SD Gothic Neo",serif;
       line-height:1.9;
       white-space:pre-line;
     }
@@ -232,7 +267,7 @@
       text-align:center;
       font-size:18px;
       margin:24px 0 18px;
-      font-family:"Apple SD Gothic Neo","Nanum Myeongjo",serif;
+      font-family:"Apple SD Gothic Neo","Noto Sans KR","Nanum Myeongjo",serif;
     }
 
     .image-placeholder {
@@ -259,7 +294,7 @@
       border:1px solid #ddd;
       font-size:18px;
       line-height:1.8;
-      font-family:"Apple SD Gothic Neo", sans-serif;
+      font-family:'Noto Sans KR',"Apple SD Gothic Neo", sans-serif;
       resize:none;
       text-align:center;
     }
@@ -326,8 +361,6 @@
     }
   </style>
 </head>
-
-
 <body>
 <div class="bg">
   <div class="phone" id="phone" data-pattern="sunrise">
@@ -361,15 +394,21 @@
         <!-- STEP 1 : 표지(타이틀) -->
         <section class="step" data-step="1">
           <div class="cover-page">
-            <div class="cover-top-label">넷플연가</div>
-            <div class="cover-main-title">나의 프로필북</div>
-            <div class="cover-author">
-              <span id="coverName"></span> 지음
-            </div>
-            <div class="cover-desc">
+            <div class="cover-card">
+              <div class="cover-top-label">넷플연가</div>
+              <div class="cover-main-title">나의 프로필북</div>
+              <div class="cover-author">
+                <span id="coverName"></span> 지음
+              </div>
+              <div class="cover-desc">
 나의 취향을
 한 페이지씩 채워가는 시간
 with 을지로 취향관
+              </div>
+
+              <div class="cover-illust">
+                이미지 자리 (나중에 교체)
+              </div>
             </div>
           </div>
         </section>
@@ -505,8 +544,6 @@ with 을지로 취향관
 
   </div>
 </div>
-
-
 <!-- html2canvas -->
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <!-- JSZip (ZIP 묶기용) -->
