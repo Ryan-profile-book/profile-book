@@ -119,10 +119,10 @@
       transform:translateX(-50%);
       bottom:14px;
       font-size:15px;
-      opacity:0.85;
+      opacity:0.9;
       z-index:999;
-      background:rgba(255,255,255,0.8);
-      padding:3px 10px;
+      background:rgba(255,255,255,0.9);
+      padding:3px 14px;
       border-radius:999px;
     }
 
@@ -169,19 +169,24 @@
       flex-direction:column;
       justify-content:flex-start;
       color:#111;
+      font-family:"Apple SD Gothic Neo", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
     .cover-top-label {
-      font-size:12px;
+      font-size:11px;
+      letter-spacing:0.18em;
+      text-transform:uppercase;
       margin-bottom:40px;
       opacity:0.9;
     }
     .cover-main-title {
-      font-size:26px;
+      font-size:30px;
+      font-family:"Nanum Myeongjo","Apple SD Gothic Neo",serif;
       font-weight:600;
-      margin-bottom:8px;
+      margin-bottom:10px;
     }
     .cover-author {
       font-size:15px;
+      font-family:"Apple SD Gothic Neo",system-ui,sans-serif;
       margin-bottom:80px;
     }
     .cover-author span {
@@ -189,29 +194,36 @@
     }
     .cover-desc {
       font-size:14px;
+      font-family:"Nanum Myeongjo","Apple SD Gothic Neo",serif;
       line-height:1.9;
       white-space:pre-line;
     }
 
-    /* 챕터 */
-    .chapter-title { text-align:center; margin-top:80px; }
-    .chapter-label {
-      font-size:24px;
-      letter-spacing:0.15em;
-      font-weight:700;
-      background:linear-gradient(90deg,#ff7a3c,#ff4b7d,#ff8a3d);
-      -webkit-background-clip:text;
-      color:transparent;
+    /* 챕터 공통 */
+    .chapter-title {
+      text-align:center;
+      margin-top:80px;
     }
-    .chapter-number {
-      font-size:36px;
-      font-weight:700;
-      color:#ff5a3c;
-      margin:4px 0 16px;
+    .chapter-ribbon {
+      display:inline-block;
+      padding:8px 20px;
+      border-radius:999px;
+      color:#fff;
+      font-size:14px;
+      font-weight:600;
+      margin-bottom:22px;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
     }
-    .chapter-sub {
-      font-size:17px;
-      font-family:"Apple SD Gothic Neo","Nanum Myeongjo",serif;
+    .chapter1-ribbon { background:#f97373; }
+    .chapter2-ribbon { background:#3b82f6; }
+    .chapter3-ribbon { background:#10b981; }
+
+    .chapter-heading {
+      font-size:20px;
+      font-family:"Nanum Myeongjo","Apple SD Gothic Neo",serif;
+      line-height:1.9;
+      white-space:pre-line;
     }
 
     /* 질문 */
@@ -264,10 +276,14 @@
     body.capture-mode textarea { display:none; }
     body.capture-mode .answer-view { display:block; }
 
-    /* 캡처 모드에서 상/하단 메뉴 숨김 */
+    /* 캡처 모드에서 상/하단 메뉴 숨기고, 폰 직사각형으로 */
     body.capture-mode .top-bar,
     body.capture-mode .bottom-nav {
       display:none;
+    }
+    body.capture-mode .phone {
+      border-radius:0;
+      box-shadow:none;
     }
 
     /* 하단 버튼 */
@@ -340,7 +356,7 @@
         <!-- STEP 1 : 표지(타이틀) -->
         <section class="step" data-step="1">
           <div class="cover-page">
-            <div class="cover-top-label">넷플연가</div>
+            <div class="cover-top-label">NETFLIX 연애</div>
             <div class="cover-main-title">나의 프로필북</div>
             <div class="cover-author">
               <span id="coverName"></span> 지음
@@ -361,9 +377,9 @@ with 을지로 취향관
           </div>
 
           <div class="chapter-title">
-            <div class="chapter-label">CHAPTER</div>
-            <div class="chapter-number">1</div>
-            <div class="chapter-sub">챕터 1 제목</div>
+            <div class="chapter-ribbon chapter1-ribbon">Chapter 1</div>
+            <div class="chapter-heading">남이 보는 나,
+내가 보는 나</div>
           </div>
 
           <div class="page-number">1</div>
@@ -413,9 +429,9 @@ with 을지로 취향관
           </div>
 
           <div class="chapter-title">
-            <div class="chapter-label">CHAPTER</div>
-            <div class="chapter-number">2</div>
-            <div class="chapter-sub">챕터 2 제목</div>
+            <div class="chapter-ribbon chapter2-ribbon">Chapter 2</div>
+            <div class="chapter-heading">취향으로
+말하는 나</div>
           </div>
 
           <div class="page-number">4</div>
@@ -457,12 +473,28 @@ with 을지로 취향관
           <div class="page-number">6</div>
         </section>
 
+        <!-- STEP 8 : 챕터 3 (미리 만들어 둔 페이지) -->
+        <section class="step" data-step="8">
+          <div class="header-fixed">
+            <div class="header-title">나의 프로필북 - 을지로 취향관</div>
+            <div class="header-nickname" id="headerName8"></div>
+          </div>
+
+          <div class="chapter-title">
+            <div class="chapter-ribbon chapter3-ribbon">Chapter 3</div>
+            <div class="chapter-heading">내가 말해주는
+나의 취향</div>
+          </div>
+
+          <div class="page-number">7</div>
+        </section>
+
       </div>
     </main>
 
     <footer class="bottom-nav">
       <button class="nav-btn" id="prev-btn">← 이전</button>
-      <div class="progress-text" id="progress-text">1 / 8</div>
+      <div class="progress-text" id="progress-text">1 / 9</div>
       <button class="nav-btn primary" id="next-btn">다음 →</button>
     </footer>
 
@@ -498,7 +530,7 @@ with 을지로 취향관
     nickname = document.getElementById("nicknameInput").value.trim();
     [
       "headerName2","headerName3","headerName4",
-      "headerName5","headerName6","headerName7"
+      "headerName5","headerName6","headerName7","headerName8"
     ].forEach(id => {
       const el = document.getElementById(id);
       if(el) el.textContent = nickname;
@@ -526,7 +558,7 @@ with 을지로 취향관
     if(currentStep===totalSteps-1) nextBtn.textContent="완료(전체 저장)";
     else nextBtn.textContent="다음 →";
 
-    // 표지일 때 cover-step 클래스 부여 (색지 전체 보이게)
+    // 표지일 때 cover-step 클래스 (색지 전체 보이게)
     document.body.classList.toggle("cover-step", currentStep===1);
 
     if(currentStep>0) applyNickname();
