@@ -34,7 +34,7 @@
       box-shadow:0 24px 60px rgba(15,23,42,0.3);
       display:flex;
       flex-direction:column;
-      background:linear-gradient(135deg,#fef5ff,#f5f7fb);
+      background:linear-gradient(135deg,#ffe0f0,#fff5d9); /* 기본 색지 */
       transition:0.3s;
       position:relative;
     }
@@ -49,7 +49,7 @@
     .phone[data-pattern="navy"]     { background:linear-gradient(135deg,#6f7fb8,#4c5a99); }
     .phone[data-pattern="black"]    { background:linear-gradient(135deg,#333,#111); }
 
-    /* 상단 바 */
+    /* 상단 바 (캡처 대상 밖이라 신경 X) */
     .top-bar {
       height:44px;
       padding:0 16px;
@@ -71,48 +71,33 @@
       flex:1;
       padding:12px;
       display:flex;
-      background:inherit; /* 색지 그라데이션 상속 */
+      background:transparent;
     }
 
-    /* 캡처 대상 */
-    .page-inner {
+    /* 🎨 테두리 + 하얀 페이지 (캡처 대상) */
+    .page-frame {
       width:100%;
       height:100%;
-      padding:24px;
-      background:inherit;            /* phone의 그라데이션을 상속 → 테두리용 */
+      background:transparent;   /* 밖에서 색지 보이게 */
       border-radius:24px;
+      padding:10px;             /* 테두리 두께 */
+    }
+
+    .page-card {
+      width:100%;
+      height:100%;
+      background:#ffffff;
+      border-radius:20px;
+      box-shadow:0 12px 30px rgba(15,23,42,0.08);
+      padding:20px 14px;
       overflow-y:auto;
       position:relative;
     }
 
-    /* 흰 종이 카드 */
-    .page-inner::before {
-      content:'';
-      position:absolute;
-      inset:10px;
-      border-radius:22px;
-      background:white;
-      box-shadow:0 12px 30px rgba(15,23,42,0.12);
-      z-index:0;
-    }
-
-    /* 각 step 내용은 카드 위에 올라오도록 */
-    .step {
-      display:none;
-      position:relative;
-      z-index:1;
-    }
+    .step { display:none; }
     .step.active { display:block; }
 
-    /* 표지일 때는 카드 없애고 색지 전체 보이게 */
-    body.cover-step .page-inner {
-      background:transparent;
-      box-shadow:none;
-      border-radius:0;
-      padding:0;
-    }
-
-    /* 페이지 상단 헤더 (챕터/질문 페이지) */
+    /* 상단 헤더 */
     .header-fixed {
       text-align:center;
       margin-bottom:14px;
@@ -126,24 +111,6 @@
       font-size:13px;
       opacity:0.7;
       margin-top:2px;
-    }
-
-    /* 페이지 번호 (아래 가운데) */
-    .page-number {
-      position:absolute;
-      left:50%;
-      transform:translateX(-50%);
-      bottom:14px;
-      font-size:15px;
-      opacity:0.9;
-      z-index:999;
-      background:rgba(255,255,255,0.9);
-      padding:3px 14px;
-      border-radius:999px;
-    }
-    /* 👉 입력할 때는 번호 안 보이게 (겹침 방지) */
-    body:not(.capture-mode) .page-number {
-      display:none;
     }
 
     /* 색지 선택 페이지 */
@@ -179,15 +146,13 @@
       font-size:14px;
     }
 
-    /* 표지(타이틀) */
+    /* 표지 */
     .cover-page {
       height:100%;
-      padding:40px 30px 32px;
       display:flex;
       flex-direction:column;
       justify-content:flex-start;
-      color:#111;
-      font-family:"Apple SD Gothic Neo", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      padding:40px 30px 32px;
     }
     .cover-top-label {
       font-size:11px;
@@ -204,11 +169,7 @@
     }
     .cover-author {
       font-size:15px;
-      font-family:"Apple SD Gothic Neo",system-ui,sans-serif;
       margin-bottom:80px;
-    }
-    .cover-author span {
-      font-weight:500;
     }
     .cover-desc {
       font-size:14px;
@@ -217,7 +178,7 @@
       white-space:pre-line;
     }
 
-    /* 챕터 공통 */
+    /* 챕터 */
     .chapter-title {
       text-align:center;
       margin-top:80px;
@@ -294,13 +255,7 @@
     body.capture-mode textarea { display:none; }
     body.capture-mode .answer-view { display:block; }
 
-    /* 캡처 모드: 상/하단 메뉴만 숨기기 (폰 레이아웃 그대로) */
-    body.capture-mode .top-bar,
-    body.capture-mode .bottom-nav {
-      display:none;
-    }
-
-    /* 하단 버튼 */
+    /* 하단 버튼 (캡처 대상 밖) */
     .bottom-nav {
       height:66px;
       padding:8px 16px 14px;
@@ -337,7 +292,6 @@
   </style>
 </head>
 
-
 <body>
 <div class="bg">
   <div class="phone" id="phone" data-pattern="sunrise">
@@ -347,163 +301,151 @@
     </header>
 
     <main class="page-container">
-      <!-- 이 div 전체가 캡처 대상 -->
-      <div class="page-inner" id="capture-target">
+      <!-- ⬇ 캡처 대상 (색지 테두리 + 흰 페이지 둘 다 포함) -->
+      <div class="page-frame" id="capture-target">
+        <div class="page-card">
 
-        <!-- STEP 0 : 색지 + 닉네임 -->
-        <section class="step active" data-step="0">
-          <div class="pattern-title">배경 색지를 골라주세요</div>
+          <!-- STEP 0 : 색지 + 닉네임 -->
+          <section class="step active" data-step="0">
+            <div class="pattern-title">배경 색지를 골라주세요</div>
 
-          <div class="pattern-grid">
-            <button class="pattern-card active" data-pattern="sunrise">선라이즈</button>
-            <button class="pattern-card" data-pattern="lavender">라벤더</button>
-            <button class="pattern-card" data-pattern="mint">민트</button>
-            <button class="pattern-card" data-pattern="sand">샌드</button>
-            <button class="pattern-card" data-pattern="gray">그레이</button>
-            <button class="pattern-card" data-pattern="blue">블루</button>
-            <button class="pattern-card" data-pattern="navy">네이비</button>
-            <button class="pattern-card" data-pattern="black">차콜 블랙</button>
-          </div>
-
-          <input class="nickname-input" id="nicknameInput" placeholder="닉네임을 입력해주세요" />
-        </section>
-
-        <!-- STEP 1 : 표지(타이틀) -->
-        <section class="step" data-step="1">
-          <div class="cover-page">
-            <div class="cover-top-label">넷플연가</div>
-            <div class="cover-main-title">나의 프로필북</div>
-            <div class="cover-author">
-              <span id="coverName"></span> 지음
+            <div class="pattern-grid">
+              <button class="pattern-card active" data-pattern="sunrise">선라이즈</button>
+              <button class="pattern-card" data-pattern="lavender">라벤더</button>
+              <button class="pattern-card" data-pattern="mint">민트</button>
+              <button class="pattern-card" data-pattern="sand">샌드</button>
+              <button class="pattern-card" data-pattern="gray">그레이</button>
+              <button class="pattern-card" data-pattern="blue">블루</button>
+              <button class="pattern-card" data-pattern="navy">네이비</button>
+              <button class="pattern-card" data-pattern="black">차콜 블랙</button>
             </div>
-            <div class="cover-desc">
+
+            <input class="nickname-input" id="nicknameInput" placeholder="닉네임을 입력해주세요" />
+          </section>
+
+          <!-- STEP 1 : 표지(타이틀) -->
+          <section class="step" data-step="1">
+            <div class="cover-page">
+              <div class="cover-top-label">넷플연가</div>
+              <div class="cover-main-title">나의 프로필북</div>
+              <div class="cover-author">
+                <span id="coverName"></span> 지음
+              </div>
+              <div class="cover-desc">
 나의 취향을
 한 페이지씩 채워가는 시간
 with 을지로 취향관
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <!-- STEP 2 : 챕터 1 -->
-        <section class="step" data-step="2">
-          <div class="header-fixed">
-            <div class="header-title">나의 프로필북 - 을지로 취향관</div>
-            <div class="header-nickname" id="headerName2"></div>
-          </div>
+          <!-- STEP 2 : 챕터 1 -->
+          <section class="step" data-step="2">
+            <div class="header-fixed">
+              <div class="header-title">나의 프로필북 - 을지로 취향관</div>
+              <div class="header-nickname" id="headerName2"></div>
+            </div>
 
-          <div class="chapter-title">
-            <div class="chapter-ribbon chapter1-ribbon">Chapter 1</div>
-            <div class="chapter-heading">남이 보는 나,
+            <div class="chapter-title">
+              <div class="chapter-ribbon chapter1-ribbon">Chapter 1</div>
+              <div class="chapter-heading">남이 보는 나,
 내가 보는 나</div>
-          </div>
+            </div>
+          </section>
 
-          <div class="page-number">1</div>
-        </section>
+          <!-- STEP 3 : 질문 1 -->
+          <section class="step" data-step="3">
+            <div class="header-fixed">
+              <div class="header-title">나의 프로필북 - 을지로 취향관</div>
+              <div class="header-nickname" id="headerName3"></div>
+            </div>
 
-        <!-- STEP 3 : 질문 1 -->
-        <section class="step" data-step="3">
-          <div class="header-fixed">
-            <div class="header-title">나의 프로필북 - 을지로 취향관</div>
-            <div class="header-nickname" id="headerName3"></div>
-          </div>
+            <h2 class="question-title">질문 1</h2>
+            <div class="image-placeholder">이미지는 나중에</div>
 
-          <h2 class="question-title">질문 1</h2>
-          <div class="image-placeholder">이미지는 나중에</div>
+            <div class="answer-block">
+              <textarea id="q1" placeholder="답변 1을 적어주세요."></textarea>
+              <div class="answer-view" id="q1-view"></div>
+            </div>
+          </section>
 
-          <div class="answer-block">
-            <textarea id="q1" placeholder="답변 1을 적어주세요."></textarea>
-            <div class="answer-view" id="q1-view"></div>
-          </div>
+          <!-- STEP 4 : 질문 2 -->
+          <section class="step" data-step="4">
+            <div class="header-fixed">
+              <div class="header-title">나의 프로필북 - 을지로 취향관</div>
+              <div class="header-nickname" id="headerName4"></div>
+            </div>
 
-          <div class="page-number">2</div>
-        </section>
+            <h2 class="question-title">질문 2</h2>
+            <div class="image-placeholder"></div>
 
-        <!-- STEP 4 : 질문 2 -->
-        <section class="step" data-step="4">
-          <div class="header-fixed">
-            <div class="header-title">나의 프로필북 - 을지로 취향관</div>
-            <div class="header-nickname" id="headerName4"></div>
-          </div>
+            <div class="answer-block">
+              <textarea id="q2" placeholder="답변 2를 적어주세요."></textarea>
+              <div class="answer-view" id="q2-view"></div>
+            </div>
+          </section>
 
-          <h2 class="question-title">질문 2</h2>
-          <div class="image-placeholder"></div>
+          <!-- STEP 5 : 챕터 2 -->
+          <section class="step" data-step="5">
+            <div class="header-fixed">
+              <div class="header-title">나의 프로필북 - 을지로 취향관</div>
+              <div class="header-nickname" id="headerName5"></div>
+            </div>
 
-          <div class="answer-block">
-            <textarea id="q2" placeholder="답변 2를 적어주세요."></textarea>
-            <div class="answer-view" id="q2-view"></div>
-          </div>
-
-          <div class="page-number">3</div>
-        </section>
-
-        <!-- STEP 5 : 챕터 2 -->
-        <section class="step" data-step="5">
-          <div class="header-fixed">
-            <div class="header-title">나의 프로필북 - 을지로 취향관</div>
-            <div class="header-nickname" id="headerName5"></div>
-          </div>
-
-          <div class="chapter-title">
-            <div class="chapter-ribbon chapter2-ribbon">Chapter 2</div>
-            <div class="chapter-heading">취향으로
+            <div class="chapter-title">
+              <div class="chapter-ribbon chapter2-ribbon">Chapter 2</div>
+              <div class="chapter-heading">취향으로
 말하는 나</div>
-          </div>
+            </div>
+          </section>
 
-          <div class="page-number">4</div>
-        </section>
+          <!-- STEP 6 : 질문 3 -->
+          <section class="step" data-step="6">
+            <div class="header-fixed">
+              <div class="header-title">나의 프로필북 - 을지로 취향관</div>
+              <div class="header-nickname" id="headerName6"></div>
+            </div>
 
-        <!-- STEP 6 : 질문 3 -->
-        <section class="step" data-step="6">
-          <div class="header-fixed">
-            <div class="header-title">나의 프로필북 - 을지로 취향관</div>
-            <div class="header-nickname" id="headerName6"></div>
-          </div>
+            <h2 class="question-title">질문 3</h2>
+            <div class="image-placeholder"></div>
 
-          <h2 class="question-title">질문 3</h2>
-          <div class="image-placeholder"></div>
+            <div class="answer-block">
+              <textarea id="q3" placeholder="답변 3을 적어주세요."></textarea>
+              <div class="answer-view" id="q3-view"></div>
+            </div>
+          </section>
 
-          <div class="answer-block">
-            <textarea id="q3" placeholder="답변 3을 적어주세요."></textarea>
-            <div class="answer-view" id="q3-view"></div>
-          </div>
+          <!-- STEP 7 : 질문 4 -->
+          <section class="step" data-step="7">
+            <div class="header-fixed">
+              <div class="header-title">나의 프로필북 - 을지로 취향관</div>
+              <div class="header-nickname" id="headerName7"></div>
+            </div>
 
-          <div class="page-number">5</div>
-        </section>
+            <h2 class="question-title">질문 4</h2>
+            <div class="image-placeholder"></div>
 
-        <!-- STEP 7 : 질문 4 -->
-        <section class="step" data-step="7">
-          <div class="header-fixed">
-            <div class="header-title">나의 프로필북 - 을지로 취향관</div>
-            <div class="header-nickname" id="headerName7"></div>
-          </div>
+            <div class="answer-block">
+              <textarea id="q4" placeholder="답변 4를 적어주세요."></textarea>
+              <div class="answer-view" id="q4-view"></div>
+            </div>
+          </section>
 
-          <h2 class="question-title">질문 4</h2>
-          <div class="image-placeholder"></div>
+          <!-- STEP 8 : 챕터 3 -->
+          <section class="step" data-step="8">
+            <div class="header-fixed">
+              <div class="header-title">나의 프로필북 - 을지로 취향관</div>
+              <div class="header-nickname" id="headerName8"></div>
+            </div>
 
-          <div class="answer-block">
-            <textarea id="q4" placeholder="답변 4를 적어주세요."></textarea>
-            <div class="answer-view" id="q4-view"></div>
-          </div>
-
-          <div class="page-number">6</div>
-        </section>
-
-        <!-- STEP 8 : 챕터 3 -->
-        <section class="step" data-step="8">
-          <div class="header-fixed">
-            <div class="header-title">나의 프로필북 - 을지로 취향관</div>
-            <div class="header-nickname" id="headerName8"></div>
-          </div>
-
-          <div class="chapter-title">
-            <div class="chapter-ribbon chapter3-ribbon">Chapter 3</div>
-            <div class="chapter-heading">내가 말해주는
+            <div class="chapter-title">
+              <div class="chapter-ribbon chapter3-ribbon">Chapter 3</div>
+              <div class="chapter-heading">내가 말해주는
 나의 취향</div>
-          </div>
+            </div>
+          </section>
 
-          <div class="page-number">7</div>
-        </section>
-
+        </div>
       </div>
     </main>
 
@@ -515,7 +457,6 @@ with 을지로 취향관
 
   </div>
 </div>
-
 
 <!-- html2canvas -->
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
@@ -550,7 +491,7 @@ with 을지로 취향관
       "headerName5","headerName6","headerName7","headerName8"
     ].forEach(id => {
       const el = document.getElementById(id);
-      if (el) el.textContent = nickname;
+      if(el) el.textContent = nickname;
     });
 
     const coverName = document.getElementById("coverName");
@@ -561,7 +502,7 @@ with 을지로 취향관
   ["q1","q2","q3","q4"].forEach(id => {
     const ta = document.getElementById(id);
     const view = document.getElementById(id+"-view");
-    if (!ta) return;
+    if(!ta) return;
     const sync = () => view.textContent = ta.value;
     ta.addEventListener("input", sync);
     sync();
@@ -572,21 +513,18 @@ with 을지로 취향관
     progressText.textContent = `${currentStep+1} / ${totalSteps}`;
     prevBtn.disabled = currentStep===0;
 
-    if (currentStep===totalSteps-1) nextBtn.textContent="완료(전체 저장)";
+    if(currentStep===totalSteps-1) nextBtn.textContent="완료(전체 저장)";
     else nextBtn.textContent="다음 →";
 
-    // 표지일 때 cover-step 클래스
-    document.body.classList.toggle("cover-step", currentStep===1);
-
-    if (currentStep>0) applyNickname();
+    if(currentStep>0) applyNickname();
   }
 
   prevBtn.addEventListener("click", () => {
-    if (currentStep>0){ currentStep--; updateStepUI(); }
+    if(currentStep>0){ currentStep--; updateStepUI(); }
   });
 
   nextBtn.addEventListener("click", async () => {
-    if (currentStep<totalSteps-1){
+    if(currentStep<totalSteps-1){
       currentStep++; updateStepUI();
     } else {
       await saveAllPagesAsImages();
@@ -597,7 +535,7 @@ with 을지로 취향관
     currentStep=0; updateStepUI();
   }
 
-  /* 특정 step을 canvas로 캡처 (다운로드는 여기서 안 함) */
+  /* 특정 step을 canvas로 캡처 (폰은 그대로, 텍스트 크기 그대로) */
   async function captureStepToCanvas(stepIndex){
     currentStep = stepIndex;
     updateStepUI();
@@ -606,10 +544,10 @@ with 을지로 취향관
     document.body.classList.add("capture-mode");
     await new Promise(r=>setTimeout(r,60));
 
-    // 📌 폰 전체를 캡처 (텍스트 확대 방지를 위해 scale=1 고정)
-    const target = phone;
+    // ❗ 글자 크기 안 바뀌도록 page-frame만 캡처 + scale 고정
+    const target = document.getElementById("capture-target");
     const canvas = await html2canvas(target, {
-      scale: 1,        // 모바일에서 확대 방지
+      scale: 2,         // 해상도만 올림, 레이아웃 그대로
       useCORS: true,
       allowTaint: true
     });
