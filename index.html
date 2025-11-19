@@ -71,9 +71,10 @@
       flex:1;
       padding:12px;
       display:flex;
+      background:inherit; /* 색지 그라데이션 상속 */
     }
 
-    /* 기본 페이지 카드 */
+    /* 캡처 대상 */
     .page-inner {
       width:100%;
       height:100%;
@@ -276,14 +277,17 @@
     body.capture-mode textarea { display:none; }
     body.capture-mode .answer-view { display:block; }
 
-    /* 캡처 모드에서 상/하단 메뉴 숨기고, 폰 직사각형으로 */
+    /* 캡처 모드에서 상/하단 메뉴 숨기고,
+       페이지를 색지 그라데이션 직사각형으로 */
     body.capture-mode .top-bar,
     body.capture-mode .bottom-nav {
       display:none;
     }
-    body.capture-mode .phone {
+    body.capture-mode .page-inner {
+      background:inherit;  /* phone의 그라데이션 상속 */
       border-radius:0;
       box-shadow:none;
+      padding:40px 30px 32px; /* 표지와 비슷한 여백 */
     }
 
     /* 하단 버튼 */
@@ -333,6 +337,7 @@
     </header>
 
     <main class="page-container">
+      <!-- 이 div 전체가 캡처 대상 -->
       <div class="page-inner" id="capture-target">
 
         <!-- STEP 0 : 색지 + 닉네임 -->
@@ -591,7 +596,7 @@ with 을지로 취향관
     document.body.classList.add("capture-mode");
     await new Promise(r=>setTimeout(r,60));
 
-    const target = document.getElementById("phone");  // 색지 포함 전체
+    const target = document.getElementById("capture-target");  // 페이지 안쪽만 캡처
     const canvas = await html2canvas(target,{scale:2});
 
     document.body.classList.remove("capture-mode");
