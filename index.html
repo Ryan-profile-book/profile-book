@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>넷플연가 프로필북</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <style>
     * { box-sizing: border-box; }
     html, body { margin:0; padding:0; height:100%; }
@@ -22,10 +23,10 @@
       padding:16px;
     }
 
-    /* 📱 모바일 화면 (세로 B안: height 700px) */
+    /* 📱 메인 모바일 레이아웃 (세로 700px) */
     .phone {
       width:390px;
-      height:700px;  /* ← B안 적용 */
+      height:700px;
       max-width:100%;
       max-height:100vh;
       border-radius:32px;
@@ -35,36 +36,20 @@
       flex-direction:column;
       background:linear-gradient(135deg,#fef5ff,#f5f7fb);
       transition:0.3s;
+      position:relative;
     }
 
-    /* 📄 기존 4개 */
-    .phone[data-pattern="sunrise"] {
-      background:linear-gradient(135deg,#ffe0f0,#fff5d9);
-    }
-    .phone[data-pattern="lavender"] {
-      background:linear-gradient(135deg,#e5e0ff,#fdf2ff);
-    }
-    .phone[data-pattern="mint"] {
-      background:linear-gradient(135deg,#d9fff2,#f2fff8);
-    }
-    .phone[data-pattern="sand"] {
-      background:linear-gradient(135deg,#fff4dd,#ffe9e0);
-    }
+    /* 패턴 */
+    .phone[data-pattern="sunrise"] { background:linear-gradient(135deg,#ffe0f0,#fff5d9); }
+    .phone[data-pattern="lavender"] { background:linear-gradient(135deg,#e5e0ff,#fdf2ff); }
+    .phone[data-pattern="mint"] { background:linear-gradient(135deg,#d9fff2,#f2fff8); }
+    .phone[data-pattern="sand"] { background:linear-gradient(135deg,#fff4dd,#ffe9e0); }
+    .phone[data-pattern="gray"] { background:linear-gradient(135deg,#f2f2f2,#dcdcdc); }
+    .phone[data-pattern="blue"] { background:linear-gradient(135deg,#dce8ff,#c5d8ff); }
+    .phone[data-pattern="navy"] { background:linear-gradient(135deg,#6f7fb8,#4c5a99); }
+    .phone[data-pattern="black"] { background:linear-gradient(135deg,#333,#111); }
 
-    /* ⭐ 안전한 파스텔톤 추가 4개 */
-    .phone[data-pattern="gray"] {
-      background:linear-gradient(135deg,#f2f2f2,#dcdcdc);
-    }
-    .phone[data-pattern="blue"] {
-      background:linear-gradient(135deg,#dce8ff,#c5d8ff);
-    }
-    .phone[data-pattern="navy"] {
-      background:linear-gradient(135deg,#6f7fb8,#4c5a99);
-    }
-    .phone[data-pattern="black"] {
-      background:linear-gradient(135deg,#333,#111);
-    }
-
+    /* 헤더 */
     .top-bar {
       height:44px;
       padding:0 16px;
@@ -72,6 +57,7 @@
       align-items:center;
       background:rgba(255,255,255,0.6);
       backdrop-filter:blur(10px);
+      flex-shrink:0;
     }
     .exit-btn {
       border:none;
@@ -80,13 +66,13 @@
       cursor:pointer;
     }
 
+    /* 페이지 본문 */
     .page-container {
       flex:1;
       padding:12px;
       display:flex;
     }
 
-    /* 캡처 영역 */
     .page-inner {
       width:100%;
       height:100%;
@@ -98,13 +84,13 @@
       position:relative;
     }
 
+    /* STEP 제어 */
     .step { display:none; }
     .step.active { display:block; }
 
-    /* 헤더 */
+    /* 헤더 (페이지 내부) */
     .header-fixed {
       text-align:center;
-      margin-top:6px;
       margin-bottom:14px;
     }
     .header-title {
@@ -112,7 +98,7 @@
       font-weight:600;
     }
     .header-nickname {
-      font-size:12px;
+      font-size:13px;
       opacity:0.7;
       margin-top:2px;
     }
@@ -130,11 +116,11 @@
       border-radius:6px;
     }
 
-    /* 색지 */
+    /* 색지 선택 */
     .pattern-title {
       text-align:center;
       font-size:16px;
-      margin:24px 0 12px;
+      margin:18px 0 8px;
     }
     .pattern-grid {
       display:flex; flex-wrap:wrap;
@@ -163,7 +149,7 @@
       font-size:14px;
     }
 
-    /* 타이틀 */
+    /* 타이틀 페이지 */
     .title-page {
       text-align:center;
       margin-top:80px;
@@ -203,9 +189,9 @@
     /* 질문 */
     .question-title {
       text-align:center;
-      font-size:17px;
+      font-size:18px;
       margin:24px 0 18px;
-      font-family:"Apple SD Gothic Neo","Nanum Myeong조",serif;
+      font-family:"Apple SD Gothic Neo","Nanum Myeongjo",serif;
     }
 
     .image-placeholder {
@@ -218,46 +204,63 @@
       font-size:11px; color:#d28b4a;
     }
 
-    .answer-block { margin-top:8px; }
+    /* 답변 */
+    .answer-block {
+      margin-top:12px;
+      text-align:center;
+    }
 
     textarea {
-      width:100%;
-      min-height:160px;
+      width:calc(100% - 10px);
+      min-height:170px;
       border-radius:18px;
-      padding:12px 14px;
+      padding:14px 14px;
       border:1px solid #ddd;
-      font-size:14px;
-      line-height:1.7;
+      font-size:18px;
+      line-height:1.8;
+      font-family:"Apple SD Gothic Neo", sans-serif;
+      resize:none;
+      text-align:center;
     }
 
     .answer-view {
       display:none;
       white-space:pre-wrap;
       line-height:1.8;
-      font-size:14px;
+      font-size:18px;
+      text-align:center;
       margin-top:4px;
     }
 
     body.capture-mode textarea { display:none; }
     body.capture-mode .answer-view { display:block; }
 
-    /* 하단 */
+    /* 하단 버튼 */
     .bottom-nav {
-      height:68px;
+      height:66px;
       padding:8px 16px 14px;
       background:rgba(255,255,255,0.7);
       backdrop-filter:blur(10px);
-      display:flex; align-items:center; gap:12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-shrink:0;
     }
+
     .nav-btn {
       min-width:90px;
       border:none;
       padding:8px 12px;
       border-radius:999px;
       background:#f3f4f6;
-      font-size:13px;
+      font-size:14px;
+      cursor:pointer;
     }
-    .nav-btn.primary { background:#111827; color:white; }
+    .nav-btn.primary {
+      background:#111827;
+      color:white;
+    }
     .nav-btn:disabled { opacity:0.35; }
 
     .progress-text {
@@ -268,6 +271,7 @@
     }
   </style>
 </head>
+
 
 <body>
 <div class="bg">
@@ -280,20 +284,19 @@
     <main class="page-container">
       <div class="page-inner" id="capture-target">
 
-        <!-- STEP 0 : 색지 + 닉네임 -->
+        <!-- STEP 0 : 첫 페이지 -->
         <section class="step active" data-step="0">
           <div class="pattern-title">배경 색지를 골라주세요</div>
+
           <div class="pattern-grid">
             <button class="pattern-card active" data-pattern="sunrise">선라이즈</button>
             <button class="pattern-card" data-pattern="lavender">라벤더</button>
             <button class="pattern-card" data-pattern="mint">민트</button>
             <button class="pattern-card" data-pattern="sand">샌드</button>
-
-            <!-- 추가된 파스텔톤 4개 -->
             <button class="pattern-card" data-pattern="gray">그레이</button>
             <button class="pattern-card" data-pattern="blue">블루</button>
             <button class="pattern-card" data-pattern="navy">네이비</button>
-            <button class="pattern-card" data-pattern="black">차콜블랙</button>
+            <button class="pattern-card" data-pattern="black">차콜 블랙</button>
           </div>
 
           <input class="nickname-input" id="nicknameInput" placeholder="닉네임을 입력해주세요" />
@@ -310,7 +313,7 @@
           </div>
         </section>
 
-        <!-- STEP 2 : CHAPTER 1 -->
+        <!-- STEP 2 : 챕터 1 -->
         <section class="step" data-step="2">
           <div class="header-fixed">
             <div class="header-title">나의 프로필북 - 을지로 취향관</div>
@@ -362,7 +365,7 @@
           <div class="page-number">3</div>
         </section>
 
-        <!-- STEP 5 : CHAPTER 2 -->
+        <!-- STEP 5 : 챕터 2 -->
         <section class="step" data-step="5">
           <div class="header-fixed">
             <div class="header-title">나의 프로필북 - 을지로 취향관</div>
@@ -371,7 +374,7 @@
 
           <div class="chapter-title">
             <div class="chapter-label">CHAPTER</div>
-            <div="chapter-number">2</div>
+            <div class="chapter-number">2</div>
             <div class="chapter-sub">챕터 2 제목</div>
           </div>
 
@@ -426,6 +429,8 @@
   </div>
 </div>
 
+
+<!-- html2canvas -->
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
 <script>
@@ -439,7 +444,7 @@
   let currentStep = 0;
   let nickname = "";
 
-  /* 패턴 선택 */
+  /* 색지 선택 */
   document.querySelectorAll(".pattern-card").forEach(btn => {
     btn.addEventListener("click", () => {
       document.querySelectorAll(".pattern-card").forEach(b => b.classList.remove("active"));
@@ -448,21 +453,23 @@
     });
   });
 
-  /* 닉네임 적용 */
+  /* 닉네임 반영 */
   function applyNickname() {
     nickname = document.getElementById("nicknameInput").value.trim();
-    ["headerName2","headerName3","headerName4","headerName5","headerName6","headerName7"]
-      .forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = nickname;
-      });
+    [
+      "headerName2","headerName3","headerName4",
+      "headerName5","headerName6","headerName7"
+    ].forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.textContent = nickname;
+    });
   }
 
-  /* textarea → 보기 모드 변환 */
+  /* textarea ↔ view 싱크 */
   ["q1","q2","q3","q4"].forEach(id => {
     const ta = document.getElementById(id);
     const view = document.getElementById(id+"-view");
-    if (!ta) return;
+    if(!ta) return;
     const sync = () => view.textContent = ta.value;
     ta.addEventListener("input", sync);
     sync();
@@ -472,9 +479,11 @@
     steps.forEach((s,i)=>s.classList.toggle("active",i===currentStep));
     progressText.textContent = `${currentStep+1} / ${totalSteps}`;
     prevBtn.disabled = currentStep===0;
-    if (currentStep===totalSteps-1) nextBtn.textContent="완료(전체 저장)";
+
+    if(currentStep===totalSteps-1) nextBtn.textContent="완료(전체 저장)";
     else nextBtn.textContent="다음 →";
-    if (currentStep>0) applyNickname();
+
+    if(currentStep>0) applyNickname();
   }
 
   prevBtn.addEventListener("click", () => {
@@ -493,30 +502,30 @@
     currentStep=0; updateStepUI();
   }
 
-  /* 전체 폰(phone) 저장하도록 변경 */
-  async function captureStep(stepIndex) {
+  /* CAPTURE */
+  async function captureStep(stepIndex){
     currentStep = stepIndex;
     updateStepUI();
     await new Promise(r=>setTimeout(r,250));
 
     document.body.classList.add("capture-mode");
-    await new Promise(r=>setTimeout(r,50));
+    await new Promise(r=>setTimeout(r,60));
 
-    const target = document.getElementById("phone"); /* ← 수정됨 */
+    const target = document.getElementById("phone");
     const canvas = await html2canvas(target,{scale:2});
 
     document.body.classList.remove("capture-mode");
 
     const link = document.createElement("a");
-    link.download = `profile-book-step${stepIndex}.png`;
+    link.download = `profile-page-${stepIndex}.png`;
     link.href = canvas.toDataURL("image/png");
     link.click();
 
     await new Promise(r=>setTimeout(r,200));
   }
 
-  async function saveAllPagesAsImages() {
-    for (let step=1; step<totalSteps; step++){
+  async function saveAllPagesAsImages(){
+    for(let step=1; step<totalSteps; step++){
       await captureStep(step);
     }
     alert("📘 모든 페이지 저장 완료!");
