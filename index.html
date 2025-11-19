@@ -279,16 +279,26 @@
 
     /* 캡처 모드에서 상/하단 메뉴 숨기고,
        페이지를 색지 그라데이션 직사각형으로 */
-    body.capture-mode .top-bar,
+    /* 캡처 모드: 상/하단 메뉴만 숨기고,
+   폰 전체(색지 + 흰 카드)를 그대로 찍기 */
+
+body.capture-mode .top-bar,
 body.capture-mode .bottom-nav {
-  display:none;
+  display: none;
 }
 
+/* 캡처할 때는 폰 모서리도 꼭짓점까지 꽉 채우고 싶다면 */
+body.capture-mode .phone {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* 페이지 카드(흰 배경)는 그대로 유지 */
 body.capture-mode .page-inner {
-  background:white;
-  border-radius:24px;
-  box-shadow:0 12px 30px rgba(15,23,42,0.08);
-  padding:20px 14px;
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 12px 30px rgba(15,23,42,0.08);
+  padding: 20px 14px;
 }
     /* 하단 버튼 */
     .bottom-nav {
@@ -596,8 +606,8 @@ with 을지로 취향관
     document.body.classList.add("capture-mode");
     await new Promise(r=>setTimeout(r,60));
 
-    const target = document.getElementById("capture-target");  // 페이지 안쪽만 캡처
-    const canvas = await html2canvas(target,{scale:2});
+    const target = document.getElementById("phone");  // 전체 폰(색지 + 흰 페이지) 캡처
+const canvas = await html2canvas(target, { scale: 2 });
 
     document.body.classList.remove("capture-mode");
     return canvas;
@@ -629,4 +639,5 @@ with 을지로 취향관
 
 </body>
 </html>
+
 
