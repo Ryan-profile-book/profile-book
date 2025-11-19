@@ -356,7 +356,7 @@
         <!-- STEP 1 : 표지(타이틀) -->
         <section class="step" data-step="1">
           <div class="cover-page">
-            <div class="cover-top-label">NETFLIX 연애</div>
+            <div class="cover-top-label">넷플연가</div>
             <div class="cover-main-title">나의 프로필북</div>
             <div class="cover-author">
               <span id="coverName"></span> 지음
@@ -473,7 +473,7 @@ with 을지로 취향관
           <div class="page-number">6</div>
         </section>
 
-        <!-- STEP 8 : 챕터 3 (미리 만들어 둔 페이지) -->
+        <!-- STEP 8 : 챕터 3 -->
         <section class="step" data-step="8">
           <div class="header-fixed">
             <div class="header-title">나의 프로필북 - 을지로 취향관</div>
@@ -504,6 +504,8 @@ with 을지로 취향관
 
 <!-- html2canvas -->
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<!-- JSZip (ZIP 묶기용) -->
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 
 <script>
   const phone = document.getElementById("phone");
@@ -580,8 +582,8 @@ with 을지로 취향관
     currentStep=0; updateStepUI();
   }
 
-  /* 페이지 캡처 (상/하단 메뉴는 capture-mode에서 숨김) */
-  async function captureStep(stepIndex){
+  /* 특정 step을 canvas로 캡처 (다운로드는 여기서 안 함) */
+  async function captureStepToCanvas(stepIndex){
     currentStep = stepIndex;
     updateStepUI();
     await new Promise(r=>setTimeout(r,250));
@@ -593,20 +595,28 @@ with 을지로 취향관
     const canvas = await html2canvas(target,{scale:2});
 
     document.body.classList.remove("capture-mode");
-
-    const link = document.createElement("a");
-    link.download = `profile-page-${stepIndex}.png`;
-    link.href = canvas.toDataURL("image/png");
-    link.click();
-
-    await new Promise(r=>setTimeout(r,200));
+    return canvas;
   }
 
+  /* 전체 페이지를 ZIP으로 묶어서 1번만 다운로드 */
   async function saveAllPagesAsImages(){
+    const zip = new JSZip();
+
     for(let step=1; step<totalSteps; step++){
-      await captureStep(step);
+      const canvas = await captureStepToCanvas(step);
+      const dataUrl = canvas.toDataURL("image/png");
+      const base64 = dataUrl.split(',')[1];
+      zip.file(`profile-page-${step}.png`, base64, { base64: true });
     }
-    alert("📘 모든 페이지 저장 완료!");
+
+    const content = await zip.generateAsync({ type: "blob" });
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(content);
+    link.download = "profile-book.zip";
+    link.click();
+
+    alert("📘 모든 페이지를 ZIP 파일로 저장했습니다!");
   }
 
   updateStepUI();
