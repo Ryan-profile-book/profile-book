@@ -1,427 +1,471 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <title>넷플연가 프로필북</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    * { box-sizing: border-box; }
-    html, body { margin:0; padding:0; height:100%; }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>나의 프로필북 - 을지로 취향관</title>
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:#e5e7eb;
-      color:#222;
-      transition:0.2s;
-    }
+<!-- Google Font (책 느낌 나는 한글 서체) -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 
-    .bg {
-      min-height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      padding:16px;
-    }
+<style>
+/* ---------------------------------------
+   전체 기본 세팅
+--------------------------------------- */
+body {
+  margin: 0;
+  padding: 0;
+  background: #f5f5f5;
+  font-family: 'Noto Serif KR', serif;
+  display: flex;
+  justify-content: center;
+}
 
-    /* 📱 모바일 화면 고정 */
-    .phone {
-      width:390px;
-      height:780px;
-      max-width:100%;
-      max-height:100vh;
-      border-radius:32px;
-      overflow:hidden;
-      box-shadow:0 24px 60px rgba(15,23,42,0.3);
-      display:flex;
-      flex-direction:column;
-      background:linear-gradient(135deg,#fef5ff,#f5f7fb);
-      transition:0.3s;
-    }
+/* 모바일 화면 고정 (390px 카드) */
+#phone {
+  width: 390px;
+  min-height: 100vh;
+  background: white;
+  position: relative;
+  overflow-x: hidden;
+}
 
-    /* 📄 페이지 배경 패턴 */
-    .phone[data-pattern="sunrise"] {
-      background:linear-gradient(135deg,#ffe0f0,#fff5d9);
-    }
-    .phone[data-pattern="lavender"] {
-      background:linear-gradient(135deg,#e5e0ff,#fdf2ff);
-    }
-    .phone[data-pattern="mint"] {
-      background:linear-gradient(135deg,#d9fff2,#f2fff8);
-    }
-    .phone[data-pattern="sand"] {
-      background:linear-gradient(135deg,#fff4dd,#ffe9e0);
-    }
+/* 선택한 색지 배경을 적용할 수 있도록 wrapper 사용 */
+#background-wrap {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  transition: background 0.3s ease;
+}
 
-    .top-bar {
-      height:44px;
-      padding:0 16px;
-      display:flex;
-      align-items:center;
-      background:rgba(255,255,255,0.6);
-      backdrop-filter:blur(10px);
-    }
-    .exit-btn {
-      border:none;
-      background:none;
-      font-size:14px;
-      cursor:pointer;
-    }
+/* 내부 페이지 */
+.page-container {
+  background: white;
+  margin: 0 auto;
+  width: 390px;
+  min-height: 100vh;
+  padding: 20px 22px;
+  box-sizing: border-box;
+  position: relative;
+}
 
-    .page-container {
-      flex:1;
-      padding:12px;
-      display:flex;
-    }
+/* ---------------------------------------
+   헤더 (캡처 포함)
+--------------------------------------- */
+.header {
+  text-align: center;
+  margin-bottom: 10px;
+}
 
-    /* 📚 캡처될 영역 */
-    .page-inner {
-      width:100%;
-      height:100%;
-      padding:20px 14px;
-      background:white;
-      border-radius:24px;
-      overflow-y:auto;
-      box-shadow:0 12px 30px rgba(15,23,42,0.08);
-    }
+.header-title {
+  font-size: 17px;
+  font-weight: 600;
+}
 
-    .step { display:none; }
-    .step.active { display:block; }
+.header-nickname {
+  font-size: 13px;
+  margin-top: 3px;
+  opacity: 0.7;
+}
 
-    /* 🎨 색지 선택 */
-    .pattern-title {
-      text-align:center;
-      font-size:16px;
-      margin:28px 0 12px;
-    }
-    .pattern-grid {
-      display:flex; flex-wrap:wrap;
-      gap:10px; justify-content:center;
-    }
-    .pattern-card {
-      padding:8px 16px;
-      font-size:13px;
-      border-radius:999px;
-      border:1px solid #ddd;
-      background:white;
-      cursor:pointer;
-    }
-    .pattern-card.active {
-      border-color:#ff8a3d;
-      box-shadow:0 0 0 2px rgba(255,138,61,0.3);
-    }
+/* ---------------------------------------
+   페이지 번호
+--------------------------------------- */
+.page-number {
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  font-size: 14px;
+  opacity: 0.7;
+}
 
-    /* 🏷 타이틀 */
-    .title-page {
-      text-align:center;
-      margin-top:80px;
-    }
-    .title-heading {
-      font-size:24px;
-      font-weight:700;
-      margin-bottom:6px;
-    }
-    .title-sub {
-      font-size:13px;
-      color:#666;
-      line-height:1.6;
-    }
+/* ---------------------------------------
+   챕터 페이지
+--------------------------------------- */
+.chapter-wrap {
+  margin-top: 40px;
+}
 
-    /* 📖 챕터 */
-    .chapter-title { text-align:center; margin-top:80px; }
-    .chapter-label {
-      font-size:24px;
-      letter-spacing:0.15em;
-      font-weight:700;
-      background:linear-gradient(90deg,#ff7a3c,#ff4b7d,#ff8a3d);
-      -webkit-background-clip:text;
-      color:transparent;
-    }
-    .chapter-number {
-      font-size:36px;
-      font-weight:700;
-      color:#ff5a3c;
-      margin:4px 0 16px;
-    }
-    .chapter-sub {
-      font-size:17px;
-      font-family:"Apple SD Gothic Neo","Nanum Myeongjo",serif;
-    }
+.chapter-band {
+  width: 100%;
+  height: 80px;
+  border-radius: 10px;
+  opacity: 0.4;
+  margin-bottom: 25px;
+}
 
-    /* ✏ 질문 */
-    .question-title {
-      text-align:center;
-      font-size:17px;
-      margin:24px 0 18px;
-      font-family:"Apple SD Gothic Neo","Nanum Myeongjo",serif;
-    }
+.chapter-title {
+  text-align: center;
+  font-size: 26px;
+  margin-top: -55px;
+  position: relative;
+  font-weight: 700;
+}
 
-    .image-placeholder {
-      margin:0 auto 16px;
-      width:220px; height:170px;
-      border-radius:24px;
-      border:1px dashed #ffd0a6;
-      background:#fff7f0;
-      display:flex; align-items:center; justify-content:center;
-      font-size:11px; color:#d28b4a;
-    }
+/* ---------------------------------------
+   질문 페이지
+--------------------------------------- */
+.question-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+}
 
-    .answer-block { margin-top:8px; }
+.answer-block textarea {
+  width: 100%;
+  height: 230px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  font-family: inherit;
+  font-size: 15px;
+  box-sizing: border-box;
+  line-height: 1.7;
+}
 
-    textarea {
-      width:100%;
-      min-height:160px;
-      border-radius:18px;
-      padding:12px 14px;
-      border:1px solid #ddd;
-      font-size:14px; line-height:1.7;
-      resize:vertical;
-    }
-    textarea:focus {
-      border-color:#ff8a3d;
-      box-shadow:0 0 0 1px rgba(255,138,61,0.3);
-      outline:none;
-    }
+.answer-view {
+  display: none;
+  white-space: pre-wrap;
+  font-size: 15px;
+  line-height: 1.9;
+  margin-top: 10px;
+}
 
-    /* 📘 캡처모드일 때 텍스트만 보이기 */
-    .answer-view {
-      display:none;
-      white-space:pre-wrap;
-      line-height:1.8;
-      font-size:14px;
-      color:#333;
-      margin-top:4px;
-    }
+/* 캡처모드: textarea 숨기고 답변뷰 표시 */
+body.capture-mode textarea {
+  display: none;
+}
+body.capture-mode .answer-view {
+  display: block;
+}
 
-    body.capture-mode textarea { display:none; }
-    body.capture-mode .answer-view { display:block; }
+/* ---------------------------------------
+   첫 페이지 (색지 + 닉네임 입력)
+--------------------------------------- */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
 
-    /* ⬇ 하단 버튼 (폰 안쪽 고정) */
-    .bottom-nav {
-      height:68px;
-      padding:8px 16px 14px;
-      background:rgba(255,255,255,0.7);
-      backdrop-filter:blur(10px);
-      display:flex; align-items:center; gap:12px;
-    }
-    .nav-btn {
-      min-width:90px;
-      border:none;
-      padding:8px 12px;
-      border-radius:999px;
-      background:#f3f4f6;
-      font-size:13px;
-      cursor:pointer;
-    }
-    .nav-btn.primary { background:#111827; color:white; }
-    .nav-btn:disabled { opacity:0.35; cursor:default; }
+.color-item {
+  width: 100%;
+  height: 110px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: 0.2s;
+}
 
-    .progress-text {
-      flex:1;
-      text-align:center;
-      font-size:12px;
-      color:#777;
-    }
-  </style>
+.color-item.selected {
+  border: 3px solid #333;
+}
+
+.nickname-input {
+  width: 100%;
+  padding: 13px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  box-sizing: border-box;
+  margin-top: 20px;
+}
+
+.start-btn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 14px;
+  border: none;
+  background: #000;
+  color: white;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* ---------------------------------------
+   하단 버튼바 (이동)
+--------------------------------------- */
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.nav-buttons button {
+  width: 48%;
+  padding: 13px;
+  border-radius: 8px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.prev-btn { background: #ddd; }
+.next-btn { background: #000; color: white; }
+
+/* ---------------------------------------
+   숨김 처리
+--------------------------------------- */
+.step { display: none; }
+.step.active { display: block; }
+
+</style>
 </head>
-
 <body>
-<div class="bg">
-  <div class="phone" id="phone" data-pattern="sunrise">
 
-    <!-- 🔼 헤더(캡처 제외 영역) -->
-    <header class="top-bar">
-      <button class="exit-btn" onclick="goFirst()">× 나가기</button>
-    </header>
+<div id="background-wrap">
+  <div id="phone">
 
-    <!-- 📄 본문(캡처될 영역) -->
-    <main class="page-container">
-      <div class="page-inner" id="capture-target">
+    <div class="page-container">
 
-        <!-- STEP 0 : 색지 선택 -->
-        <section class="step active" data-step="0">
-          <div class="pattern-title">배경 색지를 골라주세요</div>
-          <div class="pattern-grid">
-            <button class="pattern-card active" data-pattern="sunrise">선라이즈</button>
-            <button class="pattern-card" data-pattern="lavender">라벤더</button>
-            <button class="pattern-card" data-pattern="mint">민트</button>
-            <button class="pattern-card" data-pattern="sand">샌드</button>
-          </div>
-        </section>
+      <!-- =============================
+           STEP 0 — 색지 선택 + 닉네임
+      ============================== -->
+      <section class="step active" data-step="0">
+        <h2 style="font-size:22px; text-align:center; margin-bottom:10px;">
+          나의 프로필북 만들기
+        </h2>
 
-        <!-- STEP 1 : 타이틀 -->
-        <section class="step" data-step="1">
-          <div class="title-page">
-            <div class="title-heading">나의 프로필북</div>
-            <div class="title-sub">
-              넷플연가에서 만난 나의 취향을<br>
-              한 페이지씩 채워가는 시간
-            </div>
-          </div>
-        </section>
+        <p style="text-align:center; margin-bottom:5px;">
+          색지를 선택하고 닉네임을 입력하세요
+        </p>
 
-        <!-- STEP 2 : CHAPTER 1 -->
-        <section class="step" data-step="2">
-          <div class="chapter-title">
-            <div class="chapter-label">CHAPTER</div>
-            <div class="chapter-number">1</div>
-            <div class="chapter-sub">챕터 1 제목</div>
-          </div>
-        </section>
+        <!-- 색지 10개 -->
+        <div class="color-grid" id="colorGrid"></div>
 
-        <!-- STEP 3 : 질문 1 -->
-        <section class="step" data-step="3">
-          <h2 class="question-title">질문 1</h2>
-          <div class="image-placeholder">이미지는 나중에</div>
+        <input class="nickname-input" id="nicknameInput" placeholder="닉네임을 입력하세요" />
 
-          <div class="answer-block">
-            <textarea id="q1" placeholder="답변 1을 적어주세요."></textarea>
-            <div class="answer-view" id="q1-view"></div>
-          </div>
-        </section>
+        <button class="start-btn" onclick="startBook()">시작하기</button>
+      </section>
 
-        <!-- STEP 4 : 질문 2 -->
-        <section class="step" data-step="4">
-          <h2 class="question-title">질문 2</h2>
-          <div class="image-placeholder"></div>
+      <!-- =============================
+           STEP 1 — 타이틀 페이지
+      ============================== -->
+      <section class="step" data-step="1">
+        <div class="title-page" style="text-align:center; margin-top:140px;">
+          <div style="font-size:32px; font-weight:700; letter-spacing:1px;">나의 프로필북</div>
+          <div style="font-size:18px; margin-top:10px;">을지로 취향관</div>
+        </div>
+      </section>
 
-          <div class="answer-block">
-            <textarea id="q2" placeholder="답변 2를 적어주세요."></textarea>
-            <div class="answer-view" id="q2-view"></div>
-          </div>
-        </section>
+      <!-- =============================
+           STEP 2 — CHAPTER 1
+      ============================== -->
+      <section class="step" data-step="2">
+        <div class="header">
+          <div class="header-title">나의 프로필북 - 을지로 취향관</div>
+          <div class="header-nickname" id="headerNickname1"></div>
+        </div>
 
-        <!-- STEP 5 : CHAPTER 2 -->
-        <section class="step" data-step="5">
-          <div class="chapter-title">
-            <div class="chapter-label">CHAPTER</div>
-            <div class="chapter-number">2</div>
-            <div class="chapter-sub">챕터 2 제목</div>
-          </div>
-        </section>
+        <div class="chapter-wrap">
+          <div class="chapter-band" id="chapterBand1"></div>
+          <div class="chapter-title">CHAPTER 1</div>
+        </div>
 
-        <!-- STEP 6 : 질문 3 -->
-        <section class="step" data-step="6">
-          <h2 class="question-title">질문 3</h2>
-          <div class="image-placeholder"></div>
-          <div class="answer-block">
-            <textarea id="q3" placeholder="답변 3을 적어주세요."></textarea>
-            <div class="answer-view" id="q3-view"></div>
-          </div>
-        </section>
+        <div class="page-number">1</div>
+      </section>
 
-        <!-- STEP 7 : 질문 4 -->
-        <section class="step" data-step="7">
-          <h2 class="question-title">질문 4</h2>
-          <div class="image-placeholder"></div>
-          <div class="answer-block">
-            <textarea id="q4" placeholder="답변 4를 적어주세요."></textarea>
-            <div class="answer-view" id="q4-view"></div>
-          </div>
-        </section>
+      <!-- =============================
+           STEP 3 — Question 1
+      ============================== -->
+      <section class="step" data-step="3">
+        <div class="header">
+          <div class="header-title">나의 프로필북 - 을지로 취향관</div>
+          <div class="header-nickname" id="headerNickname2"></div>
+        </div>
 
+        <h2 class="question-title">질문 1</h2>
+        <div class="answer-block">
+          <textarea id="q1"></textarea>
+          <div class="answer-view" id="q1-view"></div>
+        </div>
+
+        <div class="page-number">2</div>
+      </section>
+
+      <!-- =============================
+           STEP 4 — Question 2
+      ============================== -->
+      <section class="step" data-step="4">
+        <div class="header">
+          <div class="header-title">나의 프로필북 - 을지로 취향관</div>
+          <div class="header-nickname" id="headerNickname3"></div>
+        </div>
+
+        <h2 class="question-title">질문 2</h2>
+        <div class="answer-block">
+          <textarea id="q2"></textarea>
+          <div class="answer-view" id="q2-view"></div>
+        </div>
+
+        <div class="page-number">3</div>
+      </section>
+
+      <!-- =============================
+           STEP 5 — CHAPTER 2
+      ============================== -->
+      <section class="step" data-step="5">
+        <div class="header">
+          <div class="header-title">나의 프로필북 - 을지로 취향관</div>
+          <div class="header-nickname" id="headerNickname4"></div>
+        </div>
+
+        <div class="chapter-wrap">
+          <div class="chapter-band" id="chapterBand2"></div>
+          <div class="chapter-title">CHAPTER 2</div>
+        </div>
+
+        <div class="page-number">4</div>
+      </section>
+
+      <!-- =============================
+           STEP 6 — Question 3
+      ============================== -->
+      <section class="step" data-step="6">
+        <div class="header">
+          <div class="header-title">나의 프로필북 - 을지로 취향관</div>
+          <div class="header-nickname" id="headerNickname5"></div>
+        </div>
+
+        <h2 class="question-title">질문 3</h2>
+        <div class="answer-block">
+          <textarea id="q3"></textarea>
+          <div class="answer-view" id="q3-view"></div>
+        </div>
+
+        <div class="page-number">5</div>
+      </section>
+
+      <!-- =============================
+           STEP 7 — Question 4
+      ============================== -->
+      <section class="step" data-step="7">
+        <div class="header">
+          <div class="header-title">나의 프로필북 - 을지로 취향관</div>
+          <div class="header-nickname" id="headerNickname6"></div>
+        </div>
+
+        <h2 class="question-title">질문 4</h2>
+        <div class="answer-block">
+          <textarea id="q4"></textarea>
+          <div class="answer-view" id="q4-view"></div>
+        </div>
+
+        <div class="page-number">6</div>
+      </section>
+
+      <!-- =============================
+           하단 이동 버튼
+      ============================== -->
+      <div class="nav-buttons">
+        <button class="prev-btn" onclick="prevStep()">이전</button>
+        <button class="next-btn" onclick="nextStep()">다음</button>
       </div>
-    </main>
 
-    <!-- 🔽 하단 버튼 (캡처 제외 영역) -->
-    <footer class="bottom-nav">
-      <button class="nav-btn" id="prev-btn">← 이전</button>
-      <div class="progress-text" id="progress-text">1 / 8</div>
-      <button class="nav-btn primary" id="next-btn">다음 →</button>
-    </footer>
-
+    </div>
   </div>
 </div>
 
-<!-- html2canvas -->
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<!-- html2canvas for capturing -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <script>
-  const phone = document.getElementById("phone");
-  const steps = Array.from(document.querySelectorAll(".step"));
-  const prevBtn = document.getElementById("prev-btn");
-  const nextBtn = document.getElementById("next-btn");
-  const progressText = document.getElementById("progress-text");
-  const totalSteps = steps.length;
-  let currentStep = 0;
+let currentStep = 0;
+let selectedColor = "";
+let nickname = "";
 
-  /* 패턴 선택 */
-  document.querySelectorAll(".pattern-card").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll(".pattern-card").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      phone.setAttribute("data-pattern", btn.dataset.pattern);
-    });
+/* 색지 10개 */
+const colorOptions = [
+  "linear-gradient(135deg, #ffd2c8, #ffb199)",  // peach
+  "linear-gradient(135deg, #d3ffe5, #9bfac8)",  // mint
+  "linear-gradient(135deg, #e8d4ff, #c5a3ff)",  // lavender
+  "linear-gradient(135deg, #d4f1ff, #a1dbff)",  // skyblue
+  "linear-gradient(135deg, #ffcab5, #ff9580)",  // coral
+  "url('https://i.imgur.com/3y3RrQ5.png')",     // beige paper
+  "url('https://i.imgur.com/yrRaLCl.png')",     // ricepaper
+  "linear-gradient(135deg, #cbb8ff, #a48cff)",  // toned lavender
+  "linear-gradient(135deg, #fff1a8, #ffe074)",  // honey yellow
+  "linear-gradient(135deg, #cbffe2, #91f5b4)"   // deep mint
+];
+
+/* 색지 선택 UI 채우기 */
+const colorGrid = document.getElementById("colorGrid");
+colorOptions.forEach((col, i) => {
+  const div = document.createElement("div");
+  div.className = "color-item";
+  div.style.background = col;
+  div.onclick = () => selectColor(i, col);
+  colorGrid.appendChild(div);
+});
+
+/* 선택 처리 */
+function selectColor(index, col) {
+  selectedColor = col;
+  [...document.querySelectorAll(".color-item")].forEach((el, i) => {
+    el.classList.toggle("selected", i === index);
   });
+}
 
-  /* textarea → answer-view 싱크 */
-  ["q1", "q2", "q3", "q4"].forEach(id => {
-    const ta = document.getElementById(id);
-    const view = document.getElementById(id + "-view");
-    if (!ta) return;
-    const sync = () => view.textContent = ta.value;
-    ta.addEventListener("input", sync);
-    sync();
-  });
+/* 시작 버튼 */
+function startBook() {
+  nickname = document.getElementById("nicknameInput").value.trim();
 
-  function updateStepUI() {
-    steps.forEach((s, i) => s.classList.toggle("active", i === currentStep));
-    progressText.textContent = `${currentStep + 1} / ${totalSteps}`;
-    prevBtn.disabled = currentStep === 0;
-    nextBtn.textContent = currentStep === totalSteps - 1 ? "완료(전체 저장)" : "다음 →";
+  if (!selectedColor) {
+    alert("색지를 선택해주세요!");
+    return;
+  }
+  if (!nickname) {
+    alert("닉네임을 입력해주세요!");
+    return;
   }
 
-  prevBtn.addEventListener("click", () => {
-    if (currentStep > 0) {
-      currentStep--; updateStepUI();
-    }
+  // 배경색 적용
+  document.getElementById("background-wrap").style.background = selectedColor;
+  document.getElementById("chapterBand1").style.background = selectedColor;
+  document.getElementById("chapterBand2").style.background = selectedColor;
+
+  // 헤더에 닉네임 넣기
+  ["headerNickname1","headerNickname2","headerNickname3",
+   "headerNickname4","headerNickname5","headerNickname6"]
+  .forEach(id => {
+    document.getElementById(id).textContent = nickname;
   });
 
-  nextBtn.addEventListener("click", async () => {
-    if (currentStep < totalSteps - 1) {
-      currentStep++; updateStepUI();
-    } else {
-      await saveAllPagesAsImages();
-    }
-  });
+  nextStep(); // step1으로 이동
+}
 
-  function goFirst() {
-    currentStep = 0;
-    updateStepUI();
+/* step 이동 */
+function showStep(s) {
+  [...document.querySelectorAll(".step")].forEach(el => el.classList.remove("active"));
+  document.querySelector(`.step[data-step='${s}']`).classList.add("active");
+}
+
+function nextStep() {
+  if (currentStep < 7) currentStep++;
+  showStep(currentStep);
+}
+
+function prevStep() {
+  if (currentStep > 0) currentStep--;
+  showStep(currentStep);
+}
+
+/* textarea → answer-view 동기화 */
+["q1","q2","q3","q4"].forEach(id => {
+  const ta = document.getElementById(id);
+  const view = document.getElementById(id + "-view");
+  if (ta && view) {
+    ta.addEventListener("input", () => view.textContent = ta.value);
   }
+});
 
-  /* 📸 캡처 함수 (특정 step 한 장 저장) */
-  async function captureStep(stepIndex) {
-    currentStep = stepIndex;
-    updateStepUI();
-    await new Promise(r => setTimeout(r, 250));
-
-    const target = document.getElementById("capture-target");
-
-    document.body.classList.add("capture-mode");
-    await new Promise(r => setTimeout(r, 50));
-
-    const canvas = await html2canvas(target, { scale: 2 });
-
-    document.body.classList.remove("capture-mode");
-
-    const link = document.createElement("a");
-    link.download = `profile-book-step${stepIndex}.png`;
-    link.href = canvas.toDataURL("image/png");
-    link.click();
-
-    await new Promise(r => setTimeout(r, 200));
-  }
-
-  /* 📕 전체 페이지 저장 (step1~마지막) */
-  async function saveAllPagesAsImages() {
-    for (let step = 1; step < totalSteps; step++) {
-      await captureStep(step);
-    }
-    alert("📘 모든 페이지 저장 완료!");
-  }
-
-  updateStepUI();
 </script>
-
 </body>
 </html>
