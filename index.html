@@ -255,12 +255,6 @@
     body.capture-mode textarea { display:none; }
     body.capture-mode .answer-view { display:block; }
 
-    /* ✅ 캡쳐할 때 위/아래 메뉴 숨기기 */
-    body.capture-mode .top-bar,
-    body.capture-mode .bottom-nav {
-      display: none !important;
-    }
-
     /* 하단 버튼 (캡처 대상 밖) */
     .bottom-nav {
       height:66px;
@@ -550,9 +544,10 @@ with 을지로 취향관
     document.body.classList.add("capture-mode");
     await new Promise(r=>setTimeout(r,60));
 
+    // ❗ 글자 크기 안 바뀌도록 page-frame만 캡처 + scale 고정
     const target = document.getElementById("phone");
     const canvas = await html2canvas(target, {
-      scale: 2,
+      scale: 2,         // 해상도만 올림, 레이아웃 그대로
       useCORS: true,
       allowTaint: true
     });
