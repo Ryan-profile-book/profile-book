@@ -12,7 +12,6 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background:#e5e7eb;
       color:#222;
-      transition:0.2s;
     }
 
     .bg {
@@ -23,10 +22,10 @@
       padding:16px;
     }
 
-    /* 📱 모바일 화면 고정 */
+    /* 📱 모바일 화면 (세로 B안: height 700px) */
     .phone {
       width:390px;
-      height:780px;
+      height:700px;  /* ← B안 적용 */
       max-width:100%;
       max-height:100vh;
       border-radius:32px;
@@ -38,7 +37,7 @@
       transition:0.3s;
     }
 
-    /* 📄 페이지 배경 패턴 (기존 4개) */
+    /* 📄 기존 4개 */
     .phone[data-pattern="sunrise"] {
       background:linear-gradient(135deg,#ffe0f0,#fff5d9);
     }
@@ -52,20 +51,18 @@
       background:linear-gradient(135deg,#fff4dd,#ffe9e0);
     }
 
-    /* ⭐ 추가된 4개 (밤하늘2 + 종이질감2) */
-    .phone[data-pattern="night1"] {
-      background:linear-gradient(135deg,#1c1f4a,#0a0c24);
+    /* ⭐ 안전한 파스텔톤 추가 4개 */
+    .phone[data-pattern="gray"] {
+      background:linear-gradient(135deg,#f2f2f2,#dcdcdc);
     }
-    .phone[data-pattern="night2"] {
-      background:linear-gradient(135deg,#2a2759,#120f2d);
+    .phone[data-pattern="blue"] {
+      background:linear-gradient(135deg,#dce8ff,#c5d8ff);
     }
-    .phone[data-pattern="paper1"] {
-      background:url('https://i.imgur.com/nWQe5CZ.png');
-      background-size:cover;
+    .phone[data-pattern="navy"] {
+      background:linear-gradient(135deg,#6f7fb8,#4c5a99);
     }
-    .phone[data-pattern="paper2"] {
-      background:url('https://i.imgur.com/k4IYtOQ.png');
-      background-size:cover;
+    .phone[data-pattern="black"] {
+      background:linear-gradient(135deg,#333,#111);
     }
 
     .top-bar {
@@ -89,7 +86,7 @@
       display:flex;
     }
 
-    /* 📚 캡처될 영역 */
+    /* 캡처 영역 */
     .page-inner {
       width:100%;
       height:100%;
@@ -104,11 +101,11 @@
     .step { display:none; }
     .step.active { display:block; }
 
-    /* --- 헤더 (닉네임 포함, 캡처 포함) --- */
+    /* 헤더 */
     .header-fixed {
       text-align:center;
-      margin-top:8px;
-      margin-bottom:18px;
+      margin-top:6px;
+      margin-bottom:14px;
     }
     .header-title {
       font-size:15px;
@@ -116,8 +113,8 @@
     }
     .header-nickname {
       font-size:12px;
-      margin-top:3px;
-      opacity:0.6;
+      opacity:0.7;
+      margin-top:2px;
     }
 
     /* 페이지 번호 */
@@ -126,14 +123,18 @@
       right:14px;
       bottom:14px;
       font-size:12px;
-      opacity:0.7;
+      opacity:0.8;
+      z-index:999;
+      background:rgba(255,255,255,0.6);
+      padding:2px 6px;
+      border-radius:6px;
     }
 
-    /* 🎨 색지 선택 */
+    /* 색지 */
     .pattern-title {
       text-align:center;
       font-size:16px;
-      margin:28px 0 12px;
+      margin:24px 0 12px;
     }
     .pattern-grid {
       display:flex; flex-wrap:wrap;
@@ -162,7 +163,7 @@
       font-size:14px;
     }
 
-    /* 🏷 타이틀 */
+    /* 타이틀 */
     .title-page {
       text-align:center;
       margin-top:80px;
@@ -178,7 +179,7 @@
       line-height:1.6;
     }
 
-    /* 📖 챕터 */
+    /* 챕터 */
     .chapter-title { text-align:center; margin-top:80px; }
     .chapter-label {
       font-size:24px;
@@ -199,7 +200,7 @@
       font-family:"Apple SD Gothic Neo","Nanum Myeongjo",serif;
     }
 
-    /* ✏ 질문 */
+    /* 질문 */
     .question-title {
       text-align:center;
       font-size:17px;
@@ -225,24 +226,22 @@
       border-radius:18px;
       padding:12px 14px;
       border:1px solid #ddd;
-      font-size:14px; line-height:1.7;
-      resize:vertical;
+      font-size:14px;
+      line-height:1.7;
     }
 
-    /* 📘 캡처모드일 때 텍스트만 보이기 */
     .answer-view {
       display:none;
       white-space:pre-wrap;
       line-height:1.8;
       font-size:14px;
-      color:#333;
       margin-top:4px;
     }
 
     body.capture-mode textarea { display:none; }
     body.capture-mode .answer-view { display:block; }
 
-    /* 하단 버튼 */
+    /* 하단 */
     .bottom-nav {
       height:68px;
       padding:8px 16px 14px;
@@ -257,10 +256,9 @@
       border-radius:999px;
       background:#f3f4f6;
       font-size:13px;
-      cursor:pointer;
     }
     .nav-btn.primary { background:#111827; color:white; }
-    .nav-btn:disabled { opacity:0.35; cursor:default; }
+    .nav-btn:disabled { opacity:0.35; }
 
     .progress-text {
       flex:1;
@@ -290,10 +288,12 @@
             <button class="pattern-card" data-pattern="lavender">라벤더</button>
             <button class="pattern-card" data-pattern="mint">민트</button>
             <button class="pattern-card" data-pattern="sand">샌드</button>
-            <button class="pattern-card" data-pattern="night1">밤하늘1</button>
-            <button class="pattern-card" data-pattern="night2">밤하늘2</button>
-            <button class="pattern-card" data-pattern="paper1">종이질감1</button>
-            <button class="pattern-card" data-pattern="paper2">종이질감2</button>
+
+            <!-- 추가된 파스텔톤 4개 -->
+            <button class="pattern-card" data-pattern="gray">그레이</button>
+            <button class="pattern-card" data-pattern="blue">블루</button>
+            <button class="pattern-card" data-pattern="navy">네이비</button>
+            <button class="pattern-card" data-pattern="black">차콜블랙</button>
           </div>
 
           <input class="nickname-input" id="nicknameInput" placeholder="닉네임을 입력해주세요" />
@@ -323,7 +323,7 @@
             <div class="chapter-sub">챕터 1 제목</div>
           </div>
 
-          <div class="page-number" data-pg="1"></div>
+          <div class="page-number">1</div>
         </section>
 
         <!-- STEP 3 : 질문 1 -->
@@ -341,7 +341,7 @@
             <div class="answer-view" id="q1-view"></div>
           </div>
 
-          <div class="page-number" data-pg="2"></div>
+          <div class="page-number">2</div>
         </section>
 
         <!-- STEP 4 : 질문 2 -->
@@ -359,7 +359,7 @@
             <div class="answer-view" id="q2-view"></div>
           </div>
 
-          <div class="page-number" data-pg="3"></div>
+          <div class="page-number">3</div>
         </section>
 
         <!-- STEP 5 : CHAPTER 2 -->
@@ -371,11 +371,11 @@
 
           <div class="chapter-title">
             <div class="chapter-label">CHAPTER</div>
-            <div class="chapter-number">2</div>
+            <div="chapter-number">2</div>
             <div class="chapter-sub">챕터 2 제목</div>
           </div>
 
-          <div class="page-number" data-pg="4"></div>
+          <div class="page-number">4</div>
         </section>
 
         <!-- STEP 6 : 질문 3 -->
@@ -393,7 +393,7 @@
             <div class="answer-view" id="q3-view"></div>
           </div>
 
-          <div class="page-number" data-pg="5"></div>
+          <div class="page-number">5</div>
         </section>
 
         <!-- STEP 7 : 질문 4 -->
@@ -411,7 +411,7 @@
             <div class="answer-view" id="q4-view"></div>
           </div>
 
-          <div class="page-number" data-pg="6"></div>
+          <div class="page-number">6</div>
         </section>
 
       </div>
@@ -422,6 +422,7 @@
       <div class="progress-text" id="progress-text">1 / 8</div>
       <button class="nav-btn primary" id="next-btn">다음 →</button>
     </footer>
+
   </div>
 </div>
 
@@ -434,6 +435,7 @@
   const nextBtn = document.getElementById("next-btn");
   const progressText = document.getElementById("progress-text");
   const totalSteps = steps.length;
+
   let currentStep = 0;
   let nickname = "";
 
@@ -446,44 +448,40 @@
     });
   });
 
-  /* nickname 적용 */
-  function setNickname() {
+  /* 닉네임 적용 */
+  function applyNickname() {
     nickname = document.getElementById("nicknameInput").value.trim();
-    if (!nickname) nickname = "";
-
     ["headerName2","headerName3","headerName4","headerName5","headerName6","headerName7"]
-      .forEach(id => document.getElementById(id).textContent = nickname);
+      .forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = nickname;
+      });
   }
 
-  /* textarea → answer-view 싱크 */
+  /* textarea → 보기 모드 변환 */
   ["q1","q2","q3","q4"].forEach(id => {
     const ta = document.getElementById(id);
-    const v = document.getElementById(id+"-view");
+    const view = document.getElementById(id+"-view");
     if (!ta) return;
-
-    const sync = () => v.textContent = ta.value;
+    const sync = () => view.textContent = ta.value;
     ta.addEventListener("input", sync);
     sync();
   });
 
   function updateStepUI() {
     steps.forEach((s,i)=>s.classList.toggle("active",i===currentStep));
-    progressText.textContent=`${currentStep+1} / ${totalSteps}`;
-
+    progressText.textContent = `${currentStep+1} / ${totalSteps}`;
     prevBtn.disabled = currentStep===0;
-
-    if (currentStep===0) nextBtn.textContent="다음 →";
-    else if (currentStep===totalSteps-1) nextBtn.textContent="완료(전체 저장)";
+    if (currentStep===totalSteps-1) nextBtn.textContent="완료(전체 저장)";
     else nextBtn.textContent="다음 →";
-
-    if (currentStep>0) setNickname();
+    if (currentStep>0) applyNickname();
   }
 
-  prevBtn.addEventListener("click",()=>{
+  prevBtn.addEventListener("click", () => {
     if(currentStep>0){ currentStep--; updateStepUI(); }
   });
 
-  nextBtn.addEventListener("click", async ()=>{
+  nextBtn.addEventListener("click", async () => {
     if(currentStep<totalSteps-1){
       currentStep++; updateStepUI();
     } else {
@@ -491,33 +489,34 @@
     }
   });
 
-  function goFirst(){
+  function goFirst() {
     currentStep=0; updateStepUI();
   }
 
-  async function captureStep(stepIndex){
+  /* 전체 폰(phone) 저장하도록 변경 */
+  async function captureStep(stepIndex) {
     currentStep = stepIndex;
     updateStepUI();
     await new Promise(r=>setTimeout(r,250));
 
     document.body.classList.add("capture-mode");
-    await new Promise(r=>setTimeout(r,100));
+    await new Promise(r=>setTimeout(r,50));
 
-    const target = document.getElementById("capture-target");
+    const target = document.getElementById("phone"); /* ← 수정됨 */
     const canvas = await html2canvas(target,{scale:2});
 
     document.body.classList.remove("capture-mode");
 
-    const link=document.createElement("a");
-    link.download=`profile-book-step${stepIndex}.png`;
-    link.href=canvas.toDataURL("image/png");
+    const link = document.createElement("a");
+    link.download = `profile-book-step${stepIndex}.png`;
+    link.href = canvas.toDataURL("image/png");
     link.click();
 
     await new Promise(r=>setTimeout(r,200));
   }
 
-  async function saveAllPagesAsImages(){
-    for(let step=1; step<totalSteps; step++){
+  async function saveAllPagesAsImages() {
+    for (let step=1; step<totalSteps; step++){
       await captureStep(step);
     }
     alert("📘 모든 페이지 저장 완료!");
