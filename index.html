@@ -38,7 +38,7 @@
       transition:0.3s;
     }
 
-    /* 📄 페이지 배경 패턴 */
+    /* 📄 페이지 배경 패턴 (기존 4개) */
     .phone[data-pattern="sunrise"] {
       background:linear-gradient(135deg,#ffe0f0,#fff5d9);
     }
@@ -50,6 +50,22 @@
     }
     .phone[data-pattern="sand"] {
       background:linear-gradient(135deg,#fff4dd,#ffe9e0);
+    }
+
+    /* ⭐ 추가된 4개 (밤하늘2 + 종이질감2) */
+    .phone[data-pattern="night1"] {
+      background:linear-gradient(135deg,#1c1f4a,#0a0c24);
+    }
+    .phone[data-pattern="night2"] {
+      background:linear-gradient(135deg,#2a2759,#120f2d);
+    }
+    .phone[data-pattern="paper1"] {
+      background:url('https://i.imgur.com/nWQe5CZ.png');
+      background-size:cover;
+    }
+    .phone[data-pattern="paper2"] {
+      background:url('https://i.imgur.com/k4IYtOQ.png');
+      background-size:cover;
     }
 
     .top-bar {
@@ -82,10 +98,36 @@
       border-radius:24px;
       overflow-y:auto;
       box-shadow:0 12px 30px rgba(15,23,42,0.08);
+      position:relative;
     }
 
     .step { display:none; }
     .step.active { display:block; }
+
+    /* --- 헤더 (닉네임 포함, 캡처 포함) --- */
+    .header-fixed {
+      text-align:center;
+      margin-top:8px;
+      margin-bottom:18px;
+    }
+    .header-title {
+      font-size:15px;
+      font-weight:600;
+    }
+    .header-nickname {
+      font-size:12px;
+      margin-top:3px;
+      opacity:0.6;
+    }
+
+    /* 페이지 번호 */
+    .page-number {
+      position:absolute;
+      right:14px;
+      bottom:14px;
+      font-size:12px;
+      opacity:0.7;
+    }
 
     /* 🎨 색지 선택 */
     .pattern-title {
@@ -108,6 +150,16 @@
     .pattern-card.active {
       border-color:#ff8a3d;
       box-shadow:0 0 0 2px rgba(255,138,61,0.3);
+    }
+
+    .nickname-input {
+      width:90%;
+      margin:18px auto 0;
+      display:block;
+      padding:10px 14px;
+      border-radius:14px;
+      border:1px solid #ddd;
+      font-size:14px;
     }
 
     /* 🏷 타이틀 */
@@ -152,7 +204,7 @@
       text-align:center;
       font-size:17px;
       margin:24px 0 18px;
-      font-family:"Apple SD Gothic Neo","Nanum Myeongjo",serif;
+      font-family:"Apple SD Gothic Neo","Nanum Myeong조",serif;
     }
 
     .image-placeholder {
@@ -176,11 +228,6 @@
       font-size:14px; line-height:1.7;
       resize:vertical;
     }
-    textarea:focus {
-      border-color:#ff8a3d;
-      box-shadow:0 0 0 1px rgba(255,138,61,0.3);
-      outline:none;
-    }
 
     /* 📘 캡처모드일 때 텍스트만 보이기 */
     .answer-view {
@@ -195,7 +242,7 @@
     body.capture-mode textarea { display:none; }
     body.capture-mode .answer-view { display:block; }
 
-    /* ⬇ 하단 버튼 (폰 안쪽 고정) */
+    /* 하단 버튼 */
     .bottom-nav {
       height:68px;
       padding:8px 16px 14px;
@@ -228,16 +275,14 @@
 <div class="bg">
   <div class="phone" id="phone" data-pattern="sunrise">
 
-    <!-- 🔼 헤더(캡처 제외 영역) -->
     <header class="top-bar">
       <button class="exit-btn" onclick="goFirst()">× 나가기</button>
     </header>
 
-    <!-- 📄 본문(캡처될 영역) -->
     <main class="page-container">
       <div class="page-inner" id="capture-target">
 
-        <!-- STEP 0 : 색지 선택 -->
+        <!-- STEP 0 : 색지 + 닉네임 -->
         <section class="step active" data-step="0">
           <div class="pattern-title">배경 색지를 골라주세요</div>
           <div class="pattern-grid">
@@ -245,7 +290,13 @@
             <button class="pattern-card" data-pattern="lavender">라벤더</button>
             <button class="pattern-card" data-pattern="mint">민트</button>
             <button class="pattern-card" data-pattern="sand">샌드</button>
+            <button class="pattern-card" data-pattern="night1">밤하늘1</button>
+            <button class="pattern-card" data-pattern="night2">밤하늘2</button>
+            <button class="pattern-card" data-pattern="paper1">종이질감1</button>
+            <button class="pattern-card" data-pattern="paper2">종이질감2</button>
           </div>
+
+          <input class="nickname-input" id="nicknameInput" placeholder="닉네임을 입력해주세요" />
         </section>
 
         <!-- STEP 1 : 타이틀 -->
@@ -261,15 +312,27 @@
 
         <!-- STEP 2 : CHAPTER 1 -->
         <section class="step" data-step="2">
+          <div class="header-fixed">
+            <div class="header-title">나의 프로필북 - 을지로 취향관</div>
+            <div class="header-nickname" id="headerName2"></div>
+          </div>
+
           <div class="chapter-title">
             <div class="chapter-label">CHAPTER</div>
             <div class="chapter-number">1</div>
             <div class="chapter-sub">챕터 1 제목</div>
           </div>
+
+          <div class="page-number" data-pg="1"></div>
         </section>
 
         <!-- STEP 3 : 질문 1 -->
         <section class="step" data-step="3">
+          <div class="header-fixed">
+            <div class="header-title">나의 프로필북 - 을지로 취향관</div>
+            <div class="header-nickname" id="headerName3"></div>
+          </div>
+
           <h2 class="question-title">질문 1</h2>
           <div class="image-placeholder">이미지는 나중에</div>
 
@@ -277,10 +340,17 @@
             <textarea id="q1" placeholder="답변 1을 적어주세요."></textarea>
             <div class="answer-view" id="q1-view"></div>
           </div>
+
+          <div class="page-number" data-pg="2"></div>
         </section>
 
         <!-- STEP 4 : 질문 2 -->
         <section class="step" data-step="4">
+          <div class="header-fixed">
+            <div class="header-title">나의 프로필북 - 을지로 취향관</div>
+            <div class="header-nickname" id="headerName4"></div>
+          </div>
+
           <h2 class="question-title">질문 2</h2>
           <div class="image-placeholder"></div>
 
@@ -288,51 +358,73 @@
             <textarea id="q2" placeholder="답변 2를 적어주세요."></textarea>
             <div class="answer-view" id="q2-view"></div>
           </div>
+
+          <div class="page-number" data-pg="3"></div>
         </section>
 
         <!-- STEP 5 : CHAPTER 2 -->
         <section class="step" data-step="5">
+          <div class="header-fixed">
+            <div class="header-title">나의 프로필북 - 을지로 취향관</div>
+            <div class="header-nickname" id="headerName5"></div>
+          </div>
+
           <div class="chapter-title">
             <div class="chapter-label">CHAPTER</div>
             <div class="chapter-number">2</div>
             <div class="chapter-sub">챕터 2 제목</div>
           </div>
+
+          <div class="page-number" data-pg="4"></div>
         </section>
 
         <!-- STEP 6 : 질문 3 -->
         <section class="step" data-step="6">
+          <div class="header-fixed">
+            <div class="header-title">나의 프로필북 - 을지로 취향관</div>
+            <div class="header-nickname" id="headerName6"></div>
+          </div>
+
           <h2 class="question-title">질문 3</h2>
           <div class="image-placeholder"></div>
+
           <div class="answer-block">
             <textarea id="q3" placeholder="답변 3을 적어주세요."></textarea>
             <div class="answer-view" id="q3-view"></div>
           </div>
+
+          <div class="page-number" data-pg="5"></div>
         </section>
 
         <!-- STEP 7 : 질문 4 -->
         <section class="step" data-step="7">
+          <div class="header-fixed">
+            <div class="header-title">나의 프로필북 - 을지로 취향관</div>
+            <div class="header-nickname" id="headerName7"></div>
+          </div>
+
           <h2 class="question-title">질문 4</h2>
           <div class="image-placeholder"></div>
+
           <div class="answer-block">
             <textarea id="q4" placeholder="답변 4를 적어주세요."></textarea>
             <div class="answer-view" id="q4-view"></div>
           </div>
+
+          <div class="page-number" data-pg="6"></div>
         </section>
 
       </div>
     </main>
 
-    <!-- 🔽 하단 버튼 (캡처 제외 영역) -->
     <footer class="bottom-nav">
       <button class="nav-btn" id="prev-btn">← 이전</button>
       <div class="progress-text" id="progress-text">1 / 8</div>
       <button class="nav-btn primary" id="next-btn">다음 →</button>
     </footer>
-
   </div>
 </div>
 
-<!-- html2canvas -->
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
 <script>
@@ -343,6 +435,7 @@
   const progressText = document.getElementById("progress-text");
   const totalSteps = steps.length;
   let currentStep = 0;
+  let nickname = "";
 
   /* 패턴 선택 */
   document.querySelectorAll(".pattern-card").forEach(btn => {
@@ -353,68 +446,78 @@
     });
   });
 
+  /* nickname 적용 */
+  function setNickname() {
+    nickname = document.getElementById("nicknameInput").value.trim();
+    if (!nickname) nickname = "";
+
+    ["headerName2","headerName3","headerName4","headerName5","headerName6","headerName7"]
+      .forEach(id => document.getElementById(id).textContent = nickname);
+  }
+
   /* textarea → answer-view 싱크 */
-  ["q1", "q2", "q3", "q4"].forEach(id => {
+  ["q1","q2","q3","q4"].forEach(id => {
     const ta = document.getElementById(id);
-    const view = document.getElementById(id + "-view");
+    const v = document.getElementById(id+"-view");
     if (!ta) return;
-    const sync = () => view.textContent = ta.value;
+
+    const sync = () => v.textContent = ta.value;
     ta.addEventListener("input", sync);
     sync();
   });
 
   function updateStepUI() {
-    steps.forEach((s, i) => s.classList.toggle("active", i === currentStep));
-    progressText.textContent = `${currentStep + 1} / ${totalSteps}`;
-    prevBtn.disabled = currentStep === 0;
-    nextBtn.textContent = currentStep === totalSteps - 1 ? "완료(전체 저장)" : "다음 →";
+    steps.forEach((s,i)=>s.classList.toggle("active",i===currentStep));
+    progressText.textContent=`${currentStep+1} / ${totalSteps}`;
+
+    prevBtn.disabled = currentStep===0;
+
+    if (currentStep===0) nextBtn.textContent="다음 →";
+    else if (currentStep===totalSteps-1) nextBtn.textContent="완료(전체 저장)";
+    else nextBtn.textContent="다음 →";
+
+    if (currentStep>0) setNickname();
   }
 
-  prevBtn.addEventListener("click", () => {
-    if (currentStep > 0) {
-      currentStep--; updateStepUI();
-    }
+  prevBtn.addEventListener("click",()=>{
+    if(currentStep>0){ currentStep--; updateStepUI(); }
   });
 
-  nextBtn.addEventListener("click", async () => {
-    if (currentStep < totalSteps - 1) {
+  nextBtn.addEventListener("click", async ()=>{
+    if(currentStep<totalSteps-1){
       currentStep++; updateStepUI();
     } else {
       await saveAllPagesAsImages();
     }
   });
 
-  function goFirst() {
-    currentStep = 0;
-    updateStepUI();
+  function goFirst(){
+    currentStep=0; updateStepUI();
   }
 
-  /* 📸 캡처 함수 (특정 step 한 장 저장) */
-  async function captureStep(stepIndex) {
+  async function captureStep(stepIndex){
     currentStep = stepIndex;
     updateStepUI();
-    await new Promise(r => setTimeout(r, 250));
-
-    const target = document.getElementById("capture-target");
+    await new Promise(r=>setTimeout(r,250));
 
     document.body.classList.add("capture-mode");
-    await new Promise(r => setTimeout(r, 50));
+    await new Promise(r=>setTimeout(r,100));
 
-    const canvas = await html2canvas(target, { scale: 2 });
+    const target = document.getElementById("capture-target");
+    const canvas = await html2canvas(target,{scale:2});
 
     document.body.classList.remove("capture-mode");
 
-    const link = document.createElement("a");
-    link.download = `profile-book-step${stepIndex}.png`;
-    link.href = canvas.toDataURL("image/png");
+    const link=document.createElement("a");
+    link.download=`profile-book-step${stepIndex}.png`;
+    link.href=canvas.toDataURL("image/png");
     link.click();
 
-    await new Promise(r => setTimeout(r, 200));
+    await new Promise(r=>setTimeout(r,200));
   }
 
-  /* 📕 전체 페이지 저장 (step1~마지막) */
-  async function saveAllPagesAsImages() {
-    for (let step = 1; step < totalSteps; step++) {
+  async function saveAllPagesAsImages(){
+    for(let step=1; step<totalSteps; step++){
       await captureStep(step);
     }
     alert("📘 모든 페이지 저장 완료!");
