@@ -280,16 +280,16 @@
     /* 캡처 모드에서 상/하단 메뉴 숨기고,
        페이지를 색지 그라데이션 직사각형으로 */
     body.capture-mode .top-bar,
-    body.capture-mode .bottom-nav {
-      display:none;
-    }
-    body.capture-mode .page-inner {
-      background:inherit;  /* phone의 그라데이션 상속 */
-      border-radius:0;
-      box-shadow:none;
-      padding:40px 30px 32px; /* 표지와 비슷한 여백 */
-    }
+body.capture-mode .bottom-nav {
+  display:none;
+}
 
+body.capture-mode .page-inner {
+  background:white;
+  border-radius:24px;
+  box-shadow:0 12px 30px rgba(15,23,42,0.08);
+  padding:20px 14px;
+}
     /* 하단 버튼 */
     .bottom-nav {
       height:66px;
@@ -629,3 +629,4 @@ with 을지로 취향관
 
 </body>
 </html>
+
