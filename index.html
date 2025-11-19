@@ -6,323 +6,133 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     * { box-sizing: border-box; }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-    }
-
+    html, body { margin:0; padding:0; height:100%; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #ffffff;
-      color: #222;
+      background:#fff; color:#222;
     }
+    body[data-pattern="white"]  { background:#ffffff; }
+    body[data-pattern="cream"]  { background:#fffaf0; }
+    body[data-pattern="peach"]  { background:#fff3f0; }
+    body[data-pattern="mint"]   { background:#f0fff8; }
 
-    .app {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+    .app{min-height:100vh;display:flex;flex-direction:column;}
+    .top-bar{height:44px;padding:0 16px;display:flex;align-items:center;}
+    .exit-btn{border:none;background:none;font-size:14px;cursor:pointer;}
 
-    /* 상단 바 */
+    .page-container{flex:1;padding:16px 16px 72px;display:flex;justify-content:center;align-items:center;}
+    .page-inner{width:100%;max-width:520px;min-height:60vh;padding:24px 12px;}
+    .step{display:none;}
+    .step.active{display:block;}
 
-    .top-bar {
-      height: 48px;
-      padding: 0 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 13px;
-    }
+    .chapter-title{text-align:center;margin-top:60px;}
+    .chapter-label{font-size:24px;letter-spacing:0.15em;font-weight:700;
+      background:linear-gradient(90deg,#ff7a3c,#ff4b7d,#ff8a3d);
+      -webkit-background-clip:text;color:transparent;}
+    .chapter-number{font-size:36px;color:#ff5a3c;font-weight:700;margin:4px 0 16px;}
+    .chapter-sub{font-size:17px;font-family:"Apple SD Gothic Neo","Nanum Myeongjo",serif;}
 
-    .top-left {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
+    .question-title{text-align:center;font-size:16px;margin:24px 0 16px;
+      font-family:"Apple SD Gothic Neo","Nanum Myeongjo",serif;}
+    .image-placeholder{margin:0 auto 14px;width:220px;height:170px;border-radius:24px;
+      border:1px dashed #ffd0a6;background:#fff7f0;display:flex;align-items:center;
+      justify-content:center;font-size:11px;color:#d28b4a;text-align:center;padding:8px;}
+    textarea{width:100%;min-height:140px;border-radius:16px;border:1px solid #ddd;
+      padding:10px 12px;font-size:13px;line-height:1.6;resize:vertical;}
+    textarea:focus{outline:none;border-color:#ff8a3d;box-shadow:0 0 0 1px rgba(255,138,61,.2);}
+    textarea::placeholder{color:#b3b3b3;}
 
-    .exit-btn {
-      border: none;
-      background: none;
-      font-size: 14px;
-      cursor: pointer;
-      padding: 4px 0;
-    }
+    .pattern-title{text-align:center;font-size:16px;margin:24px 0 10px;}
+    .pattern-grid{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+    .pattern-card{border-radius:999px;border:1px solid #ddd;padding:6px 14px;
+      font-size:12px;background:#fff;cursor:pointer;}
+    .pattern-card.active{border-color:#ff8a3d;box-shadow:0 0 0 1px rgba(255,138,61,.4);}
 
-    .top-actions {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .pill-btn {
-      border-radius: 999px;
-      padding: 4px 10px;
-      font-size: 11px;
-      border: none;
-      cursor: pointer;
-    }
-
-    .pill-secondary {
-      background: #f3f4f6;
-      color: #555;
-    }
-
-    .pill-primary {
-      background: #ff8a3d;
-      color: #fff;
-    }
-
-    /* 페이지 영역 */
-
-    .page-container {
-      flex: 1;
-      padding: 16px 16px 80px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .page-inner {
-      width: 100%;
-      max-width: 520px;
-      min-height: 60vh;
-      padding: 24px 16px 24px;
-    }
-
-    .step {
-      display: none;
-      height: 100%;
-    }
-    .step.active {
-      display: block;
-    }
-
-    /* 챕터 페이지 */
-
-    .chapter-title {
-      text-align: center;
-      margin-top: 60px;
-    }
-
-    .chapter-label {
-      font-size: 28px;
-      letter-spacing: 0.15em;
-      font-weight: 700;
-      margin-bottom: 8px;
-      background: linear-gradient(90deg, #ff7a3c, #ff4b7d, #ff8a3d);
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    .chapter-number {
-      font-size: 40px;
-      margin-bottom: 24px;
-      color: #ff5a3c;
-      font-weight: 700;
-    }
-
-    .chapter-subtitle {
-      font-size: 18px;
-      margin-top: 16px;
-      font-family: "Apple SD Gothic Neo", "Nanum Myeongjo", serif;
-    }
-
-    /* 질문 페이지 */
-
-    .question-title {
-      text-align: center;
-      font-size: 16px;
-      margin-top: 32px;
-      margin-bottom: 16px;
-      line-height: 1.6;
-      font-family: "Apple SD Gothic Neo", "Nanum Myeongjo", serif;
-    }
-
-    .image-placeholder {
-      margin: 0 auto 16px;
-      width: 220px;
-      height: 180px;
-      border-radius: 24px;
-      background: #fff7f0;
-      border: 1px dashed #ffd0a6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      color: #d28b4a;
-      text-align: center;
-      padding: 8px;
-    }
-
-    textarea {
-      width: 100%;
-      min-height: 160px;
-      resize: vertical;
-      border-radius: 16px;
-      border: 1px solid #ddd;
-      padding: 12px 14px;
-      font-size: 13px;
-      line-height: 1.6;
-      outline: none;
-    }
-
-    textarea::placeholder {
-      color: #b3b3b3;
-    }
-
-    textarea:focus {
-      border-color: #ff8a3d;
-      box-shadow: 0 0 0 1px rgba(255,138,61,0.2);
-    }
-
-    /* 하단 네비 */
-
-    .bottom-nav {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 64px;
-      padding: 8px 16px 12px;
-      background: rgba(255,255,255,0.96);
-      border-top: 1px solid #eee;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .nav-btn {
-      min-width: 88px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      border: none;
-      font-size: 13px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      background: #f3f4f6;
-      color: #444;
-    }
-
-    .nav-btn.primary {
-      background: #111827;
-      color: #fff;
-    }
-
-    .nav-btn:disabled {
-      opacity: 0.35;
-      cursor: default;
-    }
-
-    .progress-text {
-      flex: 1;
-      text-align: center;
-      font-size: 11px;
-      color: #999;
-    }
-
-    @media (min-width: 768px) {
-      .page-inner {
-        padding: 40px 24px 32px;
-      }
-      .chapter-title {
-        margin-top: 80px;
-      }
-    }
+    .bottom-nav{position:fixed;left:0;right:0;bottom:0;height:64px;padding:8px 16px 12px;
+      background:rgba(255,255,255,.96);border-top:1px solid #eee;display:flex;align-items:center;gap:12px;}
+    .nav-btn{min-width:88px;padding:8px 12px;border-radius:999px;border:none;font-size:13px;
+      cursor:pointer;background:#f3f4f6;color:#444;display:inline-flex;align-items:center;justify-content:center;}
+    .nav-btn.primary{background:#111827;color:#fff;}
+    .nav-btn:disabled{opacity:.35;cursor:default;}
+    .progress-text{flex:1;text-align:center;font-size:11px;color:#999;}
   </style>
 </head>
-<body>
+<body data-pattern="white">
   <div class="app">
-    <!-- 상단 바 -->
     <header class="top-bar">
-      <div class="top-left">
-        <button class="exit-btn" type="button" onclick="goFirst()">× 나가기</button>
-      </div>
-      <div class="top-actions">
-        <button class="pill-btn pill-secondary" type="button">저장</button>
-        <button class="pill-btn pill-primary" type="button">공유하기</button>
-      </div>
+      <button class="exit-btn" type="button" onclick="goFirst()">× 나가기</button>
     </header>
 
-    <!-- 페이지 영역 -->
     <main class="page-container">
-      <div class="page-inner">
-        <!-- STEP 0: CHAPTER 1 표지 -->
+      <div class="page-inner" id="capture-area">
+        <!-- STEP 0 : 배경색 선택 -->
         <section class="step active" data-step="0">
+          <div class="pattern-title">배경 색지를 골라주세요</div>
+          <div class="pattern-grid" id="pattern-grid">
+            <button class="pattern-card active" data-pattern="white">화이트</button>
+            <button class="pattern-card" data-pattern="cream">크림</button>
+            <button class="pattern-card" data-pattern="peach">피치</button>
+            <button class="pattern-card" data-pattern="mint">민트</button>
+          </div>
+        </section>
+
+        <!-- STEP 1 : CHAPTER 1 -->
+        <section class="step" data-step="1">
           <div class="chapter-title">
             <div class="chapter-label">CHAPTER</div>
             <div class="chapter-number">1</div>
-            <div class="chapter-subtitle">내가 생각하는 나</div>
+            <div class="chapter-sub">챕터 1 제목</div>
           </div>
         </section>
 
-        <!-- STEP 1: 질문 1 -->
-        <section class="step" data-step="1">
-          <h2 class="question-title">1. 요즘의 나를 한 문장으로 표현한다면?</h2>
-          <div class="image-placeholder">
-            여기에는 나중에<br />이미지나 그림이 들어갈 수 있어요.
-          </div>
-          <textarea
-            id="q1"
-            placeholder="생각을 자유롭게 적어주세요."
-          ></textarea>
-        </section>
-
-        <!-- STEP 2: 질문 2 -->
+        <!-- STEP 2 : 질문 1 -->
         <section class="step" data-step="2">
-          <h2 class="question-title">2. 내가 생각하는 나의 매력</h2>
-          <div class="image-placeholder">
-            필요하면 하트, 별, 아이콘 등<br />이미지를 넣을 수 있는 자리
-          </div>
-          <textarea
-            id="q2"
-            placeholder="예: 주변 사람을 편하게 해주는 분위기, 이야기를 잘 들어주는 태도 등"
-          ></textarea>
+          <h2 class="question-title">질문 1</h2>
+          <div class="image-placeholder">이미지는 나중에 넣을 자리</div>
+          <textarea id="q1" placeholder="답변 1을 적어주세요."></textarea>
         </section>
 
-        <!-- STEP 3: 질문 3 -->
+        <!-- STEP 3 : 질문 2 -->
         <section class="step" data-step="3">
-          <h2 class="question-title">3. 나를 가장 잘 설명하는 장면 한 가지</h2>
-          <div class="image-placeholder">
-            장면을 떠올리게 하는 사진이나<br />일러스트를 나중에 넣어도 좋아요.
-          </div>
-          <textarea
-            id="q3"
-            placeholder="언제, 어디에서, 누구와 있었는지, 그때의 느낌은 어땠는지 적어주세요."
-          ></textarea>
+          <h2 class="question-title">질문 2</h2>
+          <div class="image-placeholder"></div>
+          <textarea id="q2" placeholder="답변 2를 적어주세요."></textarea>
         </section>
 
-        <!-- STEP 4: CHAPTER 1 마무리 (예시) -->
+        <!-- STEP 4 : CHAPTER 2 -->
         <section class="step" data-step="4">
           <div class="chapter-title">
-            <div class="chapter-label">CHAPTER 1</div>
-            <div class="chapter-subtitle" style="margin-top:32px;">
-              이 장에서 발견한 “나”를<br />한 줄로 정리해본다면?
-            </div>
-            <textarea
-              id="q4"
-              style="margin-top:24px;"
-              placeholder="예: 사람 사이의 온도를 중요하게 여기면서도, 혼자만의 시간이 꼭 필요한 사람."
-            ></textarea>
+            <div class="chapter-label">CHAPTER</div>
+            <div class="chapter-number">2</div>
+            <div class="chapter-sub">챕터 2 제목</div>
           </div>
         </section>
 
-        <!-- 필요하면 여기에 CHAPTER 2 / 질문들 추가하면 됨 -->
+        <!-- STEP 5 : 질문 3 -->
+        <section class="step" data-step="5">
+          <h2 class="question-title">질문 3</h2>
+          <div class="image-placeholder"></div>
+          <textarea id="q3" placeholder="답변 3을 적어주세요."></textarea>
+        </section>
+
+        <!-- STEP 6 : 질문 4 -->
+        <section class="step" data-step="6">
+          <h2 class="question-title">질문 4</h2>
+          <div class="image-placeholder"></div>
+          <textarea id="q4" placeholder="답변 4를 적어주세요."></textarea>
+        </section>
       </div>
     </main>
 
-    <!-- 하단 네비게이션 -->
     <footer class="bottom-nav">
       <button class="nav-btn" id="prev-btn" type="button">← 이전</button>
-      <div class="progress-text" id="progress-text">1 / 5</div>
+      <div class="progress-text" id="progress-text">1 / 7</div>
       <button class="nav-btn primary" id="next-btn" type="button">다음 →</button>
     </footer>
   </div>
+
+  <!-- 나중에 html2canvas 붙일 자리 -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script> -->
 
   <script>
     const steps = Array.from(document.querySelectorAll(".step"));
@@ -332,21 +142,27 @@
     const totalSteps = steps.length;
     let currentStep = 0;
 
+    const patternButtons = document.querySelectorAll(".pattern-card");
+    patternButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        patternButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        document.body.setAttribute("data-pattern", btn.dataset.pattern);
+      });
+    });
+
     function updateStepUI() {
       steps.forEach((step, idx) => {
         step.classList.toggle("active", idx === currentStep);
       });
-
       progressText.textContent = `${currentStep + 1} / ${totalSteps}`;
-
       prevBtn.disabled = currentStep === 0;
-      nextBtn.textContent =
-        currentStep === totalSteps - 1 ? "완료" : "다음 →";
+      nextBtn.textContent = currentStep === totalSteps - 1 ? "완료" : "다음 →";
     }
 
     prevBtn.addEventListener("click", () => {
       if (currentStep > 0) {
-        currentStep -= 1;
+        currentStep--;
         updateStepUI();
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
@@ -354,13 +170,13 @@
 
     nextBtn.addEventListener("click", () => {
       if (currentStep < totalSteps - 1) {
-        currentStep += 1;
+        currentStep++;
         updateStepUI();
         window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
-        // 마지막 페이지에서 "완료" 눌렀을 때: 그냥 맨 위로 올려주기
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        alert("CHAPTER 1이 완성되었어요! 화면을 캡처해서 보관해 주세요 :)");
+        // TODO: 여기에서 전체 답변을 이미지로 저장하는 함수 호출
+        // saveAllAsImage();
+        alert("여기에서 나중에 이미지 저장 기능이 실행될 거예요!");
       }
     });
 
