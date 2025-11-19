@@ -545,7 +545,7 @@ with 을지로 취향관
     await new Promise(r=>setTimeout(r,60));
 
     // ❗ 글자 크기 안 바뀌도록 page-frame만 캡처 + scale 고정
-    const target = document.getElementById("capture-target");
+    const target = document.getElementById("phone");
     const canvas = await html2canvas(target, {
       scale: 2,         // 해상도만 올림, 레이아웃 그대로
       useCORS: true,
@@ -582,3 +582,4 @@ with 을지로 취향관
 
 </body>
 </html>
+
