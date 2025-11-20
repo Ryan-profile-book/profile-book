@@ -288,22 +288,22 @@
     body.capture-mode .answer-view { display:block; }
 
     /* 하단 버튼 */
-.bottom-nav {
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:0;
-  height:66px;
-  padding:8px 16px 14px;
-  background:rgba(255,255,255,0.9);
-  backdrop-filter:blur(10px);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  flex-shrink:0;
-  z-index:20;
-}
+    .bottom-nav {
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      height:66px;
+      padding:8px 16px 14px;
+      background:rgba(255,255,255,0.9);
+      backdrop-filter:blur(10px);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-shrink:0;
+      z-index:20;
+    }
 
     .nav-btn {
       min-width:90px;
@@ -787,6 +787,7 @@ with 을지로 취향관
 
 <script>
   const phone = document.getElementById("phone");
+  const captureTarget = document.getElementById("capture-target"); // 🔹 가운데 페이지만 캡처용
   const steps = Array.from(document.querySelectorAll(".step"));
   const prevBtn = document.getElementById("prev-btn");
   const nextBtn = document.getElementById("next-btn");
@@ -886,7 +887,9 @@ with 을지로 취향관
     document.body.classList.add("capture-mode");
     await new Promise(r=>setTimeout(r,60));
 
-    const target = document.getElementById("phone");
+    // 🔹 이제는 phone 전체가 아니라 가운데 페이지(frame)만 캡처
+    const target = captureTarget;
+
     const canvas = await html2canvas(target, {
       scale: 2,
       useCORS: true,
@@ -923,4 +926,3 @@ with 을지로 취향관
 
 </body>
 </html>
-
