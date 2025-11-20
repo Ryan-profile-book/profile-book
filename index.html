@@ -288,17 +288,22 @@
     body.capture-mode .answer-view { display:block; }
 
     /* 하단 버튼 */
-    .bottom-nav {
-      height:66px;
-      padding:8px 16px 14px;
-      background:rgba(255,255,255,0.7);
-      backdrop-filter:blur(10px);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      flex-shrink:0;
-    }
+.bottom-nav {
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height:66px;
+  padding:8px 16px 14px;
+  background:rgba(255,255,255,0.9);
+  backdrop-filter:blur(10px);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-shrink:0;
+  z-index:20;
+}
 
     .nav-btn {
       min-width:90px;
@@ -918,3 +923,4 @@ with 을지로 취향관
 
 </body>
 </html>
+
