@@ -306,19 +306,20 @@
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:12px;
+      gap:8px;
       flex-shrink:0;
       z-index:20;
     }
 
     .nav-btn {
-      min-width:90px;
+      min-width:80px;
       border:none;
-      padding:8px 12px;
+      padding:8px 10px;
       border-radius:999px;
       background:#f3f4f6;
-      font-size:14px;
+      font-size:13px;
       cursor:pointer;
+      white-space:nowrap;
     }
     .nav-btn.primary {
       background:#111827;
@@ -779,6 +780,7 @@ with 을지로 취향관
 
     <footer class="bottom-nav">
       <button class="nav-btn" id="prev-btn">← 이전</button>
+      <button class="nav-btn" id="save-chapter-btn">현재 챕터 저장</button>
       <div class="progress-text" id="progress-text">1 / 27</div>
       <button class="nav-btn primary" id="next-btn">다음 →</button>
     </footer>
@@ -796,6 +798,7 @@ with 을지로 취향관
   const steps = Array.from(document.querySelectorAll(".step"));
   const prevBtn = document.getElementById("prev-btn");
   const nextBtn = document.getElementById("next-btn");
+  const saveChapterBtn = document.getElementById("save-chapter-btn");
   const progressText = document.getElementById("progress-text");
   const totalSteps = steps.length;
 
@@ -883,7 +886,55 @@ with 을지로 취향관
     currentStep=0; updateStepUI();
   }
 
-  /* 특정 step을 canvas로 캡처 */
+  /* 🔸 현재 step이 어느 챕터인지 구간 반환 */
+  function getChapterRange(stepIndex) {
+    // Chapter 1: step 2 ~ 12
+    if (stepIndex >= 2 && stepIndex <= 12) {
+      return { start: 2, end: 12, name: "chapter1" };
+    }
+    // Chapter 2: step 13 ~ 19
+    if (stepIndex >= 13 && stepIndex <= 19) {
+      return { start: 13, end: 19, name: "chapter2" };
+    }
+    // Chapter 3: step 20 ~ 26
+    if (stepIndex >= 20 && stepIndex <= 26) {
+      return { start: 20, end: 26, name: "chapter3" };
+    }
+    // 색지/표지 등에서는 null
+    return null;
+  }
+
+  /* 🔸 현재 챕터만 ZIP으로 저장 */
+  async function saveCurrentChapter() {
+    const range = getChapterRange(currentStep);
+    if (!range) {
+      alert("챕터 페이지 또는 질문 페이지에서 사용해주세요!");
+      return;
+    }
+
+    const zip = new JSZip();
+
+    for (let step = range.start; step <= range.end; step++) {
+      const canvas = await captureStepToCanvas(step);
+      const dataUrl = canvas.toDataURL("image/png");
+      const base64 = dataUrl.split(',')[1];
+      zip.file(`${range.name}-page-${step}.png`, base64, { base64: true });
+    }
+
+    const content = await zip.generateAsync({ type: "blob" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(content);
+    link.download = `profile-${range.name}.zip`;
+    link.click();
+
+    alert(`📘 ${range.name.toUpperCase()} 페이지를 ZIP으로 저장했습니다!`);
+  }
+
+  saveChapterBtn.addEventListener("click", () => {
+    saveCurrentChapter();
+  });
+
+  /* 특정 step을 canvas로 캡처 (⚠️ 기존 로직 그대로 유지) */
   async function captureStepToCanvas(stepIndex){
     currentStep = stepIndex;
     updateStepUI();
@@ -892,7 +943,7 @@ with 을지로 취향관
     document.body.classList.add("capture-mode");
     await new Promise(r=>setTimeout(r,60));
 
-    // 🔹 폰 전체를 캡처하되, capture-mode에서 상단/하단은 숨긴 상태
+    // 폰 전체를 캡처 (상단/하단은 visibility:hidden 상태)
     const target = phone;
 
     const canvas = await html2canvas(target, {
