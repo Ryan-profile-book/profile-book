@@ -292,6 +292,33 @@
     body.capture-mode .answer-view { display:block; }
     body.capture-mode .poster-input { display:none; }
 
+    /* 🔥 질문 2개 들어가는 페이지 전용 레이아웃 */
+    .step.two-questions {
+      display:flex;
+      flex-direction:column;
+      height:100%;
+    }
+    .step.two-questions .header-fixed {
+      flex-shrink:0;
+      margin-bottom:10px;
+    }
+    .step.two-questions .question-block {
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start;
+    }
+    .step.two-questions .answer-block {
+      flex:1;
+      display:flex;
+      flex-direction:column;
+    }
+    .step.two-questions textarea,
+    .step.two-questions .answer-view {
+      flex:1;
+      min-height:0;
+    }
+
     /* 하단 버튼 */
     .bottom-nav {
       position:absolute;
@@ -403,7 +430,7 @@ with 을지로 취향관
           </section>
 
           <!-- STEP 3 : Q1 + Q2 -->
-          <section class="step" data-step="3">
+          <section class="step two-questions" data-step="3">
             <div class="header-fixed">
               <div class="header-title">나의 프로필북 - 을지로 취향관</div>
               <div class="header-nickname"></div>
@@ -433,7 +460,7 @@ with 을지로 취향관
           </section>
 
           <!-- STEP 4 : Q3 + Q4 -->
-          <section class="step" data-step="4">
+          <section class="step two-questions" data-step="4">
             <div class="header-fixed">
               <div class="header-title">나의 프로필북 - 을지로 취향관</div>
               <div class="header-nickname"></div>
@@ -458,7 +485,7 @@ with 을지로 취향관
           </section>
 
           <!-- STEP 5 : Q5 + Q6 -->
-          <section class="step" data-step="5">
+          <section class="step two-questions" data-step="5">
             <div class="header-fixed">
               <div class="header-title">나의 프로필북 - 을지로 취향관</div>
               <div class="header-nickname"></div>
@@ -482,7 +509,7 @@ with 을지로 취향관
           </section>
 
           <!-- STEP 6 : Q7 + Q8 -->
-          <section class="step" data-step="6">
+          <section class="step two-questions" data-step="6">
             <div class="header-fixed">
               <div class="header-title">나의 프로필북 - 을지로 취향관</div>
               <div class="header-nickname"></div>
@@ -506,7 +533,7 @@ with 을지로 취향관
           </section>
 
           <!-- STEP 7 : Q9 + Q10 -->
-          <section class="step" data-step="7">
+          <section class="step two-questions" data-step="7">
             <div class="header-fixed">
               <div class="header-title">나의 프로필북 - 을지로 취향관</div>
               <div class="header-nickname"></div>
@@ -572,7 +599,7 @@ with 을지로 취향관
           </section>
 
           <!-- STEP 10 : Q12 + Q13 -->
-          <section class="step" data-step="10">
+          <section class="step two-questions" data-step="10">
             <div class="header-fixed">
               <div class="header-title">나의 프로필북 - 을지로 취향관</div>
               <div class="header-nickname"></div>
@@ -596,7 +623,7 @@ with 을지로 취향관
           </section>
 
           <!-- STEP 11 : Q14 + Q15 -->
-          <section class="step" data-step="11">
+          <section class="step two-questions" data-step="11">
             <div class="header-fixed">
               <div class="header-title">나의 프로필북 - 을지로 취향관</div>
               <div class="header-nickname"></div>
@@ -651,7 +678,7 @@ with 을지로 취향관
           </section>
 
           <!-- STEP 14 : Q17 + Q18 -->
-          <section class="step" data-step="14">
+          <section class="step two-questions" data-step="14">
             <div class="header-fixed">
               <div class="header-title">나의 프로필북 - 을지로 취향관</div>
               <div class="header-nickname"></div>
@@ -675,7 +702,7 @@ with 을지로 취향관
           </section>
 
           <!-- STEP 15 : Q19 + Q20 -->
-          <section class="step" data-step="15">
+          <section class="step two-questions" data-step="15">
             <div class="header-fixed">
               <div class="header-title">나의 프로필북 - 을지로 취향관</div>
               <div class="header-nickname"></div>
@@ -699,7 +726,7 @@ with 을지로 취향관
           </section>
 
           <!-- STEP 16 : Q21 + Q22 -->
-          <section class="step" data-step="16">
+          <section class="step two-questions" data-step="16">
             <div class="header-fixed">
               <div class="header-title">나의 프로필북 - 을지로 취향관</div>
               <div class="header-nickname"></div>
